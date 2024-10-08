@@ -11,4 +11,20 @@ format:
 
 Primero ejecuta el código en la siguiente presentación para que te des una idea de cómo se ve el resultado. Después, puedes copiar el código y ejecutarlo en tu computadora.
 
+Estos ejercicios son sencillos y están diseñados para introducir a los usuarios al entorno de R de una manera práctica.
+
 {{< revealjs file="slides/lecture-01.html" height="500px">}}
+
+
+## Resumen
+
+### Operaciones Aritméticas Básicas
+
+    Suma: 3 + 5
+    Resta: 10 - 4
+    Multiplicación: 7 * 6
+    División: 20 / 4
+    Potencia: 2^3
+    Modulo: %%
+
+Nota: el operador de módulo se utiliza para obtener el residuo de una división. Por ejemplo, 10 %% 3 es igual a 1, ya que 10 dividido entre 3 es 3 y sobra 1. 5 modulo 3, o `5 %% 3`, es igual a 2, ya que 5 dividido entre 3 es 1 y sobra 2.

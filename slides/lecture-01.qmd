@@ -61,156 +61,182 @@ Where:
 Let's look at how to implement linear regression in R and Python by first simulating some data
 
 
-## R
+## Operaciones Aritméticas Básicas
+
+Ejecuta el siguiente código y observa los resultados:
 
 ```{webr}
-# Create sample data
-set.seed(123)
-x <- 1:100
-y <- 2 * x + 1 + rnorm(100, mean = 0, sd = 3)
-df <- data.frame(x = x, y = y)
 
-head(df)
+# Suma
+3 + 5
+
+```
+
+
+```{webr}
+
+# Resta
+10 - 4
+
+
+```
+
+
+```{webr}
+
+# Multiplicación
+7 * 6
+
+
+```
+
+
+```{webr}
+
+# División
+20 / 4
+
+
+```
+
+
+```{webr}
+# Potencia
+2^3
+
 ```
 
 
 ---
 
-## Guessing the Coefficients
+## NOTAS
 
-Try to fit a linear regression model by hand through manipulating coefficients below:
-
-The linear regression with $\beta_0 =$
-`{ojs} beta_0_Tgl` and $\beta_1 =$ `{ojs} beta_1_Tgl` is:
-
-```{ojs}
-//| echo: false
-import {Tangle} from "@mbostock/tangle"
-
-// Setup Tangle reactive inputs
-viewof beta_0 = Inputs.input(0);
-viewof beta_1 = Inputs.input(1);
-beta_0_Tgl = Inputs.bind(Tangle({min: -30, max: 300, minWidth: "1em", step: 1}), viewof beta_0);
-beta_1_Tgl = Inputs.bind(Tangle({min: -5, max: 5, minWidth: "1em", step: 0.25}), viewof beta_1);
-
-// draw plot in R
-regression_plot(beta_0, beta_1)
-```
+- Observa cómo al ejecutar el código, se muestra el resultado de cada operación aritmética en un mensaje. Este es el resultado y es conocido como la salida de la operación. En los textos y tutoriales de R, se le conoce como "output".
+- En R, el símbolo `#` se utiliza para hacer comentarios. Los comentarios son útiles para explicar el código y hacerlo más legible. R ignora los comentarios al ejecutar el código.
+- Observa como en el siguiente código si comentamos las operaciones, no tendremos salida.
 
 ```{webr}
-#| edit: false
-#| output: false
-#| define:
-#|   - regression_plot
-regression_plot <- function(beta_0, beta_1) {
 
-  # Create scatter plot  
-  plot(
-    df$x, df$y, 
-    xlim = c(min(df$x) - 10, max(df$x) + 10),
-    ylim = c(min(df$y) - 10, max(df$y) + 10)
-  )
+# Suma
+# 3 + 5
 
-  # Graph regression line
-  abline(a = beta_0, b = beta_1, col = "red")
-}
-```
-:::
+# División
+# 20 / 4
 
+# Potencia
+# 2^3
 
----
-
-## Fit Linear Regression Model
-
-Now that we have our data, let's fit a linear regression model to it:
-
-
-
-## R
-
-```{webr}
-# Fit linear regression model
-model <- lm(y ~ x, data = df)
-
-# View summary of the model
-summary(model)
 ```
 
+## Ejericio
 
-## Visualize the Results
-
-We can visualize the data and the regression line to see how well the model fits the data using ggplot2 in R and Matplotlib in Python.
-
-
-
-## R
-
-```{webr}
-library(ggplot2) 
-
-# Plot the data and regression line
-ggplot(df, aes(x = x, y = y)) +
-  geom_point() +
-  geom_smooth(method = "lm", se = FALSE, color = "red") +
-  theme_minimal() +
-  labs(title = "Linear Regression in R",
-       x = "X", y = "Y")
-```
-
-
----
-
-## Predicting New Values
-
-We can use our linear regression model to make predictions on new data:
-
-
-
-## R
-
-```{webr}
-# Predict new values
-new_data <- data.frame(x = c(101, 102, 103))
-predictions <- predict(model, newdata = new_data)
-
-predictions
-```
-
-
----
-
-## Your Turn: Predict New Values!
-
-{{< countdown "01:30" top="10px" right="5px">}}
-
-Create a new data frame with `x` values 10, 30, and 60, then use the model to predict the corresponding y values.
-
-
-## R 
+Realiza la operación que se muestran a continuación. Asignalo a una variable llamada `operaciones` y luego imprime el resultado.
 
 ```{webr}
 #| exercise: ex_1_r
-# Create your new data frame here
+
+# Suma 4 más 7 y divide el resultado entre 2 y asígnalo a la variable.
+# NOTA: Utiliza el paréntesis para indicar el orden de las operaciones.
 _______
 
-# Make predictions here
-_______
-
-# Print the predictions
-_______
+# imprimir el resultado
+______
 ```
+
 
 ```{webr}
 #| exercise: ex_1_r
 #| check: true
 
-# Create your new data frame here
-new_data <- data.frame(x = c(10, 30, 60))
+operaciones <- (4+7)/2
 
-# Make predictions here
-predictions <- predict(model, newdata = new_data)
+operaciones
 
-if (isTRUE(all.equal(.result, predictions))) {
+if (isTRUE(all.equal(.result, operaciones))) {
+  list(correct = TRUE, message = "Correcto!")
+} else {
+  list(correct = FALSE, message = "Incorrecto.")
+}
+```
+
+
+## Asignación de Variables
+
+En R, puedes asignar valores a variables utilizando el operador `<-` o el operador `=` (menos utilizado). Una variable te permite almacenar un valor y hacer referencia a él en tu código. En el siguiente ejemplo, asignamos el valor 10 a la variable `x` y luego imprimimos el valor de `x`:
+
+```{webr}
+
+# Asignación de variables
+x <- 10
+
+# Imprimir el valor de x
+x
+
+```
+
+## Operaciones con Variables
+
+Puedes realizar operaciones aritméticas con variables. 
+
+```{webr}
+
+a <- 10
+b <- 5
+
+a * b
+
+```
+
+## Vectores
+
+En R, un vector es una estructura de datos que almacena una secuencia de valores. Puedes crear un vector utilizando la función `c()` (que significa "concatenar"). Piénsalo como una lista de valores. Observa cómo al correr el código, no tenemos salida. Esto es porque solo hemos creado el vector, pero no hemos hecho nada con él. Es decir, R almacenó el vector en la variable `mis_numeros` en la memoria, pero no mostrará nada hasta que le pidamos que haga algo con él.
+
+```{webr}
+
+# Crear un vector de números
+mis_numeros <- c(1, 2, 3, 4, 5)
+
+```
+
+## utilidad
+
+Los vectores son útiles para almacenar datos y realizar operaciones en ellos. Por ejemplo, puedes promediar todos los elementos de un vector utilizando la función `mean()`.
+
+```{webr}
+
+# Crear un vector de números
+mis_numeros <- c(1, 2, 3, 4, 5)
+
+# Calcular el promedio de los números
+mean(mis_numeros)
+
+```
+
+## Ejercicio
+
+Calcula la suma de los números 1, 2, 3, 4, y 5. Para esto, crea un vector con los números y utiliza la función `sum()` para calcular la suma.
+
+```{webr}
+#| exercise: ex_2_r
+
+# Crear un vector de números y asígnalo a la variable mis_numeros
+_______
+
+# Calcular la suma de los números
+_______
+```
+
+
+
+```{webr}
+#| exercise: ex_2_r
+#| check: true
+
+mis_numeros <- c(1, 2, 3, 4, 5)
+
+sum(mis_numeros)
+
+if (isTRUE(all.equal(.result, sum(mis_numeros)))) {
   list(correct = TRUE, message = "Nice work!")
 } else {
   list(correct = FALSE, message = "That's incorrect, sorry.")
@@ -219,53 +245,6 @@ if (isTRUE(all.equal(.result, predictions))) {
 
 ---
 
-## Model Evaluation
-
-We can evaluate the performance of our linear regression model using various metrics:
-
-
-
-## R
-
-```{webr}
-# R-squared
-summary(model)$r.squared
-
-# Root Mean Squared Error (RMSE)
-sqrt(mean(residuals(model)^2))
-
-# Mean Absolute Error (MAE)
-mean(abs(residuals(model)))
-```
-
-
----
-
-## Assumptions 
-
-Linear regression relies on several assumptions:
-
-1. Linearity
-2. Independence
-3. Homoscedasticity
-4. Normality of residuals
-
----
-
-## Checking Assumptions with Diagnostics Plots
-
-Let's look at some diagnostic plots:
-
-
-
-## R
-
-```{webr}
-par(mfrow = c(2, 2))
-plot(model)
-```
-
----
 
 ## Conclusion
 
