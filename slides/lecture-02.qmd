@@ -1,0 +1,235 @@
+---
+title: "Datos en R"
+subtitle: "Introducción"
+format: 
+    live-revealjs: 
+        scrollable: true
+webr:
+    packages: 
+        - ggplot2
+# pyodide: 
+#     packages: 
+#         - scikit-learn
+#         - pandas
+#         - matplotlib
+#         - seaborn
+#         - statsmodels
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Overview
+
+The goal of this
+
+---
+
+## Introduction
+
+Linear regression is a fundamental statistical technique used to model the relationship between a dependent variable and one or more independent variables.
+
+This presentation will cover:
+
+1. Basic Concepts
+2. Implementation in R and Python
+3. Model Evaluation
+4. Assumptions and Diagnostics
+
+---
+
+## Tipos de Datos en R
+
+R maneja varios tipos de datos básicos que son esenciales para comenzar. Entre ellos se encuentran:
+
+    Numéricos: Incluyen tanto números decimales, como 4.5, y números enteros, como 4. Los enteros son también considerados numéricos.
+    Lógicos: Son valores booleanos que pueden ser TRUE o FALSE.
+    Caracteres (o cadenas de texto): Son textos que se representan con comillas, como "algún texto".
+    NA: Representa la ausencia de un valor y puede ser numérico, carácter, o lógico.
+
+
+## Generating Data
+
+R clasifica la información en estos tipos de datos para procesarla adecuadamente. Entender estos tipos es esencial para trabajar con R, especialmente cuando se trata de vectores, que son listas de datos relacionados del mismo tipo.
+Ejercicio Interactivo en R
+
+Este ejercicio te ayudará a familiarizarte con los tipos de datos básicos en R:
+
+## Ejercicio de tipo de datos
+
+Instrucciones: - Ejecuta cada bloque de código y observa la salida. - Una vez ejecutado, verifica el tipo de dato con typeof(). - Cambia uno de los elementos en los vectores a NA y revisa cómo cambia la naturaleza del vector.
+
+Este ejercicio te ayudará a familiarizarte con los tipos de datos básicos y cómo R los maneja internamente.
+
+```{webr}
+
+# Ejercicio: Identificar tipos de datos
+
+# Crear una variable numérica
+numero <- 4.5
+print(numero)  # Mostrar valor
+print(typeof(numero))  # Mostrar tipo de dato
+
+```
+
+
+```{webr}
+
+# Crear una variable entera
+entero <- 4L
+print(entero)
+print(typeof(entero))
+
+
+```
+
+
+```{webr}
+
+# Crear una variable lógica
+logico <- TRUE
+print(logico)
+print(typeof(logico))
+
+
+```
+
+
+```{webr}
+
+# Crear una variable de carácter
+caracter <- "Hola, mundo"
+print(caracter)
+print(typeof(caracter))
+
+```
+
+
+```{webr}
+
+# Crear una variable NA numérica
+na_numerico <- NA_real_
+print(na_numerico)
+print(typeof(na_numerico))
+
+```
+
+
+```{webr}
+
+# Crear un vector de caracteres
+vector_caracter <- c("R", "es", "genial")
+print(vector_caracter)
+print(typeof(vector_caracter))
+
+
+```
+
+Ejercicio extra: Cambia uno de los valores en los vectores a NA y observa cómo afecta el tipo de dato
+
+---
+
+## NOTA
+
+Ten cuidado al trabajar con NA, ya que puede afectar el resultado de tus operaciones. Por ejemplo, si sumas un número y NA, el resultado será NA. Esto se conoce como "propagación de NA".
+
+```{webr}
+
+# Suma de un número y NA
+numero <- 4
+na <- NA
+numero + na
+
+```
+
+Tampoco puedes realizar operaciones con tipos de datos no compatibles. Por ejemplo, si intentas sumar un número y un carácter, obtendrás un error:
+
+```{webr}
+
+# Suma de un número y un carácter
+numero <- 4
+caracter <- "cinco"
+
+numero + caracter
+
+```
+
+## Dataframes
+
+Los dataframes son una estructura de datos tabular que se utiliza para almacenar datos en R. Son similares a las hojas de cálculo de Excel y se utilizan para organizar y analizar datos. Los dataframes tienen filas y columnas, donde cada fila representa una observación y cada columna representa una variable.
+
+## CSV
+
+Los archivos CSV (valores separados por comas) son una forma común de almacenar datos tabulares. Para familiarizarte con los dataframes y los archivos CSV en R, observa las siguiente tabla que se genera cuando corres este código:
+
+```{webr}
+
+# crear una tabla de datos
+datos <- data.frame(
+  nombre = c("Juan", "María", "Pedro"),
+  edad = c(25, 30, 35),
+  ciudad = c("CDMX", "GDL", "MTY")
+)
+
+# Imprimir la tabla de datos con formato
+kable(datos)
+```
+
+## explicación
+
+En este código, creamos un dataframe llamado datos con tres columnas: nombre, edad y ciudad. El nombre, edad y ciudad son las variables, y Juan, María y Pedro, 25,30,35, CDMX, GDL, MTY son las observaciones de cada variable.
+
+
+## Lectura de CVS
+
+Para leer un archivo CSV en R, puedes utilizar la función read.csv(). Esta función lee un archivo CSV y lo convierte en un dataframe que puedes manipular y analizar. Por ejemplo, si tienes un archivo CSV llamado datos.csv, puedes leerlo y almacenarlo en una variable llamada datos_csv de la siguiente manera:
+
+```{webr}
+#| eval: false
+
+# Leer un archivo CSV
+datos_csv <- read.csv("datos.csv")
+
+# Imprimir la tabla de datos con formato
+kable(datos_csv)
+
+```
+
+## Creación de Dataframes
+
+También puedes crear dataframes manualmente utilizando la función data.frame(). Por ejemplo, para crear un dataframe con los mismos datos que el archivo CSV anterior, puedes hacer lo siguiente:
+
+```{webr}
+# Create sample data
+set.seed(123)
+x <- 1:100
+y <- 2 * x + 1 + rnorm(100, mean = 0, sd = 3)
+df <- data.frame(x = x, y = y)
+
+head(df)
+```
+
+## Funciones útiles para Dataframes
+
+Los dataframes en R tienen muchas funciones útiles que te permiten manipular y analizar los datos. Algunas de las funciones más comunes son:
+
+    head(): Muestra las primeras filas de un dataframe.
+    tail(): Muestra las últimas filas de un dataframe.
+    summary(): Proporciona un resumen estadístico de un dataframe.
+    str(): Muestra la estructura de un dataframe.
+    nrow(): Devuelve el número de filas de un dataframe.
+    ncol(): Devuelve el número de columnas de un dataframe.
+
+
+## Ejericio
+
+
+---
+
+
+## Conclusion
+
+- Linear regression is a powerful tool for modeling relationships between variables.
+- Both R and Python offer robust implementations and diagnostic tools.
+- Always check assumptions and perform diagnostics to ensure the validity of your model.
+- Consider more advanced techniques (e.g., multiple regression, polynomial regression) for complex relationships.

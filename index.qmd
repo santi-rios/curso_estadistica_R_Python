@@ -28,3 +28,7 @@ Estos ejercicios son sencillos y están diseñados para introducir a los usuario
     Modulo: %%
 
 Nota: el operador de módulo se utiliza para obtener el residuo de una división. Por ejemplo, 10 %% 3 es igual a 1, ya que 10 dividido entre 3 es 3 y sobra 1. 5 modulo 3, o `5 %% 3`, es igual a 2, ya que 5 dividido entre 3 es 1 y sobra 2.
+
+## Trabajo con datos
+
+{{< revealjs file="slides/lecture-02.html" height="500px">}}
