@@ -1,0 +1,25 @@
+---
+title: "Empieza a programar con R"
+subtitle: "Introducción"
+format: 
+    live-revealjs: 
+        scrollable: true
+webr:
+    packages: 
+        - ggplot2
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Demo
+
+```{webr}
+# Create sample data
+set.seed(123)
+x <- 1:100
+y <- 2 * x + 1 + rnorm(100, mean = 0, sd = 3)
+df <- data.frame(x = x, y = y)
+
+head(df)
+```

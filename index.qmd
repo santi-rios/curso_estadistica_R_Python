@@ -1,0 +1,12 @@
+---
+title: "Ejecutar Tu Primer Código en R"
+subtitle: "Operaciones Básicas"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+## Aqui va el código
+
+{{< revealjs file="slides/lecture-01.html" height="500px">}}
