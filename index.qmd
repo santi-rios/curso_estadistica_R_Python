@@ -9,4 +9,6 @@ format:
 
 ## Aqui va el código
 
+Primero ejecuta el código en la siguiente presentación para que te des una idea de cómo se ve el resultado. Después, puedes copiar el código y ejecutarlo en tu computadora.
+
 {{< revealjs file="slides/lecture-01.html" height="500px">}}
