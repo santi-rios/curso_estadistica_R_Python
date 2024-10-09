@@ -1,17 +1,18 @@
 ---
-title: "Ejecutar Tu Primer Código en R"
-subtitle: "Operaciones Básicas"
+title: "Introducción a R"
+subtitle: "Aprende a programar y estadística con R"
 format:
   html:
     toc: true
     toc-depth: 2
 ---
 
-## Aqui va el código
+## Showcase R
 
-Primero ejecuta el código en la siguiente presentación para que te des una idea de cómo se ve el resultado. Después, puedes copiar el código y ejecutarlo en tu computadora.
+{{< revealjs file="slides/lecture-00.html" height="500px">}}
 
-Estos ejercicios son sencillos y están diseñados para introducir a los usuarios al entorno de R de una manera práctica.
+## Empieza a programar con R
+
 
 {{< revealjs file="slides/lecture-01.html" height="500px">}}
 
@@ -29,6 +30,27 @@ Estos ejercicios son sencillos y están diseñados para introducir a los usuario
 
 Nota: el operador de módulo se utiliza para obtener el residuo de una división. Por ejemplo, 10 %% 3 es igual a 1, ya que 10 dividido entre 3 es 3 y sobra 1. 5 modulo 3, o `5 %% 3`, es igual a 2, ya que 5 dividido entre 3 es 1 y sobra 2.
 
-## Trabajo con datos
+<!-- ## Trabajo con datos
 
 {{< revealjs file="slides/lecture-02.html" height="500px">}}
+
+## Instalación de paquetes
+
+{{< revealjs file="slides/lecture-03.html" height="500px">}}
+
+## Manipulación de datos
+
+{{< revealjs file="slides/lecture-04.html" height="500px">}}
+
+## Programación Funcional y  Estructuras de Control
+
+{{< revealjs file="slides/lecture-05.html" height="500px">}}
+
+## Visualización de datos
+
+{{< revealjs file="slides/lecture-06.html" height="500px">}}
+
+## Estadística descriptiva
+
+{{< revealjs file="slides/lecture-07.html" height="500px">}} -->
+

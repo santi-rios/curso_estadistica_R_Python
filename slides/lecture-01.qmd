@@ -1,6 +1,7 @@
 ---
 title: "Empieza a programar con R"
-subtitle: "Introducción"
+subtitle: "Familiarízate con R"
+author: "Cursos Orca"
 format: 
     live-revealjs: 
         scrollable: true
@@ -19,51 +20,23 @@ engine: knitr
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Overview
+## Introducción
 
-The goal of this
+::: {.incremental}
+- Estos ejercicios son sencillos y están diseñados para introducir a los usuarios al entorno de R de una manera práctica.
+- En esta lección, aprenderás a correr código en R, asignar valores a variables y hacer operaciones con ellas y entender los errores más comunes al ejecutar código en R.
 
----
-
-## Introduction
-
-Linear regression is a fundamental statistical technique used to model the relationship between a dependent variable and one or more independent variables.
-
-This presentation will cover:
-
-1. Basic Concepts
-2. Implementation in R and Python
-3. Model Evaluation
-4. Assumptions and Diagnostics
+:::
 
 ---
 
-## Basic Concepts
-
-Linear regression aims to find the best-fitting straight line through the data points.
-
-The general form of a simple linear regression model is:
-
-$$Y = \beta_0 + \beta_1X + \epsilon$$
-
-Where:
-
-- $Y$ is the dependent variable
-- $X$ is the independent variable
-- $\beta_0$ is the y-intercept
-- $\beta_1$ is the slope
-- $\epsilon$ is the error term
-
----
-
-## Generating Data
-
-Let's look at how to implement linear regression in R and Python by first simulating some data
-
+# Ejecutar Tu Primer Código en R
 
 ## Operaciones Aritméticas Básicas
 
-Ejecuta el siguiente código y observa los resultados:
+En R, puedes realizar operaciones aritméticas básicas como suma, resta, multiplicación, división y potencia. Ejecuta el siguiente código y observa los resultados:
+
+*Suma*:
 
 ```{webr}
 
@@ -72,15 +45,18 @@ Ejecuta el siguiente código y observa los resultados:
 
 ```
 
+*Resta*:
 
 ```{webr}
 
 # Resta
 10 - 4
 
-
 ```
 
+## Operaciones Aritméticas Básicas
+
+*Multiplicación*:
 
 ```{webr}
 
@@ -90,6 +66,7 @@ Ejecuta el siguiente código y observa los resultados:
 
 ```
 
+*División*:
 
 ```{webr}
 
@@ -99,6 +76,9 @@ Ejecuta el siguiente código y observa los resultados:
 
 ```
 
+## Operaciones Aritméticas Básicas
+
+*Potencia*:
 
 ```{webr}
 # Potencia
@@ -106,14 +86,65 @@ Ejecuta el siguiente código y observa los resultados:
 
 ```
 
+*Modulo*:
+
+```{webr}
+# Modulo
+10 %% 3
+
+```
+
+**Nota**: el operador de modulo se utiliza para obtener el residuo de una división. Por ejemplo, 10 %% 3 es igual a 1, ya que 10 dividido entre 3 es 3 y sobra 1. 
+
+## Ejercicio
+
+¿Cuál será el resultado de `5 modulo 3`, o `5 %% 3`? Trata de razonarlo antes de correr el código o ver la solución. 
+
+
+```{webr}
+#| exercise: ex_0_r
+
+# Modulo
+5 %% 3
+
+```
+
+
+::: { .solution exercise="ex_0_r" }
+::: { .callout-tip collapse="false"}
+## Solución y explicación:
+
+`5 modulo 3`, o `5 %% 3`? es igual a 2, ya que 5 dividido entre 3 es 1 y sobra 2.
+
+:::
+:::
+
 
 ---
 
-## NOTAS
+## Puntos Clave - Salida o Output
 
-- Observa cómo al ejecutar el código, se muestra el resultado de cada operación aritmética en un mensaje. Este es el resultado y es conocido como la salida de la operación. En los textos y tutoriales de R, se le conoce como "output".
-- En R, el símbolo `#` se utiliza para hacer comentarios. Los comentarios son útiles para explicar el código y hacerlo más legible. R ignora los comentarios al ejecutar el código.
+- Observa cómo al ejecutar el código, se muestra el resultado de cada operación aritmética en una línea de mensaje. 
+- Este es el resultado y es conocido como la salida de la operación. En los textos y tutoriales de R, se le conoce como "*output*".
+- Corre el siguiente código que tiene 2 operaciones aritméticas y observa cómo se muestran 2 salidas, una para cada operación en una línea de mensaje.
+
+```{webr}
+# Suma
+3 + 5
+
+# División
+20 / 4
+
+```
+
+## Puntos Clave - Comentarios I
+
+::: {.incremental}
+- En R, el símbolo `#` se utiliza para hacer comentarios. 
+- R ignora los comentarios al ejecutar el código.
+- Los comentarios son útiles para explicar el código y hacerlo más legible. 
 - Observa como en el siguiente código si comentamos las operaciones, no tendremos salida.
+:::
 
 ```{webr}
 
@@ -128,9 +159,180 @@ Ejecuta el siguiente código y observa los resultados:
 
 ```
 
-## Ejericio
+## Puntos Clave - Comentarios II
 
-Realiza la operación que se muestran a continuación. Asignalo a una variable llamada `operaciones` y luego imprime el resultado.
+- Si removemos los comentarios, el código se ejecutará y mostrará la salida.
+
+
+```{webr}
+
+# Suma
+3 + 5
+
+# División
+20 / 4
+
+# Potencia
+2^3
+
+```
+
+***Observa*** como dejamos los comentarios en las líneas de código que explican la operación aritmética (`#Suma #División...`). Esto es una buena práctica para hacer el código más legible al describir lo que hace cada línea de código.
+
+También es posible comentar una línea de código al final de la línea de código de la siguiente manera. Todo lo que sigue después del símbolo `#` en la misma línea se considera un comentario.
+
+```{webr}
+
+3 + 5 # Suma
+
+20 / 4 # División
+
+2^3 # Potencia
+
+```
+
+::: {.callout-caution}
+Si pones el comentario antes de la operación, no obtendrás la salida ya que R considerará toda la línea como un comentario. Verifica que el siguiente código no tiene salida.
+
+```{webr}
+
+# Suma 3 + 5 
+
+# División 20 / 4 
+
+# Potencia 2^3 
+
+```
+
+:::
+
+
+## Puntos Clave - Comentarios III
+
+::: {.callout-warning}
+Si quitamos los comentarios de la línea de código que explica, obtendremos un error.
+:::
+
+Corre el siguiente código y observa el error. Más adelante en la diapositiva veremos a detalle el tema de los errores en códigos. Por lo mientras, solo observa que se produce un error si quitamos el comentario `#` en la línea que explica.
+
+
+```{webr}
+
+Suma de 3 más cinco:
+3 + 5
+
+```
+
+Esto se soluciona agregando el símbolo `#` al principio de la línea para convertirlo en un comentario.
+
+```{webr}
+
+# Suma de 3 más cinco:
+3 + 5
+
+```
+
+# Variables
+
+## Asignación de Variables
+
+::: {.incremental}
+- En R, puedes asignar valores a variables utilizando el operador `<-` o el operador `=` (menos utilizado; no se recomienda). 
+- Una variable te permite almacenar un valor y hacer referencia a él en tu código. 
+- En el siguiente ejemplo, asignamos el valor `10` a la variable `x` y luego imprimimos el valor de `x`. 
+:::
+
+```{webr}
+
+# Asignación de variables
+x <- 10
+
+# Imprimir el valor de x
+print(x)
+
+```
+
+## Imprimir Valores
+
+::: {.callout-note}
+A qué nos referimos con ¨imprimir¨ en R: En R, puedes *imprimir* o visualizar un valor utilizando la función `print()`. Sin embargo, en la mayoría de los casos, no es necesario utilizar `print()` para imprimir valores, como en el siguiente ejemplo. Observa que el resultado es el mismo que si utilizamos `print()`, como en la diapositiva pasada.
+
+```{webr}
+
+# Asignación de variables
+x <- 10
+
+# Imprimir el valor de x SIN print()
+x
+
+```
+
+Otra función para visualizar o imprimir valores muy útil en R en lugar de `print()` es `cat()`. `cat()` es una función que concatena y visualiza los valores que le pasas como argumentos. Por ejemplo, puedes concatenar texto y valores en la misma línea de código.
+
+```{webr}
+
+# Asignación de variables
+x <- 10
+
+# Imprimir el valor de x con cat()
+# Nota que podemos poner cualquier texto entre comillas
+cat("El valor de x es:", x)
+
+```
+
+Por el momento, solo utiliza `print(nombre_variable)` para imprimir valores en R cuando se diga explicitamente que lo hagas. En otro caso, imprime los valores directamente como en el primer ejemplo de esta diapositiva.
+
+:::
+
+## Operaciones con Variables
+
+Puedes realizar operaciones aritméticas con variables. En  el siguiente ejemplo, asignamos valores numéricos a las variables `a` y `b`, y luego multiplicamos `a` por `b`. 
+
+```{webr}
+
+a <- 10 # variable a vale 10
+b <- 5 # variable b vale 5
+
+a * b # es igual a 10 * 5
+
+```
+
+## Operaciones con Variables II
+
+::: {.incremental}
+- En el siguiente ejemplo, asignamos valores NO numéricos a las variables `a` y `b`, y luego multiplicamos `a` por `b`.
+- Esto nos dará un error, ya que no se pueden multiplicar valores no numéricos. Esto se expande en la lección sobre los tipos de datos en R más adelante en el curso.
+:::
+
+```{webr}
+
+a <- "diez" # variable a vale 10
+b <- "cinco" # variable b vale 5
+
+a * b 
+
+```
+
+## Variables - Cómo nombrarlas
+
+::: {.incremental}
+- En R, las variables pueden tener nombres descriptivos y significativos.
+- Los nombres de las variables pueden contener letras, números y guiones bajos, pero no pueden comenzar con un número.
+- Los nombres de las variables son sensibles a mayúsculas y minúsculas, lo que significa que `x` y `X` son variables diferentes.
+- Los nombres de las variables no pueden contener espacios, pero puedes usar guiones bajos (`nombre_variable`) o puntos (`nombre.variable`) para separar palabras.
+- Es una buena práctica utilizar nombres de variables descriptivos y significativos para hacer tu código más legible.
+- No usar nombre que puedan tener conflicto o que ya estén reservados para funciones de R, como `c`, `mean`, `sum`, `data`, entre otros.
+
+:::
+
+
+# Ejericio Práctico - Operaciones y Variables
+
+## Ejericio {.smaller}
+
+**Instrucciones**. 1.- Realiza la operación que se pide a continuación. 2.- Asigna el resultado a una variable llamada `operaciones` 3.- Imprime el resultado.
+
+*Nota*: Sustituye los guiones bajos (`_______`) por el código correspondiente. Si estás atorado, puedes ver pistas o la solución haciendo click en el botón de ayuda. 
 
 ```{webr}
 #| exercise: ex_1_r
@@ -139,7 +341,7 @@ Realiza la operación que se muestran a continuación. Asignalo a una variable l
 # NOTA: Utiliza el paréntesis para indicar el orden de las operaciones.
 _______
 
-# imprimir el resultado
+# imprimir el resultado con print(nombre_variable)
 ______
 ```
 
@@ -148,48 +350,68 @@ ______
 #| exercise: ex_1_r
 #| check: true
 
-operaciones <- (4+7)/2
+operaciones <- (4 + 7)/2
 
-operaciones
+print(operaciones)
 
-if (isTRUE(all.equal(.result, operaciones))) {
+if (isTRUE(all.equal(.result, print(operaciones)))) {
   list(correct = TRUE, message = "Correcto!")
 } else {
   list(correct = FALSE, message = "Incorrecto.")
 }
 ```
 
+::: { .hint exercise="ex_1_r"}
+::: { .callout-note collapse="false"}
+## Pista 1
 
-## Asignación de Variables
+El órden de las operaciones es importante. Utiliza paréntesis para indicar el orden de las operaciones.
 
-En R, puedes asignar valores a variables utilizando el operador `<-` o el operador `=` (menos utilizado). Una variable te permite almacenar un valor y hacer referencia a él en tu código. En el siguiente ejemplo, asignamos el valor 10 a la variable `x` y luego imprimimos el valor de `x`:
+```r
+(____ + ____)/____
+```
+:::
+:::
 
-```{webr}
+::: { .hint exercise="ex_1_r"}
+::: { .callout-note collapse="false"}
+## Pista 2
 
-# Asignación de variables
-x <- 10
+Asigna el resultado a la variable que se te indica y acuérdate de imprimir el resultado.	
 
-# Imprimir el valor de x
-x
+```r
+nombre_variable <- (____ + ____)/____
 
+print(nombre_variable)
+```
+:::
+:::
+
+::: { .solution exercise="ex_1_r" }
+::: { .callout-tip collapse="false"}
+## Solución
+
+
+```r
+operaciones <- (4 + 7)/2
+
+print(operaciones)
 ```
 
-## Operaciones con Variables
 
-Puedes realizar operaciones aritméticas con variables. 
+:::
+:::
 
-```{webr}
+# Vectores
 
-a <- 10
-b <- 5
+## Vectores - Introducción
 
-a * b
+::: {.incremental}
+- En R, un vector es una estructura de datos que almacena una secuencia de valores. 
+- Puedes crear un vector utilizando la función `c()` (que significa "concatenar"). 
+:::
 
-```
-
-## Vectores
-
-En R, un vector es una estructura de datos que almacena una secuencia de valores. Puedes crear un vector utilizando la función `c()` (que significa "concatenar"). Piénsalo como una lista de valores. Observa cómo al correr el código, no tenemos salida. Esto es porque solo hemos creado el vector, pero no hemos hecho nada con él. Es decir, R almacenó el vector en la variable `mis_numeros` en la memoria, pero no mostrará nada hasta que le pidamos que haga algo con él.
+Ejecuta el siguiente código para crear un vector de números.
 
 ```{webr}
 
@@ -198,23 +420,101 @@ mis_numeros <- c(1, 2, 3, 4, 5)
 
 ```
 
-## utilidad
+::: {.callout-important}
+Observa cómo al correr el código, no tenemos salida. Esto es porque solo hemos creado el vector, pero no hemos hecho nada con él. Es decir, R almacenó el vector en la variable `mis_numeros` en su memoria, pero no mostrará nada hasta que le pidamos que haga algo con él. Si ya corriste el código de arriba, podemos imprimir el vector `mis_numeros` para ver su contenido. Ten en cuenta que si no has corrido el código, o reinicias la página o RStudio, no podrás imprimir el vector ya que no existe en la memoria de R. 
 
-Los vectores son útiles para almacenar datos y realizar operaciones en ellos. Por ejemplo, puedes promediar todos los elementos de un vector utilizando la función `mean()`.
+```{webr}
+# Imprimir el vector
+print(mis_numeros)
+
+```
+
+Ten cuidado con reutilizar nombres de variables en R, ya que puedes sobreescribir el valor de una variable. Si asignas un nuevo valor a una variable existente, el valor anterior se perderá. A veces, esto puede ser útil, pero en general, es una buena práctica utilizar nombres de variables únicos y descriptivos para evitar confusiones.
+
+
+```{webr}
+# sobreescribir el vector
+mis_numeros <- c(10, 20, 30, 40, 50)
+
+# Imprimir el vector
+print(mis_numeros)
+
+```
+
+:::
+
+## Vectores - Introducción II
+
+::: {.incremental}
+- En R (a diferencia de los vectores en matemáticas), los vectores pueden contener diferentes tipos de datos, como números, texto, o valores lógicos.
+- Por simplicidad, en esta lección, nos enfocaremos en vectores numéricos.
+- Solo como ejemplo, ejecuta el siguiente código para crear un vector con datos no numéricos.
+
+:::
+
+```{webr}
+
+# Crear un vector de nombre de frutas
+frutas <- c("manzana", "naranja", "plátano", "uva")
+
+# imprimir el vector
+print(frutas)
+
+```
+
+
+## Vectores - Operaciones
+
+Los vectores son útiles para almacenar datos y realizar las operaciones arítmeticas que vimos al inicio de la lección entre ellos. 
+
+```{webr}
+
+# Crear dos vectores de números
+vector_a <- c(1, 2, 3, 4, 5)
+vector_b <- c(1, 10, 100, 1000, 1000)
+
+# Suma los vectores
+vector_a + vector_b
+
+```
+
+Cómo realiza R la operación: `vector_a + vector_b`? 
+- En R, la operación de suma de vectores se realiza elemento por elemento.
+- Cuando sumas dos vectores, cada elemento de un vector se suma al elemento correspondiente en la misma posición del otro vector.
+- La suma es posicional, es decir, el primer elemento de vector_a se suma con el primer elemento de vector_b, el segundo con el segundo, y así sucesivamente.
+- El resultado que obtuvimos proviene de:
+
+- `1 + 1 = 2`
+- `2 + 10 = 12`
+- `3 + 100 = 103`
+- `4 + 1000 = 1004`
+- `5 + 1000 = 1005`
+
+## Vectores - Operaciones II
+
+Más comunmente, los vectores se utilizan para realizar operaciones en todos los elementos del vector. Por ejemplo, puedes promediar todos los elementos de un vector utilizando la función `mean()`.
 
 ```{webr}
 
 # Crear un vector de números
-mis_numeros <- c(1, 2, 3, 4, 5)
+mis_numeros_media <- c(1, 2, 3, 4, 5)
 
 # Calcular el promedio de los números
-mean(mis_numeros)
+# No utilizamos print() ya que la función mean() ya imprime el resultado
+mean(mis_numeros_media)
 
 ```
 
-## Ejercicio
+En otro módulo del curso veremos más funciones y operaciones que puedes realizar con vectores en R.
 
-Calcula la suma de los números 1, 2, 3, 4, y 5. Para esto, crea un vector con los números y utiliza la función `sum()` para calcular la suma.
+# Ejercicio Práctico 2 - Vectores
+
+## Ejercicio {.smaller}
+
+**Instrucciones**. 1.- Crea un vector llamado `mis_numeros_ejercicio` con los valores `1, 2, 3, 4, y 5`. 2.- Calcula la suma de los números en este vector con la función `sum()`. 
+
+Básate en el ejercicio anterior, sólo remplaza la función de la media con la función de la suma.
+
 
 ```{webr}
 #| exercise: ex_2_r
@@ -232,11 +532,11 @@ _______
 #| exercise: ex_2_r
 #| check: true
 
-mis_numeros <- c(1, 2, 3, 4, 5)
+mis_numeros_ejercicio <- c(1, 2, 3, 4, 5)
 
-sum(mis_numeros)
+sum(mis_numeros_ejercicio)
 
-if (isTRUE(all.equal(.result, sum(mis_numeros)))) {
+if (isTRUE(all.equal(.result, sum(mis_numeros_ejercicio)))) {
   list(correct = TRUE, message = "Nice work!")
 } else {
   list(correct = FALSE, message = "That's incorrect, sorry.")
@@ -246,9 +546,220 @@ if (isTRUE(all.equal(.result, sum(mis_numeros)))) {
 ---
 
 
-## Conclusion
 
-- Linear regression is a powerful tool for modeling relationships between variables.
-- Both R and Python offer robust implementations and diagnostic tools.
-- Always check assumptions and perform diagnostics to ensure the validity of your model.
-- Consider more advanced techniques (e.g., multiple regression, polynomial regression) for complex relationships.
+# Errores en R
+
+## Introducción a los errores en R
+
+::: {.incremental}
+- En R, si cometes un error en tu código, R te mostrará un mensaje de error. 
+- Previamente en otro ejecicio, olvidamos poner el símbolo `#` al hacer un comentario. 
+- Esto causó el error `Error: unexpected symbol in "Suma..."`, lo que significa que R no reconoció la palabra `Suma` como un comando válido. Es decir, R esperaba un comando o una operación aritmética, pero encontró una palabra que no reconoció. 
+- Para solucionar este error, simplemente agrega el símbolo `#` al principio de la línea para convertirlo en un comentario.
+- Soluciona el error y corre el código nuevamente:
+:::
+
+```{webr}
+#| exercise: ex_00_r
+
+Suma de 3 más cinco:
+3 + 5
+
+```
+
+::: { .solution exercise="ex_00_r" }
+::: { .callout-tip collapse="false"}
+## Solución y explicación:
+
+```r
+# Suma de 3 más cinco:                                 #<1>
+3 + 5              
+```
+1. Añade el comentario a esta línea `#`
+
+
+:::
+:::
+
+## Errores en R II
+
+::: {.incremental}
+- En R, los errores son comunes y pueden ocurrir por diversas razones, como errores de *sintaxis*, errores de *lógica*, errores de *tipografía*, problemas específicos de ciertos *paquetes*, entre otros.
+- Trabajar con R implica, inevitablemente, encontrarse con errores. Entender cómo interpretar estos errores y encontrar soluciones es una habilidad crucial para cualquier usuario de R. 
+:::
+
+## Entender los mensajes de error 
+
+::: {.incremental}
+
+- Un error en R es un mensaje que indica que algo no ha funcionado correctamente durante la ejecución del código.
+- Estos mensajes se diseñan para ayudarte a identificar qué salió mal y dónde encontrar el problema.
+- En las siguientes diapositivas, veremos cómo leer y entender un mensaje de error en R, y cómo tratar de solucionar errores comunes.
+
+
+:::
+
+## 1. Identificar el tipo de error
+
+::: {.incremental}
+- Los mensajes de error en R comienzan con la palabra “`Error`” seguida de una descripción del problema. 
+- Ejemplo: `Error in plot(x, y): object 'x' not found`.
+- Existen otro tipo de mensajes de advertencia, como `Warning`, que no detienen la ejecución del código, pero indican que algo puede no estar funcionando como se esperaba.
+::: 
+
+## 2. Localizar el problema
+
+::: {.incremental}
+- El mensaje de error suele indicar qué parte del código falló. 
+- Por ejemplo, en el mensaje de error `Error in plot(x, y): object 'x' not found`.
+- El problema es que el objeto 'x' no fue encontrado. 
+
+:::
+
+## 3. Revisar el Código
+
+::: {.incremental}
+
+- Verifica la sintaxis, nombres de variables, y asegúrate de que los datos existan en el contexto adecuado.
+
+:::
+
+## 4. Buscar Documentación
+
+
+Usa las siguientes funciones: 
+
+- `help(nombre_funcion)` o `?nombre_funcion` en la consola de R para acceder a la documentación de una función específica. Por ejemplo, `help(plot)` o `?plot` para buscar información sobre la función `plot`.
+
+- `help.search("topico")` o `??topico` para buscar documentación relacionada con un tema específico. Por ejemplo, `help.search("plot")` o `??plot` para buscar información sobre gráficos.
+
+
+Puedes ejecutar el siguiente ejemplo en la presentación para buscar ayuda sobre la función `plot` (tarda aproximadamente 1 minuto). Si lo ejecutas en tu consola de RStudio, verás la documentación de la función `plot` dentro de RStudio en un formato más legible. 
+
+```{webr}
+?plot
+
+```
+
+
+## 5. Buscar Ayuda en Línea
+
+- Cuando te encuentras con un error en R, utilizar recursos en línea eficientemente es clave para encontrar soluciones rápidas y precisas. Estos son algunos recursos útiles:
+
+***ChatGPT*** y otros asistentes virtuales de IA
+
+Estos modelos de inteligencia artificial pueden ayudarte a resolver dudas sobre programación y estadística en R. Interactúa con ChatGPT proporcionando una descripción clara de tu problema. Puedes pedirle ejemplos de código, explicaciones de errores, o conceptos concretos. *Qué Preguntar*: Explica el error o la pregunta de forma específica, Pide sugerencias de código o pasos para resolver el problema. También puedes solicitar clarificación sobre conceptos en R que no entiendas bien. En un módulo extra del curso, veremos cómo interactuar con ChatGPT para resolver dudas en R. Se incluye un ejercicio donde desarrollarás una aplicación web de análisis de datos con R, con ChatGPT como asistente virtual para guiarte con el código, incluso si eres principiante en R.
+
+***Stack Overflow***
+
+Es una comunidad en línea donde los programadores pueden preguntar y responder preguntas de programación, estadística y diversos temas académicos. *Cómo Usarlo*: Visita Stack Overflow ([https://stackoverflow.com/](https://stackoverflow.com/)) y usa la barra de búsqueda para encontrar soluciones a problemas similares. Asegúrate de incluir "R" en tus términos de búsqueda. Si no encuentras una solución, crea una nueva pregunta (necesitarás abrir una cuenta para esto). Proporciona un título claro, una descripción detallada del problema, ejemplos del código y mensajes de error específicos para que otros puedan ayudarte de manera efectiva. Incluye detalles específicos del error (mensaje exacto, condiciones en las que aparece), Código relevante, lo que esperabas que sucediera, y lo que realmente pasó.
+
+***CRAN Task Views***
+CRAN Task Views son colecciones organizadas de paquetes de R centradas en áreas específicas de interés o tareas comunes, como manipulación de datos, gráficos, tiempo-serie, entre otros. *Cómo Usarlo*: Visita el sitio web de CRAN Task Views ([https://cran.r-project.org/web/views/](https://cran.r-project.org/web/views/)). Navega por las categorías disponibles para encontrar una que se ajuste a tus necesidades. Cada Task View proporciona una lista de paquetes recomendados y descripciones breves de su funcionalidad.
+
+
+# Errores y soluciones comunes en R
+
+## Error de Sintaxis
+
+- Estos errores ocurren cuando el código no sigue las reglas de sintaxis de R ([aprende más de sintaxis en este enlace](https://juanchiem.github.io/R_Intro/02-R_sintaxis.html)).
+- *Sintaxis* se refiere a la estructura y el orden de las palabras, así como símbolos en el código.
+- Olvidar un paréntesis, una coma o un corchete puede causar un error de sintaxis.
+- Observa el siguiente código con un error de sintaxis y correlo para ver el mensaje de error.
+
+```{webr}
+# Olvidar cerrar un paréntesis
+x <- c(1, 2, 3
+
+# calcular la media de x
+mean(x)
+```
+
+Solución, cerrar el paréntesis:
+
+```{webr}
+# Código corregido
+x <- c(1, 2, 3)
+mean(x)
+```
+
+## Problema Específico con Paquetes
+
+- A veces, los errores pueden ser específicos de ciertos paquetes.
+- Un ejemplo común es cuando olvidas cargar un paquete antes de usar una función de ese paquete.
+- Instalar y cargar paquetes es una parte importante del trabajo en R, ya que los paquetes proporcionan funciones adicionales y herramientas para análisis de datos. Se verá más a detalle en otra lección del curso.
+
+```{{r}}
+# Intentando usar una función de ggplot2 sin cargar el paquete
+data(mtcars)
+ggplot(mtcars, aes(x = mpg, y = hp)) +
+  geom_point()
+``` 
+
+Error:
+
+```{{r}}
+Error in ggplot(mtcars, aes(x = mpg, y = hp)) : 
+  could not find function "ggplot"
+```
+
+*Solución*:
+
+Asegurarse de que el paquete necesario está instalado y cargado antes de usar sus funciones. Esto se verá más a detalle en otra lección del curso.
+
+```{{r}}
+# Código corregido
+install.packages("ggplot2")  # Instalar si es necesario
+library(ggplot2)  # Cargar el paquete
+
+ggplot(mtcars, aes(x = mpg, y = hp)) +
+  geom_point()
+```
+
+## Problema con la Lógica del Código
+
+- Los errores de lógica ocurren cuando el código no produce el resultado esperado.
+- Estos errores son un poco más complejos ya que incluso pueden ejecutarse sin errores, pero el resultado no es el esperado. Esto se verá más a detalle en otro módulo.
+
+Código Erróneo:
+
+```{webr}
+# Intentando dividir por cero
+a <- 10
+b <- 0
+resultado <- a / b
+```
+
+Solución:
+
+Verificar las condiciones que causan una división por cero y manejarlo adecuadamente en el código.
+
+```{webr}
+# Código corregido
+a <- 10
+b <- 0
+if (b != 0) {
+  resultado <- a / b
+} else {
+  resultado <- NA  # or you could set an appropriate default or handler
+  warning("No se puede dividir por cero. Cambiar datos por NA.")
+}
+
+```
+
+# Resumen
+
+## Resumen de la Lección {.smaller}
+
+- En esta lección, aprendiste a correr código en R, asignar valores a variables y hacer operaciones con ellas.
+- También aprendiste sobre errores comunes en R y cómo solucionarlos.
+- Esta es una primera introducción a R que servirá como base para las lecciones siguientes.
+- En lo que resta del curso, aprenderás a trabajar con datos en R y a manipularlos para análisis y visualización, tal como en la lección de muestra al inicio.
+
+
+¡Inscríbete y sigue practicando, no dudes en preguntar si tienes dudas! Te esperan más de 40 lecciones que te llevarán de la mano para que aprendas R y los fundamentos de estadística y análisis de datos en las ciencias de la salud. 
+
+Más información en Este enlace: [Cursos Orca](https://cursos.orca-analytics.com/)
+
+Contacto
+
