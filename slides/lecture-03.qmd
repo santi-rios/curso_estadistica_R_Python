@@ -1,0 +1,109 @@
+---
+title: "Instalación y Carga de Paquetes en R"
+subtitle: "Introducción a los Paquetes en R"
+format: 
+    live-revealjs: 
+        scrollable: true
+webr:
+    packages: 
+        - dplyr
+# pyodide: 
+#     packages: 
+#         - scikit-learn
+#         - pandas
+#         - matplotlib
+#         - seaborn
+#         - statsmodels
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Introducción
+
+R es un lenguaje de programación extensible, y una de sus características más poderosas es la capacidad de ampliar su funcionalidad mediante paquetes. Un paquete en R es una colección de funciones, datos y documentación que extienden las herramientas básicas del lenguaje. Existen miles de paquetes disponibles que facilitan tareas como análisis estadístico, visualización de datos, manipulación de datos, y más.
+
+```{webr}
+install.packages("dplyr") # quiet = TRUE
+library(dplyr)
+
+starwars |>
+  filter(height < 100) |>
+  select(name, height, mass)
+```
+---
+
+## ¿Para qué sirven los paquetes en R?
+
+¿Para Qué Sirven los Paquetes?
+
+    Especialización: Permiten realizar tareas específicas; por ejemplo, ggplot2 para gráficos avanzados, dplyr para manipulación de datos, o caret para aprendizaje automático.
+    Ahorro de Tiempo: Al utilizar funciones predefinidas y optimizadas, se reduce el tiempo necesario para programar desde cero.
+    Comunidad: Acceso a un ecosistema amplio y constantemente actualizado gracias a la contribución de la comunidad de usuarios.
+
+
+---
+
+## Cómo Instalar Paquetes en R
+
+Puedes instalar un paquete desde CRAN (la red de archivos principal de R) usando la función install.packages():
+
+`# Instalar un paquete
+install.packages("nombre_del_paquete")`
+
+Por ejemplo, para instalar ggplot2, usarías:
+
+`install.packages("ggplot2")`
+
+## Cargar Paquetes en R
+
+Una vez que hayas instalado un paquete, puedes cargarlo en tu sesión de R usando la función library():
+
+
+`# Cargar un paquete
+library(nombre_del_paquete)`
+
+Para ggplot2, sería:
+
+`library(ggplot2)`
+
+## Mantener tus Paquetes Actualizados
+
+Es importante mantener tus paquetes actualizados para asegurarte de tener las últimas funciones y correcciones de errores. Puedes hacerlo con la función update.packages(). Actualiza regularmente tus paquetes para obtener las últimas mejoras y correcciones:
+
+`# Actualizar todos los paquetes
+update.packages()`
+
+## Ejercicio
+
+nstalación y Carga de un Paquete
+
+Este ejercicio te ayudará a practicar la instalación y carga de un paquete.
+
+    Abre RStudio.
+    Instala y carga el paquete dplyr, que es útil para manipular y transformar datos.
+
+`# Paso 1: Instalar el paquete 'dplyr'
+install.packages("dplyr")`
+
+`# Paso 2: Cargar el paquete 'dplyr'
+library(dplyr)`
+
+    Usa dplyr para cargar el conjunto de datos incorporado mtcars y seleccionar las columnas mpg y hp.
+
+`# Cargando el conjunto de datos
+data("mtcars")`
+
+`# Seleccionar columnas usando dplyr
+mtcars_seleccionado <- select(mtcars, mpg, hp)
+print(mtcars_seleccionado)`
+
+---
+
+
+## Reflexión
+
+    ¿Qué ventajas encuentras en usar dplyr para manipulación de datos respecto a métodos base de R?
+    Intenta investigar un paquete de R que podría ser útil en tu campo de estudio y compártelo con tus compañeros.
+
+Este ejercicio introduce lo esencial sobre los paquetes: desde su instalación y uso básico hasta una aplicación simple que muestra su utilidad práctica. Al dominar esta habilidad, estarás mejor preparado para aprovechar el vasto ecosistema R en tus proyectos futuros.

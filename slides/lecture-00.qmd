@@ -11,6 +11,7 @@ webr:
         - ggplot2
         - plotly
         - ggseg
+        - leaflet
 # pyodide: 
 #     packages: 
 #         - scikit-learn
@@ -172,6 +173,15 @@ ggplot() +
 ```
 
 
+##
+
+```{webr}
+library(leaflet)
+
+leaflet() |>
+  addTiles() |>
+  addMarkers(lng = -99.18735796750228, lat = 19.33348477957739, popup = "CUUU")
+```
 
 ---
 
