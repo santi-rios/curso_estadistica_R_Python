@@ -1,29 +1,13 @@
 ---
-title: "Introducción a R"
-subtitle: "Aprende a programar y estadística con R"
+title: "Inicio"
 format:
   html:
     toc: true
     toc-depth: 2
 ---
 
-## Showcase R
+Bienvenido al curso de R para principiantes. En este curso, aprenderás a programar en R, un lenguaje de programación ampliamente utilizado en análisis de datos y estadística. R es una herramienta poderosa para visualizar datos, realizar cálculos estadísticos y crear gráficos impresionantes.
 
-{{< revealjs file="slides/lecture-00.html" height="500px">}}
-
-## Empieza a programar con R
-
-
-{{< revealjs file="slides/lecture-01.html" height="500px">}}
-
-
-## Trabajo con datos
-
-{{< revealjs file="slides/lecture-02.html" height="500px">}}
-
-## Instalación de paquetes
-
-{{< revealjs file="slides/lecture-03.html" height="500px">}}
 
 <!--
 

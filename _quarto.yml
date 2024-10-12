@@ -3,19 +3,18 @@ project:
   output-dir: _site
 
 website:
-  title: "Ejecutar Tu Primer Código en R"
+  title: "Curso introductorio a R"
+  description: "Aprende R y bioestadística con contenido interactivo"
   reader-mode: true
   repo-url: https://github.com/santi-rios/R_interactivo_ejecutar
   repo-actions: [edit, issue]
-  navbar:
-    background: light
-    foreground: dark
-    align: right
-    right:
+  sidebar:
+    style: docked
+    search: true
+    contents: 
       - href: index.qmd
-        text: Home
-      - href: https://r-wasm.github.io/quarto-live/
-        text: Quarto Live
-      - icon: github
-        href: https://github.com/coatless-tutorials/next-gen-data-science-education
-        aria-label: GitHub
+        title: "Inicio"
+      - section: "Introducción a R"
+        contents:
+          - sections/00-presentacion.qmd
+          - sections/01-intro-r.qmd

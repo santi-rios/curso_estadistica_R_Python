@@ -1,0 +1,17 @@
+---
+title: "Presentación del Curso"
+subtitle: "Aprende a programar y estadística con R"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+## Conoce el curso
+
+{{< revealjs file="../slides/00-presentacion-curso.html" height="500px">}}
+
+
+## Mira una demostración
+
+{{< revealjs file="../slides/00-demostracion-r.html" height="500px">}}

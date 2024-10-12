@@ -1,9 +1,25 @@
 ---
 title: "Demostración de Análisis de Datos con R"
-subtitle: "ilustra el poder de R"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+title-slide-attributes:
+  data-background-image: "https://r-charts.com/en/miscellaneous/brickr_files/figure-html/brickr.png"
+  data-background-size: contain
+  data-background-opacity: "0.5"
 format: 
     live-revealjs: 
+        theme: serif
         scrollable: true
+        progress: true
+        slide-number: true
+        incremental: true
+        lang: es
+        logo: "https://cran.r-project.org/Rlogo.svg"
 webr:
     packages: 
         - gapminder
@@ -12,13 +28,6 @@ webr:
         - plotly
         - ggseg
         - leaflet
-# pyodide: 
-#     packages: 
-#         - scikit-learn
-#         - pandas
-#         - matplotlib
-#         - seaborn
-#         - statsmodels
 engine: knitr
 ---
 
@@ -175,6 +184,8 @@ ggplot() +
 
 ##
 
+De nuevo, observa como el código base es muy similar al que hemos visto antes, pero el resultado es un gráfico completamente diferente:
+
 ```{webr}
 library(leaflet)
 
@@ -187,9 +198,11 @@ leaflet() |>
 
 ## Reflexión
 
-::: {.incremental}
+
 - Este ejemplo ofrece una pequeña muestra del poder de R para manejar, analizar y visualizar cantidades ricas de datos y muestra algunas de las muchas capacidades que podrán dominar mediante la constancia y dedicación en su aprendizaje del lenguaje con este curso.
 - Como observaste, R es un lenguaje muy versátil y poderoso que te permitirá realizar análisis de datos complejos y visualizaciones interactivas con relativamente poco esfuerzo.
+
+##
+
 - En este curso, aprenderás los fundamentos de R y cómo aplicarlos a problemas del mundo real. A medida que avances en el curso, te animamos a experimentar con tus propios datos y a explorar las muchas posibilidades que ofrece R para el análisis de datos.
 - Por último, nuestro curso se da de manera interactiva para todos los conceptos, como en esta presentación. De esta manera podrás practicar el código en tiempo real y ver los resultados de tus análisis de datos al mismo tiempo que estudias los conceptos teóricos. Sin embargo, también habrá ejercicios que requieran que utilices tu propio entorno de R en tu computadora para completarlos.
-::: 
