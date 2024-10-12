@@ -24,6 +24,7 @@ format:
 webr:
     packages: 
         - htmltools
+        - calendR
 engine: knitr
 ---
 
@@ -489,7 +490,9 @@ Proximas fechas de inicio:
 
 ## Calendario
 
-```{r}
+```{webr}
+#| autorun: true
+
 # install.packages("calendR")
 library(calendR)
 
