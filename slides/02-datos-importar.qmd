@@ -1,0 +1,142 @@
+---
+title: "Importar"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-revealjs: 
+        theme: serif
+        toc: true
+        scrollable: true
+        progress: true
+        slide-number: true
+        incremental: true
+        lang: es
+        logo: "https://readr.tidyverse.org/logo.png"
+        # code-link: true
+# webr:
+#     packages: 
+#         - dplyr
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## 
+
+![](https://github.com/tidyverse/datascience-box/blob/main/course-materials/_slides/u1-d01-welcome/img/data-science-cycle/data-science-cycle.002.png?raw=true)
+
+## Crear un DataFrame
+
+En este código, creamos un dataframe llamado datos con tres columnas: nombre, edad y ciudad. El nombre, edad y ciudad son las variables, y Juan, María y Pedro, 25,30,35, CDMX, GDL, MTY son las observaciones de cada variable.
+
+```{webr}
+
+# crear una tabla de datos
+datos <- data.frame(
+  nombre = c("Juan", "María", "Pedro"),
+  edad = c(25, 30, 35),
+  ciudad = c("CDMX", "GDL", "MTY")
+)
+
+# Imprimir la tabla de datos con formato
+kable(datos)
+```
+
+## Leer un archivo CSV
+
+Para leer un archivo CSV en R, puedes utilizar la función read.csv(). Esta función lee un archivo CSV y lo convierte en un dataframe que puedes manipular y analizar. Por ejemplo, si tienes un archivo CSV llamado datos.csv, puedes leerlo y almacenarlo en una variable llamada datos_csv de la siguiente manera:
+
+```{{r}}
+#| eval: false
+
+# Leer un archivo CSV
+datos_csv <- read.csv("datos.csv")
+
+# Imprimir la tabla de datos con formato
+kable(datos_csv)
+
+```
+
+## Leer archivos de Excel .xls y .xlsx
+
+Para leer archivos de Excel en R, puedes utilizar las funciones `read_excel()` del paquete `readxl` y `read.xlsx()` del paquete `openxlsx`. Estas funciones leen archivos de Excel (`archivo.xlsx`) y los convierten en dataframes que puedes manipular y analizar. Por ejemplo, si tienes un archivo de Excel llamado `datos.xlsx`, puedes leerlo y almacenarlo en una variable llamada datos_excel de la siguiente manera:
+
+```{{r}}
+# instalar el paquete readxl si no lo tienes instalado
+install.packages("readxl")
+# Cargar la librería
+library(readxl)
+
+# Leer un archivo de Excel
+# el argumento sheet = 1 indica que se leerá la primera hoja del archivo
+datos_excel <- readxl::read_excel("datos.xlsx", sheet = 1)
+
+```
+
+## Exportar un DataFrame
+
+Para exportar un dataframe a un archivo CSV en R, puedes utilizar la función `write.csv()`. Esta función toma un dataframe y lo guarda en un archivo CSV en el directorio de trabajo actual. Por ejemplo, si tienes un dataframe llamado `datos` y quieres guardarlo en un archivo CSV llamado `datos_exportados.csv`, puedes hacerlo de la siguiente manera:
+
+```{{r}}
+# Exportar un dataframe a un archivo CSV
+write.csv(datos, "datos_exportados.csv", row.names = FALSE)
+```
+
+## datos incluidos en R
+
+R incluye varios conjuntos de datos de ejemplo que puedes utilizar para practicar y aprender. Algunos de los conjuntos de datos más comunes incluyen `mtcars`, `iris`, `airquality`, `swiss`, `faithful`, `ChickWeight`, `ToothGrowth`, `CO2`. Puedes cargar estos conjuntos de datos utilizando la función `data()` y luego acceder a ellos como dataframes normales. Por ejemplo, para cargar el conjunto de datos `mtcars` y mostrar las primeras filas, puedes hacer lo siguiente:
+
+```{webr}
+# Leer un conjunto de datos incluido en R
+data(mtcars)
+
+# Imprimir la tabla de datos con formato
+kable(head(mtcars))
+
+```
+
+## Otros formatos de archivo
+
+Además de los archivos CSV y Excel, R puede leer y escribir en muchos otros formatos de archivo, como archivos de texto, archivos JSON y formatos de otros programas estadísticos, como SPSS, SAS, Graphpad Prism y más. Sólo como referencia, aquí hay una lista de algunas funciones útiles para leer y escribir en diferentes formatos de archivo en R. En este curso, nos centraremos principalmente en los archivos CSV y Excel.
+
+:::: {.panel-tabset}
+
+## Prism
+
+```{{r}}	
+library(pzfx)
+df <- read_pzfx(system.file("extdata/exponential_decay.pzfx", package="pzfx"), table="Exponential decay")
+```
+
+## SPSS
+
+```{{r}}	
+library(haven)
+data11 <- read_sav("data/airline_passengers.sav")
+```
+## MatLAB
+
+```{{r}}	
+library(R.matlab)
+data14 <- readMat("data/cross_dsads.mat")
+```
+## JSON
+
+```{{r}}	
+library(rjson)
+JsonData <- fromJSON(file = 'data/drake_data.json')
+print(JsonData[1])
+```
+## SAS
+
+```{{r}}	
+library(haven)
+data10 <- read_sas('data/lond_small.sas7bdat')
+```
+
+::::

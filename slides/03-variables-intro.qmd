@@ -1,0 +1,195 @@
+---
+title: "Variables en Estadística"
+subtitle: "Conceptos Clave de Variables"
+format: 
+    live-revealjs: 
+        scrollable: true
+webr:
+    packages: 
+        - ggplot2
+# pyodide: 
+#     packages: 
+#         - scikit-learn
+#         - pandas
+#         - matplotlib
+#         - seaborn
+#         - statsmodels
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Introducción
+
+En estadística, para poner a prueba hipótesis, medimos variables, que son elementos que pueden cambiar. Estas variables pueden variar entre personas (como el coeficiente intelectual o el comportamiento), entre lugares (como el desempleo), o con el tiempo (como el estado de ánimo o las ganancias). Generalmente, las hipótesis se expresan en términos de dos variables: una causa propuesta y un resultado propuesto.
+
+---
+
+## Conceptos Clave
+
+    Variable Independiente: Esta es la variable que se considera la causa; su valor no depende de otras variables. En términos experimentales, es la que se manipula para observar su efecto sobre otra variable.
+
+    Variable Dependiente: Esta es la variable que se piensa es afectada por cambios en la variable independiente. Es el resultado que se mide en el experimento.
+
+    Variable Predictora y de Resultado: En investigaciones donde no se manipulan variables directamente, los términos "variable independiente" y "variable dependiente" pueden no ser adecuados. En su lugar, se usan los términos "variable predictora" (equivalente a la independiente) y "variable de resultado" (equivalente a la dependiente). Esta terminología es útil en estudios donde una o más variables se utilizan para predecir el resultado.
+
+
+---
+
+## Ejercicio Práctico en R: Visualización de Relaciones entre Variables
+
+Para reforzar estos conceptos, realizaremos un ejercicio práctico en R utilizando un conjunto de datos simulado.
+
+    Crear y visualizar un conjunto de datos simple:
+
+Simularemos datos que reflejan una situación hipotética donde examinamos el efecto de horas de estudio (variable predictora) sobre la calificación de un examen (variable de resultado).
+
+```{webr}
+library(ggplot2)
+
+# Datos simulados
+set.seed(123)
+horas_estudio <- rnorm(100, mean=5, sd=2)  # Horas de estudio
+calificacion_examen <- 70 + 5 * horas_estudio + rnorm(100, mean=0, sd=5)  # Calificación en el examen
+
+datos <- data.frame(horas_estudio, calificacion_examen)
+
+# Relación entre las variables
+ggplot(datos, aes(x = horas_estudio, y = calificacion_examen)) +
+  geom_point() +
+  geom_smooth(method = "lm", col = "blue") +
+  labs(title="Relación entre Horas de Estudio y Calificación",
+       x="Horas de Estudio",
+       y="Calificación del Examen")
+```
+
+
+---
+
+
+## Reflexión y Discusión:
+
+    Identifica la variable predictora (independiente) y la variable de resultado (dependiente) en el gráfico.
+    Discute cómo la relación visualizada podría cambiar si variamos las horas de estudio.
+
+Esta lección introduce a los estudiantes a los conceptos básicos de variables en estadística, permitiéndoles ver y analizar relaciones simples utilizando R, un paso crucial para avanzar en sus estudios de estadística.
+
+# Tipos de Variables en Estadística
+
+## Introducción
+
+Las variables pueden clasificarse en diferentes tipos, que nos ayudan a comprender y analizar adecuadamente los datos en estadística.
+
+
+
+    Variables Categóricas:
+        Nominales: Estas no tienen un orden específico. Por ejemplo, marcas de refrescos.
+        Ordinales: Tienen un orden, pero no proporcionan información sobre las diferencias entre categorías. Por ejemplo, puesto en una carrera (primero, segundo, tercero).
+
+    Variables Continuas:
+        Intervalo: Presentan igual diferencia entre valores en la escala, pero no tienen un cero absoluto. Por ejemplo, la calificación de un profesor en una escala de 1 a 5.
+        Razón: Cumplen con las propiedades del intervalo y además tienen un cero absoluto, lo que permite comparaciones multiplicativas. Por ejemplo, tiempos de reacción medidos en milisegundos.
+
+    Variables Continuas vs. Discretas:
+        Continuas: Pueden medirse con cualquier nivel de precisión. Por ejemplo, la edad.
+        Discretas: Solo pueden tomar ciertos valores específicos. Por ejemplo, número de hijos, que siempre es un número entero.
+
+
+## Ejercicio Práctico en R: Trabajando con Diferentes Tipos de Variables
+
+Simularemos un conjunto de datos que contiene diferentes tipos de variables:
+
+```{webr}
+library(ggplot2)
+
+# Datos simulados
+set.seed(123)
+nivel_educativo <- factor(c("Primaria", "Secundaria", "Licenciatura", "Maestría", "Doctorado"), ordered = TRUE)
+ingresos <- round(runif(100, 20000, 80000), -3)  # Variable continua
+calificacion <- sample(1:5, 100, replace = TRUE)  # Variable discreta (tratada a veces como continua)
+
+estudiantes <- data.frame(
+  ID = 1:100,
+  Nivel_Educativo = sample(nivel_educativo, 100, replace = TRUE),
+  Ingresos = ingresos,
+  Calificacion = calificacion
+)
+
+# Visualización
+ggplot(estudiantes, aes(x = Nivel_Educativo, y = Ingresos)) +
+  geom_boxplot(aes(fill = Nivel_Educativo)) +
+  labs(title="Distribución de Ingresos por Nivel Educativo",
+       x="Nivel Educativo",
+       y="Ingresos Anuales") +
+  theme_minimal()
+
+```
+
+## Reflexión y Discusión:
+
+    Identifica los diferentes tipos de variables en el conjunto de datos creado. ¿Cuál es ordinal, continua y discreta?
+    Discute cómo el tipo de variable influye en la elección de métodos analíticos y visualizaciones.
+
+Esta lección proporciona una comprensión fundamental de los tipos de variables en estadística, incorporando ejercicios prácticos para reforzar el aprendizaje y preparar a los estudiantes para análisis más complejos en el futuro.
+
+# Niveles de Medición de Variables
+
+## Introducción
+
+Las variables en estadística se pueden dividir en dos grandes categorías: categóricas y continuas. Dentro de estas categorías, existen diferentes niveles de medición que nos ayudan a entender el tipo de datos con los que estamos trabajando y cómo analizarlos adecuadamente.
+
+
+
+    Variables Categóricas:
+
+        Variable Binaria: Incluye solo dos categorías distintivas. Ejemplo: vivo o muerto.
+
+        Variable Nominal: Contiene más de dos categorías sin orden específico. Ejemplo: dieta de una persona (omnivoro, vegetariano, vegano, frugívoro).
+
+        Variable Ordinal: Similar a la nominal, pero con un orden lógico entre las categorías. Ejemplo: calificaciones en un examen (fail, pass, merit, distinction).
+
+    Variables Continuas:
+
+        Variable de Intervalo: Los intervalos iguales en la escala de la variable representan diferencias iguales en la propiedad medida. Ejemplo: diferencias iguales de temperatura (entre 6 y 8, y entre 13 y 15 grados).
+
+        Variable de Razón: Igual que la de intervalo, pero con un cero absoluto, haciendo que los cocientes entre los valores sean lógicos. Ejemplo: una puntuación de ansiedad de 16 significa realmente el doble de ansiedad que una puntuación de 8.
+
+
+## Ejercicio Práctico en R: Identificación de Niveles de Medición
+
+```{webr}
+library(ggplot2)
+
+# Datos simulados
+set.seed(123)
+resultado_examen <- factor(c("Fail", "Pass", "Merit", "Distinction"), ordered = TRUE)
+estado_civil <- factor(c("Soltero", "Casado", "Divorciado", "Viudo"))
+vivo_muerto <- factor(c("Vivo", "Muerto"), levels = c("Vivo", "Muerto"))
+temperatura <- rnorm(100, mean=22, sd=5)  # Variable de intervalo
+anxiety_score <- runif(100, min=0, max=21)  # Variable de razón
+
+datos <- data.frame(
+  ID = 1:100,
+  Resultado_Examen = sample(resultado_examen, 100, replace = TRUE),
+  Estado_Civil = sample(estado_civil, 100, replace = TRUE),
+  Vivo_Muerto = sample(vivo_muerto, 100, replace = TRUE),
+  Temperatura = temperatura,
+  Anxiety_Score = anxiety_score
+)
+
+# Visualización de resultados de examen
+ggplot(datos, aes(x = Resultado_Examen)) +
+  geom_bar(fill = "steelblue") +
+  labs(title="Distribución de Resultados de Examen",
+       x="Resultado del Examen",
+       y="Frecuencia") +
+  theme_minimal()
+
+```
+
+## Reflexión y Discusión:
+
+    Revisa el conjunto de datos simulado y determina el nivel de medición de cada variable. ¿Cuál es binaria, nominal, ordinal, de intervalo o de razón?
+    Discute cómo el nivel de medición influye en el tipo de análisis estadístico que puedes realizar.
+
+Esta lección culmina el tema de variables, brindando a los estudiantes un conocimiento sólido sobre la clasificación y niveles de medición de variables, permitiéndoles comprender mejor cómo utilizar estos conceptos en análisis estadísticos futuros.

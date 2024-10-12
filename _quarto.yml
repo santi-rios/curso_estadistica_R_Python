@@ -5,7 +5,6 @@ project:
 website:
   title: "Curso introductorio a R"
   description: "Aprende R y bioestadística con contenido interactivo"
-  reader-mode: true
   repo-url: https://github.com/santi-rios/R_interactivo_ejecutar
   repo-actions: [edit, issue]
   sidebar:
@@ -18,3 +17,12 @@ website:
         contents:
           - sections/00-presentacion.qmd
           - sections/01-intro-r.qmd
+      - section: "Introducción a Estadística"
+        contents:
+          - sections/02-estadistica.qmd
+      - section: "Modelado Estadístico"
+        contents:
+          - sections/03-estadisticall.qmd
+      - section: "Estadística Avanzada"
+        contents:
+          - sections/04-estadisticalll.qmd

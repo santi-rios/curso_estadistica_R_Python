@@ -1,0 +1,122 @@
+---
+title: "Distribuciones de Probabilidad II"
+subtitle: "Más allá de la distribución normal"
+format: 
+    live-revealjs: 
+        scrollable: true
+webr:
+    packages: 
+        - ggplot2
+        # - plotly
+        # - tweenr
+# pyodide: 
+#     packages: 
+#         - scikit-learn
+#         - pandas
+#         - matplotlib
+#         - seaborn
+#         - statsmodels
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Introducción y Objetivos
+
+::: {.incremental}
+- A pesar de que la distribución normal es la más conocida y utilizada para los datos en biología y medicina, existen muchas otras distribuciones de probabilidad que se pueden aplicar a diferentes tipos de datos.
+- En esta lección, exploraremos algunas de las distribuciones de probabilidad más comunes y cómo se pueden utilizar en la práctica.
+- Nuestro objetivo es comprender las características clave de estas distribuciones y cómo se pueden aplicar en el análisis de datos, además de graficarlas en R para visualizar su forma y propiedades.
+- Al final de esta lección, tendrás una comprensión más amplia de las distribuciones de probabilidad y cómo se pueden utilizar en tu trabajo de análisis de datos.
+
+:::
+
+## Distribuciones de Probabilidad
+
+::: {.incremental}
+- En estadística, una distribución de probabilidad describe la probabilidad de ocurrencia de cada valor en un conjunto de datos.
+- Cada distribución tiene sus propias características y propiedades, lo que las hace únicas y útiles para diferentes situaciones.
+- Aunque la distribución normal es la más común, existen muchas otras distribuciones que se pueden aplicar a diferentes tipos de datos.
+- Algunas de las distribuciones de probabilidad más comunes incluyen la distribución binomial, la distribución de Poisson, la distribución exponencial, entre otras.
+:::
+
+## Distribución Normal
+
+::: {.incremental}
+- La distribución normal, también conocida como distribución gaussiana, es una de las distribuciones más importantes en estadística.
+- Se caracteriza por su forma de campana y es simétrica alrededor de su media.
+- La distribución normal tiene dos parámetros clave: la media ((\mu)) y la desviación estándar ((\sigma)).
+- La mayoría de los datos en la naturaleza siguen una distribución normal, lo que la hace muy útil en el análisis de datos.
+- La distribución normal es fundamental en la teoría estadística y se utiliza en muchos métodos y pruebas estadísticas.
+- A continuación, veremos cómo se ve la distribución normal y cómo se puede aplicar en la práctica.
+
+:::
+
+Generaremos datos simulados que sigan una distribución normal.
+
+```{webr}
+# Generar datos de una distribución normal
+set.seed(42)
+datos_normales <- rnorm(1000, mean = 50, sd = 10)
+
+# Visualizar la distribución
+hist(datos_normales, breaks = 30, probability = TRUE,
+     col = "skyblue", main = "Distribución Normal",
+     xlab = "Valores", ylab = "Densidad")
+lines(density(datos_normales), col = "darkblue", lwd = 2)
+```
+
+## Distribución Binomial
+
+::: {.incremental}
+- La distribución binomial describe el número de éxitos en una secuencia de ensayos independientes.
+- Cada ensayo tiene dos resultados posibles: éxito o fracaso.
+- Los parámetros clave de la distribución binomial son el número de ensayos (n) y la probabilidad de éxito (p).
+- La distribución binomial es útil para modelar eventos discretos y se utiliza en situaciones donde solo hay dos resultados posibles.
+- Por ejemplo, lanzar una moneda, tirar un dado, o contar el número de éxitos en una muestra.
+- A continuación, veremos cómo se ve la distribución binomial y cómo se puede aplicar en la práctica.
+
+:::
+
+```{webr}	
+# Simular resultados de una distribución binomial
+resultados_binomiales <- rbinom(1000, size = 10, prob = 0.5)
+
+# Visualizar la distribución
+barplot(table(resultados_binomiales) / 1000,
+        col = "lightgreen", main = "Distribución Binomial",
+        xlab = "Número de Éxitos", ylab = "Probabilidad")
+```
+
+## Distribución de Poisson
+
+::: {.incremental}
+- La distribución de Poisson describe el número de eventos que ocurren en un intervalo de tiempo o espacio fijo.
+- Se utiliza para modelar eventos raros o inusuales, como accidentes, llamadas telefónicas, o errores en un proceso.
+- La distribución de Poisson tiene un solo parámetro, la tasa de ocurrencia ((\lambda)), que representa el número promedio de eventos en el intervalo.
+- La distribución de Poisson es útil para modelar eventos discretos y se utiliza en situaciones donde los eventos son raros y aleatorios.
+- A continuación, veremos cómo se ve la distribución de Poisson y cómo se puede aplicar en la práctica.
+
+:::
+
+Simularemos datos utilizando una distribución Poisson.
+
+```{webr}
+# Generar datos de una distribución Poisson
+datos_poisson <- rpois(1000, lambda = 4)
+
+# Visualizar la distribución
+barplot(table(datos_poisson) / 1000,
+        col = "salmon", main = "Distribución Poisson",
+        xlab = "Número de Eventos", ylab = "Probabilidad")
+```
+
+
+---
+
+
+## Reflexión y Discusión
+
+- Observa las gráficas y describe las diferencias clave entre estas distribuciones. ¿Qué las hace únicas?
+- Discute ejemplos en la vida real donde podrías aplicar cada una de estas distribuciones para modelar datos.
+

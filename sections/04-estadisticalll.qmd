@@ -1,0 +1,58 @@
+---
+title: "Estadística Aplicada y Tópicos Avanzados"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+Módulo 4: Estadística Aplicada y Tópicos Avanzados
+
+## Bioestadística y Estadística Genómica:
+
+Análisis estadístico en datos genómicos y de proteómica.
+Uso de herramientas como Bioconductor para el análisis de datos biológicos.
+
+## Modelos Mixtos:
+
+Introducción a modelos de efectos aleatorios y fijos.
+Aplicación de modelos lineales generalizados mixtos (GLMMs) en R.
+
+
+## Estadística Multivariada Avanzada:
+
+Análisis de correspondencias múltiples.
+Regresión parcial menos cuadrados (PLS).
+Análisis discriminante lineal y cuadrático.
+
+## Minería de Datos y Machine Learning:
+
+Introducción a técnicas de machine learning con R.
+Algoritmos supervisados como árboles de decisión, random forests y support vector machines (SVM).
+Algoritmos no supervisados como clustering y reducción de dimensionalidad.
+
+## Análisis de Redes Sociales:
+
+Conceptos básicos de redes y grafos.
+Análisis de redes sociales con R utilizando bibliotecas como igraph.
+
+## Estadística Espacial:
+
+Análisis estadístico de datos espaciales.
+Modelos de puntos y geoestadística aplicada.
+
+## Evaluación de Políticas Públicas:
+
+Métodos estadísticos para la evaluación de impacto.
+Análisis de intención de tratar y métodos de regresión discontinua.
+
+## Análisis de Datos de Encuestas:
+
+Diseño y análisis de encuestas.
+Uso de R para analizar datos de sondeos y encuestas complejas.
+
+## Simulación Estadística:
+
+Técnicas de simulación para pruebas de hipótesis y generación de datos.
+Uso de simulación de Monte Carlo para análisis estadístico.
+

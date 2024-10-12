@@ -1,0 +1,31 @@
+---
+title: "Estadística II"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+## Análisis de Correlación
+
+{{< revealjs file="../slides/04-correlacion-intro.html" height="500px">}}
+
+## Regresión Lineal
+
+{{< revealjs file="../slides/04-regresion-lineal.html" height="500px">}}
+
+## Regresión Logística
+
+{{< revealjs file="../slides/04-regresion-logistica.html" height="500px">}}
+
+## Análisis de Varianza (ANOVA)
+
+{{< revealjs file="../slides/04-anova-intro.html" height="500px">}}
+
+## Pruebas de Hipótesis
+
+{{< revealjs file="../slides/04-pruebas-hipotesis.html" height="500px">}}
+
+## Datos no Paramétricos
+
+{{< revealjs file="../slides/04-datos-no-parametricos.html" height="500px">}}

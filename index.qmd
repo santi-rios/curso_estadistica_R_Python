@@ -9,21 +9,4 @@ format:
 Bienvenido al curso de R para principiantes. En este curso, aprenderás a programar en R, un lenguaje de programación ampliamente utilizado en análisis de datos y estadística. R es una herramienta poderosa para visualizar datos, realizar cálculos estadísticos y crear gráficos impresionantes.
 
 
-<!--
-
-## Manipulación de datos
-
-{{< revealjs file="slides/lecture-04.html" height="500px">}}
-
-## Programación Funcional y  Estructuras de Control
-
-{{< revealjs file="slides/lecture-05.html" height="500px">}}
-
-## Visualización de datos
-
-{{< revealjs file="slides/lecture-06.html" height="500px">}}
-
-## Estadística descriptiva
-
-{{< revealjs file="slides/lecture-07.html" height="500px">}} -->
 

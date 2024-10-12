@@ -28,37 +28,48 @@ Día 6: Manipulación de datos con dplyr - Objetivo: Introducir la manipulación
 Día 7: Repaso y ejercicios prácticos - Objetivo: Reforzar los conceptos aprendidos con ejercicios prácticos. - Contenido: - Ejercicios interactivos y revisión. - Diapositivas: Usa material previamente discutido.
 Semana 2: Introducción a la Bioestadística
 
-Día 8: Conceptos básicos de estadística - Objetivo: Presentar los fundamentos de la estadística. - Contenido: - Población y muestra. - Variables: categóricas y continuas. - Diapositivas: 10-12.
-
-Día 9: Medidas de tendencia central - Objetivo: Calcular y entender las medidas de tendencia central. - Contenido: - Media, mediana, moda. - Diferencias y aplicaciones. - Diapositivas: 8-10.
-
-Día 10: Medidas de dispersión - Objetivo: Comprender e interpretar las medidas de dispersión. - Contenido: - Rango, varianza, desviación estándar. - Cuartiles y percentiles. - Diapositivas: 8-10.
-
-Día 11: Visualización de datos en R - Objetivo: Aprender a crear gráficos básicos. - Contenido: - Histograma, diagrama de cajas, gráficos de barras. - Introducción a ggplot2. - Diapositivas: 10-12.
-
-Día 12: Distribuciones de probabilidad - Objetivo: Introducir distribuciones básicas. - Contenido: - Distribución normal, binomial. - Uso en R. - Diapositivas: 10-12.
-
-Día 13: Introducción a pruebas de hipótesis - Objetivo: Comprender el concepto de pruebas estadísticas. - Contenido: - Planteamiento de hipótesis nula y alternativa. - Errores tipo I y II. - Diapositivas: 8-10.
-
-Día 14: Repaso y ejercicios estadísticos - Objetivo: Reforzar los conceptos de bioestadística mediante ejercicios. - Contenido: - Ejercicios interactivos y discusión. - Diapositivas: Usa material previamente discutido.
 
 
-<!-- ## Showcase R
+## Conceptos básicos de R
 
-{{< revealjs file="slides/lecture-00.html" height="500px">}}
+### Paquetes
 
-## Eje
+{{< revealjs file="../slides/02-paquetes-r.html" height="500px">}}
 
-{{< revealjs file="slides/01-ejemplo-actividades.html" height="500px">}}
+## Datos
 
-## Empieza a programar con R
+### Tipos de datos
 
-{{< revealjs file="../slides/lecture-01.html" height="500px">}}
+{{< revealjs file="../slides/02-datos-intro.html" height="500px">}}
 
-## Trabajo con datos
+### Importar datos
 
-{{< revealjs file="../slides/lecture-02.html" height="500px">}}
+{{< revealjs file="../slides/02-datos-importar.html" height="500px">}}
 
-## Instalación de paquetes
+## Introducción a la programación
 
-{{< revealjs file="../slides/lecture-03.html" height="500px">}} -->
+{{< revealjs file="../slides/02-programacion-intro.html" height="500px">}}
+
+### Funciones e introducción a tidyverse
+
+{{< revealjs file="../slides/02-funciones-r.html" height="500px">}}
+
+### Funciones básicas en estadística
+
+{{< revealjs file="../slides/02-funciones-estadistica.html" height="500px">}}
+
+### Funciones básicas para Visualización
+
+{{< revealjs file="../slides/02-funciones-visualizacion.html" height="500px">}}
+
+## Errores comunes
+
+{{< revealjs file="../slides/02-errores-comunes.html" height="500px">}}
+
+## Programación en R
+
+{{< revealjs file="../slides/02-programacion-ll.html" height="500px">}}
+
+## scripts
+
+{{< revealjs file="../slides/02-scripts-r.html" height="500px">}}

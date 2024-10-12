@@ -30,21 +30,6 @@ mod <- glm(mpg ~ cyl, data = mt)
 summary(mod)
 ```
 
----
-
-## Introduction
-
-Linear regression is a fundamental statistical technique used to model the relationship between a dependent variable and one or more independent variables.
-
-This presentation will cover:
-
-1. Basic Concepts
-2. Implementation in R and Python
-3. Model Evaluation
-4. Assumptions and Diagnostics
-
----
-
 ## Tipos de Datos en R
 
 R maneja varios tipos de datos básicos que son esenciales para comenzar. Entre ellos se encuentran:
@@ -53,9 +38,6 @@ R maneja varios tipos de datos básicos que son esenciales para comenzar. Entre 
     Lógicos: Son valores booleanos que pueden ser TRUE o FALSE.
     Caracteres (o cadenas de texto): Son textos que se representan con comillas, como "algún texto".
     NA: Representa la ausencia de un valor y puede ser numérico, carácter, o lógico.
-
-
-## Generating Data
 
 R clasifica la información en estos tipos de datos para procesarla adecuadamente. Entender estos tipos es esencial para trabajar con R, especialmente cuando se trata de vectores, que son listas de datos relacionados del mismo tipo.
 Ejercicio Interactivo en R
@@ -134,7 +116,6 @@ print(typeof(vector_caracter))
 
 Ejercicio extra: Cambia uno de los valores en los vectores a NA y observa cómo afecta el tipo de dato
 
----
 
 ## NOTA
 
@@ -168,72 +149,6 @@ Los dataframes son una estructura de datos tabular que se utiliza para almacenar
 ## CSV
 
 Los archivos CSV (valores separados por comas) son una forma común de almacenar datos tabulares. Para familiarizarte con los dataframes y los archivos CSV en R, observa las siguiente tabla que se genera cuando corres este código:
-
-```{webr}
-
-# crear una tabla de datos
-datos <- data.frame(
-  nombre = c("Juan", "María", "Pedro"),
-  edad = c(25, 30, 35),
-  ciudad = c("CDMX", "GDL", "MTY")
-)
-
-# Imprimir la tabla de datos con formato
-kable(datos)
-```
-
-## explicación
-
-En este código, creamos un dataframe llamado datos con tres columnas: nombre, edad y ciudad. El nombre, edad y ciudad son las variables, y Juan, María y Pedro, 25,30,35, CDMX, GDL, MTY son las observaciones de cada variable.
-
-
-## Lectura de CVS
-
-Para leer un archivo CSV en R, puedes utilizar la función read.csv(). Esta función lee un archivo CSV y lo convierte en un dataframe que puedes manipular y analizar. Por ejemplo, si tienes un archivo CSV llamado datos.csv, puedes leerlo y almacenarlo en una variable llamada datos_csv de la siguiente manera:
-
-```{webr}
-#| eval: false
-
-# Leer un archivo CSV
-datos_csv <- read.csv("datos.csv")
-
-# Imprimir la tabla de datos con formato
-kable(datos_csv)
-
-```
-
-## Creación de Dataframes
-
-También puedes crear dataframes manualmente utilizando la función data.frame(). Por ejemplo, para crear un dataframe con los mismos datos que el archivo CSV anterior, puedes hacer lo siguiente:
-
-```{webr}
-# Create sample data
-set.seed(123)
-x <- 1:100
-y <- 2 * x + 1 + rnorm(100, mean = 0, sd = 3)
-df <- data.frame(x = x, y = y)
-
-head(df)
-```
-
-
-## Leer archivos de Excel .xls y .xlsx
-
-Para leer archivos de Excel en R, puedes utilizar las funciones readxl::read_excel() y openxlsx::read.xlsx(). Estas funciones leen archivos de Excel y los convierten en dataframes que puedes manipular y analizar. Por ejemplo, si tienes un archivo de Excel llamado datos.xlsx, puedes leerlo y almacenarlo en una variable llamada datos_excel de la siguiente manera:
-
-```{webr}
-#| eval: false
-
-library(readxl)
-
-# Leer un archivo de Excel
-datos_excel <- readxl::read_excel("datos.xlsx")
-
-# Imprimir la tabla de datos con formato
-kable(datos_excel)
-
-```
-
 
 ## Funciones útiles para Dataframes
 
@@ -302,12 +217,3 @@ Actividad Interactiva:
     Discute cómo estos tipos de datos pueden influir en análisis posteriores en un entorno de ciencias de la salud.
 
 
----
-
-
-## Conclusion
-
-- Linear regression is a powerful tool for modeling relationships between variables.
-- Both R and Python offer robust implementations and diagnostic tools.
-- Always check assumptions and perform diagnostics to ensure the validity of your model.
-- Consider more advanced techniques (e.g., multiple regression, polynomial regression) for complex relationships.

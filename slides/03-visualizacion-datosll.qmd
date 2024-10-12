@@ -1,0 +1,98 @@
+---
+title: "Visualización Avanzada de Datos"
+subtitle: "Conceptos Clave de Variables"
+format: 
+    live-revealjs: 
+        scrollable: true
+webr:
+    packages: 
+        - ggplot2
+# pyodide: 
+#     packages: 
+#         - scikit-learn
+#         - pandas
+#         - matplotlib
+#         - seaborn
+#         - statsmodels
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Introducción
+
+La visualización de datos avanzada permite explorar y comunicar patrones complejos de manera eficaz. Al ampliar los conceptos básicos, se pueden utilizar técnicas para un análisis más profundo, permitiendo también una comprensión más clara de las relaciones en datos multivariados.
+
+---
+
+## Herramientas de Visualización Avanzada
+
+    Gráfico de Cajas (Boxplot):
+        Muestra la distribución de los datos a través de sus cuartiles y resalta valores atípicos.
+
+    Gráfico de Violín:
+        Combina aspectos del boxplot y el gráfico de densidad para mostrar la distribución de los datos.
+
+    Gráfico de Dispersión 3D:
+        Expone la relación entre tres variables utilizando un sistema de coordenadas tridimensional.
+
+
+
+---
+
+## Ejercicio Práctico en R
+
+Utilizaremos datos simulados y conjuntos de datos incorporados en R para crear estas visualizaciones avanzadas.
+Gráfico de Cajas
+
+```{webr}
+# Cargar paquete necesario
+install.packages("ggplot2")
+library(ggplot2)
+
+# Datos: conjunto `mtcars`
+data("mtcars")
+
+# Gráfico de Cajas
+ggplot(mtcars, aes(x = as.factor(cyl), y = mpg)) +
+  geom_boxplot(fill = "lightblue") +
+  labs(title = "Distribución de MPG por Número de Cilindros",
+       x = "Cilindros", y = "Millas por Galón (MPG)")   
+```
+
+Gráfico de Violín
+
+```{webr}
+# Gráfico de Violín
+ggplot(mtcars, aes(x = as.factor(cyl), y = mpg)) +
+  geom_violin(fill = "lightgreen") +
+  labs(title = "Distribución de MPG por Número de Cilindros (Gráfico de Violín)",
+       x = "Cilindros", y = "Millas por Galón (MPG)")  
+```
+
+Gráfico de Dispersión 3D
+
+```{webr}
+# Cargar paquete necesario para gráficos 3D
+install.packages("plotly")
+library(plotly)
+
+# Gráfico de Dispersión 3D
+plot_ly(mtcars, x = ~mpg, y = ~disp, z = ~hp, type = "scatter3d", mode = "markers",
+        marker = list(size = 5, color = mtcars$cyl, colorscale = "Viridis")) %>%
+  layout(title = "Relación entre MPG, Desplazamiento y Caballos de Fuerza",
+         scene = list(xaxis = list(title = "MPG"),
+                      yaxis = list(title = "Desplazamiento"),
+                      zaxis = list(title = "HP")))   
+```
+
+
+---
+
+
+## Reflexión y Discusión
+
+    Examina cada tipo de gráfico: ¿Qué información adicional puedes obtener de un gráfico de violín en comparación con un boxplot?
+    Discute cómo la visualización tridimensional puede desvelar relaciones no evidentes en una inspección bidimensional.
+
+Esta lección te ofrece las herramientas necesarias para realizar visualizaciones de datos más avanzadas en R, capacitándote para descubrir y comunicar patrones complejos de manera eficaz y clara.

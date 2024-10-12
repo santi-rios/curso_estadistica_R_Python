@@ -1,0 +1,472 @@
+---
+title: "Distribuciones de Probabilidad"
+subtitle: "Distrbución Normal y cómo visualizarla en R, primeros pasos con ggplot2"
+format: 
+    live-revealjs: 
+        scrollable: true
+webr:
+    packages: 
+        - ggplot2
+        # - plotly
+        # - tweenr
+# pyodide: 
+#     packages: 
+#         - scikit-learn
+#         - pandas
+#         - matplotlib
+#         - seaborn
+#         - statsmodels
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Introducción y Objetivos
+
+::: {.incremental}
+- Las *distribuciones de probabilidad* describen cómo se distribuyen los valores posibles de una variable aleatoria. 
+- Son fundamentales en el análisis estadístico, ya que facilitan el entendimiento y modelado de los datos. 
+- En esta lección, abordaremos algunas de las distribuciones más comunes y cómo trabajarlas en R.
+
+:::
+
+## Ejemplo Visual I
+
+::: {.incremental}
+- Imagina que tomas la altura de 100 jirafas: 50 pertenecienctes a la isla A y 50 a la isla B, como se muestra en las imágenes. 
+
+:::
+
+![Isla A e Isla B](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/giraffe_islands2.jpg)
+
+![Toma de alturas de jirafas](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/giraffe_lineup4.jpg)
+
+
+
+::: {.footer}
+Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html) si deseas profundizar en el tema.
+:::
+
+
+## Ejemplo Visual II
+
+::: {.incremental}
+- ¿Cómo podemos visualizar los 100 datos para ver cuál es la altura más común?.
+- Una forma practica sería la siguiente: tomas la altura de cada jirafa y llevas un conteo de cuántas veces se repite cada altura (**frecuencia**).
+- Esta es la base de un gráfico conocido como **histograma**, que muestra la distribución de los datos. 
+- Ejecuta el siguiente código y observa cómo se va construyendo el histograma. No te preocupes por el código, solo observa el gráfico.
+- NOTA: Puedes hacer clic en el botón de reproducción para ver la animación. Después de ejecutar el código, tarda unos segundos en cargar la animación.
+
+:::
+
+```{{webr}}
+library(plotly)
+library(tweenr)
+
+set.seed(12)
+x <- round(rnorm(50, 10, 2))
+x2 <- round(rnorm(50, 18, 1.2))
+x <- c(x, x2)
+df <- data.frame(x = x, y = 23, type = rep(c("Isla #1", "Isla #2"), 
+    each = 50))
+dfs <- list(df)
+for (i in seq_len(nrow(df)))
+{
+    dftemp <- tail(dfs, 1)
+    dftemp[[1]]$y[i] <- sum(dftemp[[1]]$x[seq_len(i)] == dftemp[[1]]$x[i])
+    dfs <- append(dfs, dftemp)
+}
+dfs <- append(dfs, dfs[rep(length(dfs), 3)])
+dft <- tween_states(dfs, 10, 1, "cubic-in", 500)
+dft$y <- dft$y - 0.5
+dft <- dft[dft$y != 23, ]
+
+m <- list(l = 50, r = 50, b = 10, t = 10, pad = 4)
+
+p <- 
+  dft %>% 
+  plot_ly(x = ~x, y = ~y, frame = ~.frame, color = ~type, 
+          colors = c("green3", "turquoise3"), 
+          marker = list(size = 16), width = 630, height = 390) %>%
+  config(displayModeBar = F) %>%
+  layout(xaxis = list(range = c(4, 23), title = "Altura de jirafas", zeroline = F), 
+         yaxis = list(range = c(-0.5, 21), title = "Frecuencia", zeroline = F), 
+         legend = list(x = 0.075, y = 0.91), 
+         autosize = F, margin = m) %>%
+  animation_opts(frame = 25, transition = 0, redraw = FALSE) %>%
+  animation_slider(hide = T) %>%
+  animation_button(x = 1, xanchor = "right", y = 0, yanchor = "bottom")
+
+p
+
+```
+
+
+
+::: {.footer}
+Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html) si deseas profundizar en el tema.
+:::
+
+## Ejemplo Visual III
+
+::: {.incremental}
+- El grafico que acabamos de ver (**histograma**) muestra la *distribución* o forma de nuestros datos.
+- A partir de la distribución de nuestra variable de altura, podemos observar lo siguiente:
+    - Cuál es el valor mínimo y máximo de las alturas (`6-20 cm`). 
+    - La altura más común es diferente para las firafas de la isla 1 y 2.
+    - Hay una variabilidad en las alturas, con algunas jirafas más altas y otras más bajas.
+- Dependiendo de la forma de la distribución, se le da un nombre a esta distribución de los datos. La más común y utilizada es la **distribución normal**.
+- Cada distribución tiene sus propias características y propiedades, lo que las hace únicas y útiles para diferentes situaciones.
+- Exploremos las características de la distribución normal con nuestro ejemplo de alturas de jirafas. Estas características son:
+    - Tiene un solo pico o punto más alto donde se concentran los datos.
+    - Los datos se distribuyen simétricamente alrededor de este punto medio. 
+:::
+
+![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/normal_hist.png)
+
+## Graficar un histograma - Introducción a ggplot2
+
+- Ahora vamos a aprender a graficar un histograma en R.
+- Para esto, utilizaremos el paquete `ggplot2`. 
+- Este paquete será la base de muchos de nuestros gráficos en R, ya que nos permite crear visualizaciones de datos de manera sencilla y flexible.
+- Primero tenemos que instalar y cargar el paquete `ggplot2`. Si no lo tienes instalado, puedes hacerlo con el siguiente comando: `install.packages("ggplot2")`.
+- Luego, cargamos el paquete con `library(ggplot2)`.
+- A continuación, iremos paso por paso en la construcción del gráfico con ggplot. Una vez que entiendas esta base, verás que graficar cualquier tipo de gráfico en R es muy similar.
+
+
+## Paso 1. 
+
+- Primero, tenemos que cargar el paquete `ggplot2` con `library(ggplot2)`.
+- Ahora, para decirle a R que queremos hacer un gráfico con ggplot2, usamos la función `ggplot()`.
+- Corre el siguiente código para crear un objeto ggplot vacío. No te preocupes si no ves nada en la salida, es normal. 
+
+```{webr}	
+
+library(ggplot2)
+
+# Crear un objeto ggplot
+ggplot()
+
+```
+
+## Paso 2.
+
+- Ahora, necesitamos decirle a ggplot qué datos queremos graficar y cómo queremos visualizarlos.
+- Para este ejercicio, vamos a crear un dataset de ejemplo con 1000 datos que siguen una distribución normal.
+- Esto es fácil en R con la función `rnorm()`, que genera datos aleatorios de una distribución normal.
+
+
+```{webr}
+
+# Generar datos de una distribución normal
+# guardamos los datos en el dataframe datos_normales
+set.seed(42)
+datos_normales <- rnorm(1000, mean = 50, sd = 10)
+
+# Visualizar los primeros 10 datos
+head(datos_normales)
+
+# Visualizar los últimos 10 datos
+tail(datos_normales)
+
+# Convertir a dataframe
+datos_normales <- as.data.frame(datos_normales)
+
+```
+
+::: {.callout}
+- `set.seed(42)` fija la semilla para que los resultados sean reproducibles. Se utiliza para generar números aleatorios, pero de manera controlada para que siempre obtengamos los mismos resultados. El valor específico (`42`) es arbitrario, pero mientras sea el mismo, los resultados serán los mismos.
+- `rnorm(1000, mean = 50, sd = 10)` genera 1000 datos de una distribución normal con media 50 y desviación estándar 10.
+- `head()` y `tail()` muestran los primeros y últimos datos, respectivamente.
+- `as.data.frame()` convierte los datos en un dataframe, que es el formato que ggplot2 espera.
+:::
+
+## Paso 3.
+
+- Ahora que tenemos nuestros datos, vamos a crear un histograma con ggplot2.
+- Empezamos por decirle a `ggplot()` estos dos argumentos:
+    - `data`: el dataset que queremos graficar.
+    - `aes()`: las estéticas (*aesthetics*) del gráfico, como qué variable va en el eje x o y. Como estamos haciendo un histograma, solo necesitamos especificar la variable `x`.
+- Ahora, cuando corras el siguiente código, verás un gráfico vacío con el eje que especificamos. 
+- Sin embargo, todavía no le hemos dicho a ggplot cómo queremos visualizar los datos. Eso lo haremos en el siguiente paso.
+
+
+```{webr}	
+# library(ggplot2)
+
+# Agregar datos y estéticas al objeto ggplot
+ggplot(data = datos_normales, aes(x = datos_normales))
+
+```
+
+## Paso 4.
+
+- Ahora que hemos especificado los datos y las estéticas, necesitamos agregar lo que se conoce como una capa geométrica (***geom*** *layer*) al gráfico.
+- Esta capa determina cómo se visualizan los datos. Para un histograma, usamos `geom_histogram()`.
+- Nota que agregamos esta nueva capa con el signo `+` al final de la línea anterior. Esto nos permite agregar múltiples capas al gráfico si es necesario, sumando capas una tras otra.
+- Puedes observar todos los tipos de capas geométricas que ggplot2 ofrece en la [documentación oficial](https://ggplot2.tidyverse.org/reference/#section-layer-geoms). No te preocupes, veremos más de ellas en futuras lecciones.
+- Por el momento, solo necesitas saber que cada capa tiene parámetros específicos. Por ejemplo, para `geom_histogram()`, podemos especificar el número de `bins` (contenedores) que queremos en el histograma. Esto determina cuántas barras tendrá el gráfico.
+
+```{webr}
+
+# Agregar una capa geométrica al gráfico
+ggplot(data = datos_normales, aes(x = datos_normales)) +
+  geom_histogram(bins = 30)
+
+```
+
+## Pequeño paréntesis
+- ¿Cómo afecta el número de contenedores (`bins`) al histograma?
+- Cambia el número de contenedores en el siguiente código y observa cómo se modifica el gráfico.
+- Idealmente, el número de contenedores debe ser suficiente para capturar la forma de la distribución, pero no demasiado para perder la información.
+- Observa que pasa si el número de contenedores es muy bajo o muy alto.
+
+```{webr}
+#| input:
+#|   - n
+
+set.seed(420)
+
+hist(rnorm(1000), breaks = n, col = "forestgreen")
+```
+
+```{ojs}
+//| echo: false
+viewof n = Inputs.range([0, 501], {step: 1, label: "contenedores"})
+```
+
+## Paso 5.
+
+- Es buena práctica guardar el gráfico en un objeto para poder modificarlo más adelante si es necesario.
+- Esto también será útil cuando empezamos a crear gráficos más complejos con múltiples capas.
+
+```{webr}
+
+# guardar el gráfico en un objeto
+
+
+histograma_ggplot <- ggplot(data = datos_normales, aes(x = datos_normales)) +
+  geom_histogram(bins = 30)
+
+# Mostrar el gráfico
+histograma_ggplot
+
+```
+
+## Paso 6.
+
+- Finalmente, podemos personalizar el gráfico agregando títulos, etiquetas, colores, etc.
+- Vamos a regresar al ejemplo de las girafas para entender cómo se aplican estos conceptos en la práctica.
+- Primero, ejecuta el siguiente código para que se guarden los datos de las girafas en un dataframe.
+
+```{webr}
+library(tweenr)
+
+set.seed(12)
+x <- round(rnorm(50, 10, 2))
+x2 <- round(rnorm(50, 18, 1.2))
+x <- c(x, x2)
+df <- data.frame(x = x, y = 23, type = rep(c("Isla #1", "Isla #2"), 
+    each = 50))
+dfs <- list(df)
+for (i in seq_len(nrow(df)))
+{
+    dftemp <- tail(dfs, 1)
+    dftemp[[1]]$y[i] <- sum(dftemp[[1]]$x[seq_len(i)] == dftemp[[1]]$x[i])
+    dfs <- append(dfs, dftemp)
+}
+dfs <- append(dfs, dfs[rep(length(dfs), 3)])
+dft <- tween_states(dfs, 10, 1, "cubic-in", 500)
+dft$y <- dft$y - 0.5
+dft <- dft[dft$y != 23, ]
+
+```
+
+## Paso 6.2
+
+- Siguiendo la estructura básica que ya conocemos, vamos a crear un histograma con los datos de las girafas.
+- Nota que ahora usam `binwidth = 1` en `geom_histogram()` para especificar el ancho de las barras del histograma.
+
+```{webr}
+
+# Crear un objeto ggplot
+
+ggplot(data = dft, 
+        aes(x = x)) +
+  geom_histogram(binwidth = 1) 
+
+
+
+```
+
+## Paso 6.3
+
+- Como vemos, el gráfico es un buen comienzo, pero podemos mejorarlo.
+- Vamos a decirle a ggplot que cada isla tenga un color diferente.
+- Para esto, agregamos `fill = type` dentro de `aes()`. 
+- Esto le dice a ggplot que queremos que cada barra del histograma se llene con un color diferente según el tipo de isla, almacenado en la variable llamada "type".
+
+```{webr}
+
+# agregar color
+
+ggplot(data = dft, 
+        aes(x = x, fill = type)) +
+  geom_histogram(binwidth = 1)
+
+```
+
+::: {.callout}
+- `fill = type` le dice a ggplot que queremos que cada barra del histograma se llene con un color diferente según el tipo de isla.
+- No confundir `fill` con `color`. `fill` se refiere al relleno de las barras, mientras que `color` se refiere al contorno de las barras. 
+- Observa la diferencia si cambias `fill` por `color` en el código.
+
+```{webr}
+
+# agregar color
+
+ggplot(data = dft, 
+        aes(x = x, color = type)) +
+  geom_histogram(binwidth = 1)
+
+```
+
+:::
+
+## Paso 6.4
+
+- Ahora, vamos a especificar los colores que queremos para cada isla.
+- Para esto, agregamos una capa adicional con `+ scale_fill_manual()` al gráfico.
+- Dentro de esta función, especificamos los colores que queremos para cada isla de la siguiente manera: `values = c("color1", "color2")`.
+    - Nota que estamos concatenando los colores con `c()`. Esto es importante para que R entienda que son dos colores diferentes. Ten en cuenta que debes proporcionar tantos colores como categorías tengas en tu gráfico, en este caso, dos.
+    - Los colores pueden ser especificados de distinas maneras. Puedes usar palabras como `red`, `blue`, `green`, `yellow`, `black`, `white`, entre otros. También puedes usar códigos hexadecimales como `#FF0000` para rojo, `#0000FF` para azul, etc. 
+    - Conoce todos las palabras de colores que se pueden usar en [este enlace](http://sape.inf.usi.ch/quick-reference/ggplot2/colour) y los códigos hexadecimales en [este enlace](https://htmlcolorcodes.com/es/).
+- Ahora, corre el siguiente código para ver el histograma con los colores que quieras. Sustituye los valores faltantes (marcados con `------`) con los colores que prefieras.
+
+```{webr}	
+
+# Agregar colores personalizados
+
+ggplot(data = dft, 
+        aes(x = x, fill = type)) +
+  geom_histogram(binwidth = 1) +
+  scale_fill_manual(values = c("______", "______"))
+
+```
+
+## Paso 6.5
+
+- Una forma facil de modificar la apariencia del gráfico es utilizando temas predefinidos.
+- Puedes conocer los diferentes temas que ggplot2 ofrece en la [documentación oficial](https://ggplot2.tidyverse.org/reference/ggtheme.html).
+- En el siguiente código, comenta y descomenta las líneas para ver cómo cambia la apariencia del gráfico con los diferentes temas.
+- Nota: solamente puedes tener un tema activo a la vez. Si quieres cambiar el tema, comenta la línea del tema actual y descomenta la del nuevo tema.
+
+```{webr}	
+
+# jugar con el tema
+
+ggplot(data = dft, 
+        aes(x = x, fill = type)) +
+  geom_histogram(binwidth = 1) +
+  scale_fill_manual(values = c("#00cd00", "#00c5cd")) +
+
+    theme_minimal() 
+    # theme_light() 
+    # theme_dark() 
+    # theme_classic() 
+    # theme_void() 
+    # theme_bw() 
+    # theme_linedraw() 
+    # theme_gray()
+
+```
+
+
+## Paso 7
+
+- Finalmente, podemos agregar títulos y etiquetas a nuestro gráfico para hacerlo más informativo.
+- Para facilitar el trabajo con multiples capas, podemos guardar el gráfico en un objeto y luego agregar las capas adicionales.
+
+```{webr}	
+
+# guardar el gráfico en un objeto llamado p
+
+p <- ggplot(data = dft, 
+        aes(x = x, fill = type)) +
+  geom_histogram(binwidth = 1) +
+  scale_fill_manual(values = c("#00cd00", "#00c5cd")) +
+    theme_minimal() 
+
+```
+
+
+## Paso 7.2
+
+- Ahora, vamos a agregar títulos y etiquetas al gráfico.
+
+```{webr}
+
+# Agregar títulos y etiquetas
+
+p +
+  labs(title = "Distribución de Alturas de Jirafas",
+       x = "Altura (cm)",
+       y = "Frecuencia")
+
+```
+
+## Paso 7.3
+
+- Ahora, quitemos el espacio en blanco alrededor del gráfico para hacerlo más limpio y movamos la leyenda a la parte superior.
+
+```{webr}
+
+# Quitar espacio en blanco y mover la leyenda
+
+p +
+  labs(title = "Distribución de Alturas de Jirafas",
+       x = "Altura (cm)",
+       y = "Frecuencia") +
+  scale_y_continuous(expand = c(0,0)) +
+  theme(legend.position = "top")
+
+```
+
+## Paso 7.4
+
+- Por último, podemos cambiar el tamaño de la leyenda y las etiquetas de los ejes, y cambiar el nombre de las leyenda.
+
+```{webr}
+
+# Cambiar tamaño de la leyenda y etiquetas
+
+p +
+  labs(title = "Distribución de Alturas de Jirafas",
+       x = "Altura (cm)",
+       y = "Frecuencia") +
+  scale_y_continuous(expand = c(0,0)) +
+  theme(legend.position = "top",
+        legend.text = element_text(size = 12),
+        axis.text = element_text(size = 12),
+        legend.title = element_text(size = 14))
+
+```
+
+
+---
+
+
+## Reflexión y Discusión
+
+- Toma en cuenta que en nuestro ejemplo de las jirafas, es probable que no hayamos tomado las alturas de TODAS las jirafas de las islas.
+- Por lo tanto, nuestro histograma es una *aproximación* de la verdadera distribución de alturas.
+- Esta aproximación está basada en un muestreo aleatorio de las alturas. Esto es común en la estadística, donde trabajamos con **muestras** de datos en lugar de la población completa.
+- Existe la posibilidad de que nuestro muestreo no sea adecuado para representar la verdadera distribución de alturas en la población. Esto es un tema importante en la estadística y se conoce como **error de muestreo**.
+- Debido a esto, es importante tomar una muestra lo suficientemente grande y representativa.
+- En futuras lecciones, exploraremos más sobre muestreo y cómo podemos estimar la verdadera distribución de una población a partir de una muestra.
+- Para ilustrar este concepto, observa cómo cambia la forma del histograma cuando tomamos muestras pequeñas o grandes de los datos de las jirafas:
+
+![](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve_files/figure-html/unnamed-chunk-10-.gif)
+
+- Observa cómo con una muestra pequeña, la forma del histograma cambia drásticamente, mientras que con una muestra grande, se asemeja más a la distribución normal.
+

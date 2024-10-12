@@ -1,0 +1,149 @@
+---
+title: "Funciones"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-revealjs: 
+        theme: serif
+        toc: true
+        scrollable: true
+        progress: true
+        slide-number: true
+        incremental: true
+        lang: es
+        logo: "https://readr.tidyverse.org/logo.png"
+        # code-link: true
+webr:
+    packages: 
+        - dplyr
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Funciones en R
+
+- Las funciones son bloques de código que realizan una tarea específica. En R, las funciones son fundamentales para realizar tareas de análisis de datos, cálculos estadísticos y visualizaciones.
+- La estructura básica de una función en R es la siguiente: la función es una palabra clave (verbo) seguida de una o varias instrucciones entre paréntesis `()`.
+
+`hacer_esto(a_esto)
+hacer_aquello(a_esto, a_aquello, con_aquellos)`
+
+##
+
+- En R, las funciones pueden tener argumentos opcionales, que se pueden especificar al llamar a la función. Por ejemplo, la función `mean()` tiene un argumento opcional llamado `na.rm`, que se utiliza para eliminar los valores faltantes al calcular la media.
+
+
+## Introducción
+
+dplyr es un paquete de R optimizado para la manipulación de datos. Ofrece una sintaxis clara y funciones eficientes, permitiendo transformar y resumir datos de manera mucho más intuitiva que con las funciones base de R. Es especialmente útil cuando trabajas con grandes conjuntos de datos.
+Funciones Clave en dplyr
+
+---
+
+## dplyr
+
+dplyr se centra en una serie de funciones verbales que hacen que la manipulación de datos sea intuitiva. Aquí están las funciones más utilizadas:
+
+    select() - Seleccionar columnas específicas de un marco de datos.
+    filter() - Filtrar filas basadas en condiciones.
+    arrange() - Reordenar filas de un marco de datos.
+    mutate() - Añadir nuevas columnas o transformar columnas existentes.
+    summarize() - Resumir datos, normalmente acompañado de group_by().
+    group_by() - Agrupar datos antes de resumirlos.
+
+
+
+---
+
+## Uso de dplyr
+
+A continuación, te mostramos cómo puedes utilizar algunas de estas funciones en un marco de datos. Usaremos el conjunto de datos mtcars para ilustrar estas funcionalidades.
+
+```{webr}
+
+# Cargar paquete dplyr
+library(dplyr)
+
+# Cargar el conjunto de datos
+data("mtcars")
+
+# Ejemplo de uso de funciones clave de dplyr
+
+# 1. Seleccionar columnas específicas
+mtcars_selected <- select(mtcars, mpg, hp, wt)
+print(mtcars_selected)
+
+# 2. Filtrar filas: coches con más de 100 caballos de fuerza
+mtcars_filtered <- filter(mtcars, hp > 100)
+print(mtcars_filtered)
+
+# 3. Reordenar filas por eficiencia en millas por galón (mpg)
+mtcars_arranged <- arrange(mtcars, desc(mpg))
+print(mtcars_arranged)
+
+# 4. Añadir una nueva columna: relación potencia/peso
+mtcars_mutated <- mutate(mtcars, hp_per_wt = hp / wt)
+print(mtcars_mutated)
+
+# 5. Resumir datos: calcular promedio de mpg agrupado por número de cilindros
+mtcars_summary <- mtcars %>%
+  group_by(cyl) %>%
+  summarize(mean_mpg = mean(mpg))
+print(mtcars_summary)
+
+
+```
+
+## Ejercicio
+
+
+Ejercicio: Manipulación de Datos Práctica
+
+Usa dplyr para realizar las siguientes tareas en el conjunto de datos mtcars:
+
+    Selecciona las columnas mpg, cyl, y gear.
+    Filtra los coches que tienen menos de 4 cilindros.
+    Ordena los datos según la columna gear de forma ascendente.
+    Añade una nueva columna que calcule el doble de mpg.
+    Agrupa los datos por gear y calcula el promedio de mpg para cada grupo.
+
+Código del Ejercicio:
+
+```{webr}
+
+# Cargar paquete dplyr
+library(dplyr)
+
+# Cargar el conjunto de datos
+data("mtcars")
+
+# Tu solución:
+mtcars_manipulado <- mtcars %>%
+  select(mpg, cyl, gear) %>%
+  filter(cyl < 4) %>%
+  arrange(gear) %>%
+  mutate(double_mpg = mpg * 2) %>%
+  group_by(gear) %>%
+  summarize(mean_mpg = mean(mpg))
+
+print(mtcars_manipulado)
+
+```
+
+
+
+---
+
+
+## Reflexión
+
+    ¿Qué ventajas encuentras al usar dplyr frente a otras formas de manipulación de datos en R?
+    Explora cómo podrías combinar diferentes funciones de dplyr para realizar tareas más complejas en tus propios conjuntos de datos.
+
+Esta lección te introduce a dplyr, mostrando lo sencillo que es transformar y resumir datos. Practicando con estos ejemplos podrás desarrollar habilidades sólidas en la manipulación de datos en R, una competencia esencial en análisis de datos
