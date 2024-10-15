@@ -8,9 +8,15 @@ format:
 
 ## Análisis de Correlación
 
+https://datasciencebox.org/course-materials/_slides/u2-d15-studies-confounding/u2-d15-studies-confounding#1
+
 {{< revealjs file="../slides/04-correlacion-intro.html" height="500px">}}
 
+https://datasciencebox.org/course-materials/_slides/u2-d17-doing-data-science/u2-d17-doing-data-science#1
+
 ## Regresión Lineal
+
+https://datasciencebox.org/02-making-rigorous-conclusions
 
 {{< revealjs file="../slides/04-regresion-lineal.html" height="500px">}}
 

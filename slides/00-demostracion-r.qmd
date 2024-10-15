@@ -167,7 +167,7 @@ fig
 
 ## 
 
-Por ejemplo, observa y corre el siguiente código que grafica un hemisferio cerebral con  regiones subcorticales. de nuevo, el código base es muy similar al que hemos visto antes, pero el resultado es un gráfico completamente diferente basado en un atlas cerebral.
+Por ejemplo, observa y corre el siguiente código que grafica un hemisferio cerebral con  regiones subcorticales. De nuevo, el código base es muy similar al que hemos visto antes, pero el resultado es un gráfico completamente diferente basado en un atlas cerebral.
 
 ```{webr}
 library(ggplot2)

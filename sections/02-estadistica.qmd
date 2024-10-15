@@ -6,6 +6,15 @@ format:
     toc-depth: 2
 ---
 
+statistics with r
+https://r-coder.com/r-statistics/
+
+rcharts
+https://r-coder.com/r-graphs/ 
+
+data manipulation
+https://r-coder.com/r-data-manipulation/
+
 Este módulo serviría para ampliar las capacidades de los estudiantes en la aplicación de técnicas más sofisticadas en estadística, lo cual es esencial para un análisis más riguroso y profundo de los datos. Aquí tienes algunas sugerencias de temas y subtemas para este módulo:
 Módulo 3: Modelos Estadísticos y Análisis Avanzados
 
@@ -83,4 +92,12 @@ Algunos tips...
 ## Intervalos de Confianza
 
 {{< revealjs file="../slides/03-intervalos-confianza.html" height="500px">}}
+
+## Ejercicios
+
+https://minecr.shinyapps.io/dsbox-04-legosales/#section-counting-frequencies
+
+https://minecr.shinyapps.io/dsbox-06-dcbikeshare/
+
+https://minecr.shinyapps.io/dsbox-07-exploregss/
 

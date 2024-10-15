@@ -38,7 +38,11 @@ Semana 2: Introducción a la Bioestadística
 
 ## Datos
 
+- https://datasciencebox.org/course-materials/_slides/u2-d01-data-viz/u2-d01-data-viz#1
+
 ### Tipos de datos
+
+https://datasciencebox.org/course-materials/_slides/u2-d03-viz-num/u2-d03-viz-num#1
 
 {{< revealjs file="../slides/02-datos-intro.html" height="500px">}}
 
@@ -46,19 +50,48 @@ Semana 2: Introducción a la Bioestadística
 
 {{< revealjs file="../slides/02-datos-importar.html" height="500px">}}
 
+https://datasciencebox.org/course-materials/_slides/u2-d12-data-import/u2-d12-data-import#1
+
 ## Introducción a la programación
 
 {{< revealjs file="../slides/02-programacion-intro.html" height="500px">}}
 
+https://stanford.edu/~cpiech/karel/lessons.html#/english/unit2/lesson3
+https://cran.r-project.org/web/packages/karel/vignettes/b_meetingkarel_es.html
+https://ropensci.github.io/karel/
+https://homerhanumat.github.io/r-notes/turtle.html
+https://p4a.seas.gwu.edu/2019-Fall/TurtleGraphics.html
+
 ### Funciones e introducción a tidyverse
 
+https://datasciencebox.org/course-materials/_slides/u2-d05-tidy-data/u2-d05-tidy-data#1
+
+https://datasciencebox.org/course-materials/_slides/u2-d06-grammar-wrangle/u2-d06-grammar-wrangle#1
+
 {{< revealjs file="../slides/02-funciones-r.html" height="500px">}}
+
+https://datasciencebox.org/course-materials/_slides/u2-d07-single-df/u2-d07-single-df#1
+
+https://datasciencebox.org/course-materials/_slides/u2-d08-multi-df/u2-d08-multi-df#1
+
+https://datasciencebox.org/course-materials/_slides/u2-d09-tidying/u2-d09-tidying#1
 
 ### Funciones básicas en estadística
 
 {{< revealjs file="../slides/02-funciones-estadistica.html" height="500px">}}
 
+https://datasciencebox.org/course-materials/_slides/u2-d10-data-types/u2-d10-data-types#1
+
+https://datasciencebox.org/course-materials/_slides/u2-d11-data-classes/u2-d11-data-classes#3
+
+https://datasciencebox.org/course-materials/_slides/u2-d13-data-recode/u2-d13-data-recode#1
+
+https://minecr.shinyapps.io/dsbox-02-accidents/
+
+https://minecr.shinyapps.io/dsbox-03-collegemajors/
+
 ### Funciones básicas para Visualización
+
 
 {{< revealjs file="../slides/02-funciones-visualizacion.html" height="500px">}}
 
@@ -73,3 +106,7 @@ Semana 2: Introducción a la Bioestadística
 ## scripts
 
 {{< revealjs file="../slides/02-scripts-r.html" height="500px">}}
+
+## Ejercicios
+
+https://minecr.shinyapps.io/dsbox-01-edibnb/#section-data-visualisation
