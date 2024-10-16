@@ -7,6 +7,7 @@ format:
         theme: simple
         scrollable: true
         toc: true
+        toc-depth: 1
         toc-title: Contenido de la Lección
         progress: true
         slide-number: true
@@ -126,7 +127,10 @@ En R, puedes realizar operaciones aritméticas básicas como suma, resta, multip
 
 - Observa cómo al ejecutar el código, se muestra el resultado de cada operación aritmética en una línea de mensaje. 
 - Este es el resultado y es conocido como la salida de la operación. En los textos y tutoriales de R, se le conoce como "*output*".
-- Corre el siguiente código que tiene 2 operaciones aritméticas y observa cómo se muestran 2 salidas, una para cada operación en una línea de mensaje.
+
+##
+
+Corre el siguiente código que tiene 2 operaciones aritméticas y observa cómo se muestran 2 salidas, una para cada operación en una línea de mensaje.
 
 ```{webr}
 # Suma
@@ -137,7 +141,7 @@ En R, puedes realizar operaciones aritméticas básicas como suma, resta, multip
 
 ```
 
-## Puntos Clave - Comentarios I
+## Puntos Clave - Comentarios I {.smaller}
 
 ::: {.incremental}
 - En R, el símbolo `#` se utiliza para hacer comentarios. 
@@ -177,9 +181,12 @@ En R, puedes realizar operaciones aritméticas básicas como suma, resta, multip
 
 ```
 
+##
+
 ***Observa*** como dejamos los comentarios en las líneas de código que explican la operación aritmética (`#Suma #División...`). Esto es una buena práctica para hacer el código más legible al describir lo que hace cada línea de código.
 
-También es posible comentar una línea de código al final de la línea de código de la siguiente manera. Todo lo que sigue después del símbolo `#` en la misma línea se considera un comentario.
+También es posible comentar una línea de código al final de la línea de código de la siguiente manera. 
+
 
 ```{webr}
 
@@ -190,6 +197,8 @@ También es posible comentar una línea de código al final de la línea de cód
 2^3 # Potencia
 
 ```
+
+##
 
 ::: {.callout-caution}
 Si pones el comentario antes de la operación, no obtendrás la salida ya que R considerará toda la línea como un comentario. Verifica que el siguiente código no tiene salida.
@@ -213,7 +222,7 @@ Si pones el comentario antes de la operación, no obtendrás la salida ya que R 
 Si quitamos los comentarios de la línea de código que explica, obtendremos un error.
 :::
 
-Corre el siguiente código y observa el error. Más adelante en la diapositiva veremos a detalle el tema de los errores en códigos. Por lo mientras, solo observa que se produce un error si quitamos el comentario `#` en la línea que explica.
+Corre el siguiente código y observa el error. En otra lección veremos a detalle el tema de los errores en códigos. Por lo mientras, solo observa que se produce un error si quitamos el comentario `#` en la línea que explica.
 
 
 ```{webr}
@@ -234,13 +243,23 @@ Esto se soluciona agregando el símbolo `#` al principio de la línea para conve
 
 # Variables
 
-## Asignación de Variables
+## Asignación de Variables {.smaller}
 
 ::: {.incremental}
-- En R, puedes asignar valores a variables utilizando el operador `<-` o el operador `=` (menos utilizado; no se recomienda). 
-- Una variable te permite almacenar un valor y hacer referencia a él en tu código. 
-- En el siguiente ejemplo, asignamos el valor `10` a la variable `x` y luego imprimimos el valor de `x`. 
+- Una variable te permite almacenar un valor (números, palabras, datos) y hacer referencia a él en tu código. 
+- Piensa en una variable como una caja donde puedes guardar un valor y luego utilizarlo.
 :::
+
+. . .
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/variable.png)
+
+
+## Asignación de Variables {.smaller}
+
+- En R, puedes asignar valores a variables utilizando el operador `<-` o el operador `=` (menos utilizado; no se recomienda). 
+- En el siguiente ejemplo, asignamos el valor `10` a la variable `x` y luego imprimimos el valor de `x`. 
+
 
 ```{webr}
 
@@ -266,21 +285,6 @@ x <- 10
 x
 
 ```
-
-Otra función para visualizar o imprimir valores muy útil en R en lugar de `print()` es `cat()`. `cat()` es una función que concatena y visualiza los valores que le pasas como argumentos. Por ejemplo, puedes concatenar texto y valores en la misma línea de código.
-
-```{webr}
-
-# Asignación de variables
-x <- 10
-
-# Imprimir el valor de x con cat()
-# Nota que podemos poner cualquier texto entre comillas
-cat("El valor de x es:", x)
-
-```
-
-Por el momento, solo utiliza `print(nombre_variable)` para imprimir valores en R cuando se diga explicitamente que lo hagas. En otro caso, imprime los valores directamente como en el primer ejemplo de esta diapositiva.
 
 :::
 
@@ -318,7 +322,6 @@ a * b
 ::: {.incremental}
 - En R, las variables pueden tener nombres descriptivos y significativos.
 - Los nombres de las variables pueden contener letras, números y guiones bajos, pero no pueden comenzar con un número.
-- Los nombres de las variables son sensibles a mayúsculas y minúsculas, lo que significa que `x` y `X` son variables diferentes.
 - Los nombres de las variables no pueden contener espacios, pero puedes usar guiones bajos (`nombre_variable`) o puntos (`nombre.variable`) para separar palabras.
 - Es una buena práctica utilizar nombres de variables descriptivos y significativos para hacer tu código más legible.
 - No usar nombre que puedan tener conflicto o que ya estén reservados para funciones de R, como `c`, `mean`, `sum`, `data`, entre otros.
@@ -328,9 +331,9 @@ a * b
 
 # Ejericio Práctico - Operaciones y Variables
 
-## Ejericio {.smaller}
+## Ejericio
 
-**Instrucciones**. 1.- Realiza la operación que se pide a continuación. 2.- Asigna el resultado a una variable llamada `operaciones` 3.- Imprime el resultado.
+**Instrucciones**. 1.- Realiza la operación que se pide a continuación. 2.- Asigna el resultado a una variable llamada `operaciones` 3.- Imprime el resultado con la función `print()`.
 
 *Nota*: Sustituye los guiones bajos (`_______`) por el código correspondiente. Si estás atorado, puedes ver pistas o la solución haciendo click en el botón de ayuda. 
 
@@ -361,8 +364,10 @@ if (isTRUE(all.equal(.result, print(operaciones)))) {
 }
 ```
 
+
 ::: { .hint exercise="ex_1_r"}
 ::: { .callout-note collapse="false"}
+
 ## Pista 1
 
 El órden de las operaciones es importante. Utiliza paréntesis para indicar el orden de las operaciones.
@@ -375,6 +380,7 @@ El órden de las operaciones es importante. Utiliza paréntesis para indicar el 
 
 ::: { .hint exercise="ex_1_r"}
 ::: { .callout-note collapse="false"}
+
 ## Pista 2
 
 Asigna el resultado a la variable que se te indica y acuérdate de imprimir el resultado.	
@@ -387,8 +393,9 @@ print(nombre_variable)
 :::
 :::
 
-::: { .0 exercise="ex_1_r" }
+::: { .solution exercise="ex_1_r" }
 ::: { .callout-tip collapse="false"}
+
 ## Solución
 
 
@@ -402,16 +409,57 @@ print(operaciones)
 :::
 :::
 
+
+## 
+
+
+::: {.callout-note}
+A diferencia de la analogía de la variable como una caja, cuando usamos ("abrimos") una variable, esta variable mantendrá su valor almacenado en la memoria de R. Observa como si volvemos a imprimir el valor de la variable `x` que guardamos unas diapositivas atrás, este seguirá siendo `10`.
+:::
+
+```{webr}
+#| include: false
+
+x <- 10
+
+```
+
+```{webr}
+
+# Imprimir el valor almacenado previamente
+x
+
+```
+
+## 
+
+::: {.callout-note}
+Si asignas un nuevo valor a una variable existente, el valor anterior se perderá. A veces, esto puede ser útil, pero en general, es una buena práctica utilizar nombres de variables únicos y descriptivos para evitar confusiones. Observa como si asignamos un nuevo valor a la variable `x`, el valor anterior se pierde.
+:::
+
+```{webr}
+
+# nuevo valor para la variable x
+x <- 20
+
+# Imprimir el valor
+x
+
+```
+
 # Vectores
 
 ## Vectores - Introducción
 
 ::: {.incremental}
-- En R, un vector es una estructura de datos que almacena una secuencia de valores. 
+- En R, un vector es una estructura que almacena una secuencia de valores.
+- En R (a diferencia de los vectores en matemáticas), los vectores pueden contener diferentes tipos de datos, como números, texto, o valores lógicos. Por el momento, nos enfocaremos en vectores numéricos. 
 - Puedes crear un vector utilizando la función `c()` (que significa "concatenar"). 
 :::
 
-Ejecuta el siguiente código para crear un vector de números.
+. . .
+
+Ejecuta el siguiente código para crear un vector de números. Solo ejecuta el código, no hay salida (ver siguiente diapositiva).
 
 ```{webr}
 
@@ -419,6 +467,8 @@ Ejecuta el siguiente código para crear un vector de números.
 mis_numeros <- c(1, 2, 3, 4, 5)
 
 ```
+
+##
 
 ::: {.callout-important}
 Observa cómo al correr el código, no tenemos salida. Esto es porque solo hemos creado el vector, pero no hemos hecho nada con él. Es decir, R almacenó el vector en la variable `mis_numeros` en su memoria, pero no mostrará nada hasta que le pidamos que haga algo con él. Si ya corriste el código de arriba, podemos imprimir el vector `mis_numeros` para ver su contenido. Ten en cuenta que si no has corrido el código, o reinicias la página o RStudio, no podrás imprimir el vector ya que no existe en la memoria de R. 
@@ -429,28 +479,12 @@ print(mis_numeros)
 
 ```
 
-Ten cuidado con reutilizar nombres de variables en R, ya que puedes sobreescribir el valor de una variable. Si asignas un nuevo valor a una variable existente, el valor anterior se perderá. A veces, esto puede ser útil, pero en general, es una buena práctica utilizar nombres de variables únicos y descriptivos para evitar confusiones.
-
-
-```{webr}
-# sobreescribir el vector
-mis_numeros <- c(10, 20, 30, 40, 50)
-
-# Imprimir el vector
-print(mis_numeros)
-
-```
-
 :::
 
 ## Vectores - Introducción II
 
-::: {.incremental}
-- En R (a diferencia de los vectores en matemáticas), los vectores pueden contener diferentes tipos de datos, como números, texto, o valores lógicos.
-- Por simplicidad, en esta lección, nos enfocaremos en vectores numéricos.
-- Solo como ejemplo, ejecuta el siguiente código para crear un vector con datos no numéricos.
+Solo como ejemplo, ejecuta el siguiente código para crear un vector con datos no numéricos. Puedes experimentar y seguir agregando más elementos al vector. Si quieres agregar palabras, recuerda ponerlas entre comillas dobles `""`. SI quieres poner valores numéricos, solamente ponlos sin comillas `12`. Separar los elementos con comas `,`. Al final, imprime el vector para ver su contenido.
 
-:::
 
 ```{webr}
 
@@ -465,34 +499,8 @@ print(frutas)
 
 ## Vectores - Operaciones
 
-Los vectores son útiles para almacenar datos y realizar las operaciones arítmeticas que vimos al inicio de la lección entre ellos. 
 
-```{webr}
-
-# Crear dos vectores de números
-vector_a <- c(1, 2, 3, 4, 5)
-vector_b <- c(1, 10, 100, 1000, 1000)
-
-# Suma los vectores
-vector_a + vector_b
-
-```
-
-Cómo realiza R la operación: `vector_a + vector_b`? 
-- En R, la operación de suma de vectores se realiza elemento por elemento.
-- Cuando sumas dos vectores, cada elemento de un vector se suma al elemento correspondiente en la misma posición del otro vector.
-- La suma es posicional, es decir, el primer elemento de vector_a se suma con el primer elemento de vector_b, el segundo con el segundo, y así sucesivamente.
-- El resultado que obtuvimos proviene de:
-
-- `1 + 1 = 2`
-- `2 + 10 = 12`
-- `3 + 100 = 103`
-- `4 + 1000 = 1004`
-- `5 + 1000 = 1005`
-
-## Vectores - Operaciones II
-
-Más comunmente, los vectores se utilizan para realizar operaciones en todos los elementos del vector. Por ejemplo, puedes promediar todos los elementos de un vector utilizando la función `mean()`.
+Podemos utilizar vectores para realizar operaciones en todos los elementos del vector. Por ejemplo, puedes promediar todos los elementos de un vector utilizando la función `mean()`.
 
 ```{webr}
 
@@ -511,7 +519,7 @@ En otro módulo del curso veremos más funciones y operaciones que puedes realiz
 
 ## Ejercicio {.smaller}
 
-**Instrucciones**. 1.- Crea un vector llamado `mis_numeros_ejercicio` con los valores `1, 2, 3, 4, y 5`. 2.- Calcula la suma de los números en este vector con la función `sum()`. 
+**Instrucciones**. Crea un vector llamado `mis_numeros_ejercicio` con los valores `1, 2, 3, 4, y 5`.  Calcula la suma de los números en este vector con la función `sum()`. 
 
 Básate en el ejercicio anterior, sólo remplaza la función de la media con la función de la suma.
 
@@ -543,6 +551,21 @@ if (isTRUE(all.equal(.result, sum(mis_numeros_ejercicio)))) {
 }
 ```
 
+
+::: { .solution exercise="ex_2_r" }
+::: { .callout-tip collapse="false"}
+
+## Solución
+
+```r
+mis_numeros_ejercicio <- c(1, 2, 3, 4, 5)
+
+sum(mis_numeros_ejercicio)
+```
+
+:::
+:::
+
 ---
 
 
@@ -559,9 +582,5 @@ if (isTRUE(all.equal(.result, sum(mis_numeros_ejercicio)))) {
 - En lo que resta del curso, aprenderás a trabajar con datos en R y a manipularlos para análisis y visualización, tal como en la lección de muestra al inicio.
 
 
-¡Inscríbete y sigue practicando, no dudes en preguntar si tienes dudas! Te esperan más de 40 lecciones que te llevarán de la mano para que aprendas R y los fundamentos de estadística y análisis de datos en las ciencias de la salud. 
-
-Más información en Este enlace: [Cursos Orca](https://cursos.orca-analytics.com/)
-
-Contacto
+# Fin
 
