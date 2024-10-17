@@ -3,6 +3,7 @@ title: Conceptos básicos de programación
 subtitle: Aprende a programar con Karel
 format: html
 embed-resources: true
+navbar: false
 execute: 
   eval: false
 ---

@@ -32,6 +32,8 @@ Semana 2: Introducción a la Bioestadística
 
 ## Conceptos básicos de R
 
+{{< revealjs file="../slides/01-r-comparacionotros.html" height="500px">}}
+
 ### Paquetes
 
 {{< revealjs file="../slides/02-paquetes-r.html" height="500px">}}

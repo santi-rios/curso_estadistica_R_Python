@@ -36,7 +36,7 @@ R maneja varios tipos de datos básicos:
 
 # Ejercicio de tipo de datos
 
-Instrucciones: - Ejecuta cada bloque de código y observa la salida. - Una vez ejecutado, verifica el tipo de dato con la función `typeof()`, la cuál nos dirá el tipo de dato del objeto que pongamos entre los paréntesis. - Cambia uno de los elementos en los vectores a NA y revisa cómo cambia la naturaleza del vector.
+Instrucciones: - Ejecuta cada bloque de código y observa la salida. - Una vez ejecutado, verifica el tipo de dato con la función `typeof()`, la cuál nos dirá el tipo de dato del objeto que pongamos entre los paréntesis.
 
 ## Variable numérica 
 

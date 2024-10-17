@@ -179,3 +179,6 @@ data %>%
 - El enfoque de R em en estadística se observa en el nombre de sus funciones
 - Estas tienden a ser muy simples y consistentes.
 - Por ejemplo, `filter()` filtra observaciones de tus datos, `select()` selecciona variables específicas, 
+
+
+## Fin

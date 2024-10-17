@@ -48,6 +48,8 @@ En este módulo, aprenderás a importar datos en R desde diferentes fuentes, com
 - Por ejemplo, en la siguiente figura, tenemos 7 variables: ID, Apellido (Last Name), Nombre (First Name), Sexo, ciudad (City), Estado (State), y ocupación (Occupation).
 - Los nombres de las variables son tomados de la primera fila del conjunto de datos.
 
+##
+
 ![](https://jhudatascience.org/tidyversecourse/images/gslides/001.png)
 
 ## Observaciones
@@ -128,7 +130,7 @@ list.files("datos")
 ```{webr}
 
 # Leer un archivo CSV
-datos_csv <- read.csv("datos/datos.csv")
+datos_csv <- read.csv("datos/mtcars.csv")
 
 # Imprimir datos
 kable(datos_csv)
@@ -225,4 +227,12 @@ Los dataframes en R tienen muchas funciones útiles que te permiten manipular y 
     nrow(): Devuelve el número de filas de un dataframe.
     ncol(): Devuelve el número de columnas de un dataframe.
 
+```{webr}
 
+# Mostrar las primeras filas de un dataframe
+head(datos_csv)
+
+# Mostrar las últimas filas de un dataframe
+tail(datos_csv)
+
+```

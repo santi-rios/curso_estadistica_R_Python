@@ -17,9 +17,9 @@ format:
         incremental: true
         lang: es
         logo: "https://tidyverse.tidyverse.org/logo.png"
-webr:
-    packages: 
-        - dplyr
+# webr:
+#     packages: 
+#         - dplyr
 engine: knitr
 ---
 
@@ -45,10 +45,13 @@ install.packages("nombre_del_paquete")`
 - Vamos a instalar el conjunto de paquetes 'tidyverse', que incluye muchos paquetes útiles para el análisis de datos.
 - Veremos más sobre estos paquetes en las próximas lecciones, por ahora solo necesitas instalarlos.
 - Para instalar 'tidyverse', usa: `install.packages("tidyverse")`
-- realiza la instalación en la consola que se encuentra abajo. Después, instalalo de la misma manera en tu RStudio.
+
+##
+
+realiza la instalación en la consola que se encuentra abajo. Después, instalalo de la misma manera en tu RStudio. Espera unos segundos hasta que tengas un mensaje de la consola. Por el momento verás algunas advertencias, pero no te preocupes por ellas.
 
 ```{webr}
-install.packages("tidyverse") # quiet = TRUE
+install.packages("tidyverse") 
 
 ```
 
@@ -56,14 +59,13 @@ install.packages("tidyverse") # quiet = TRUE
 
 - Comprueba que el paquete 'tidyverse' se haya instalado correctamente en tu RStudio.
 - Para esto, carga el paquete con la función `library(nombre_del_paquete)`.
-- Si todo está bien, no deberías ver ningún mensaje de error.
+- Si todo está bien, no deberías ver ningún mensaje de error. Deberías ver un mensaje similar a `Attaching core tidyverse packages...` 
 - Corre el siguiente código en esta consola y en tu RStudio.
 
 ```{webr}
 library(tidyverse)
 
 ```
-
 ---
 
 ##
