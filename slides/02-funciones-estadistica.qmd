@@ -21,7 +21,9 @@ engine: knitr
 
 ## Introducción
 
-Las estadísticas descriptivas son herramientas cruciales en el análisis de datos, ya que nos permiten resumir y describir las características principales de un conjunto de datos. En R, disponemos de funciones básicas que nos ayudan a calcular medidas como la media, la mediana, la desviación estándar, entre otras. Estas medidas ofrecen una visión general del comportamiento de los datos y son fundamentales para cualquier análisis cuantitativo.
+- Las estadísticas descriptivas son herramientas cruciales en el análisis de datos, ya que nos permiten resumir y describir las características principales de un conjunto de datos. 
+- En R, disponemos de funciones básicas que nos ayudan a calcular medidas como la media, la mediana, la desviación estándar, entre otras. - Estas medidas ofrecen una visión general del comportamiento de los datos y son fundamentales para cualquier análisis cuantitativo.
+- Veremos la teoría más adelante, pero 
 
 ---
 
@@ -29,10 +31,14 @@ Las estadísticas descriptivas son herramientas cruciales en el análisis de dat
 
 A continuación, se presentan algunas de las funciones más utilizadas en R para calcular estadísticas descriptivas:
 
-    Media (mean()):
-        Calcula el promedio de un conjunto de valores numéricos.
+    Media (`mean()`):
 
-        mean(c(1, 2, 3, 4, 5))  # Devuelve 3
+```{webr}
+# Calcula el promedio de un conjunto de valores numéricos.
+
+mean(c(1, 2, 3, 4, 5))  # Devuelve 3
+```
+## 
 
 Mediana (median()):
 

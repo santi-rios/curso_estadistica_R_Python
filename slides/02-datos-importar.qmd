@@ -10,7 +10,6 @@ author:
 format: 
     live-revealjs: 
         theme: serif
-        toc: true
         scrollable: true
         progress: true
         slide-number: true
@@ -26,13 +25,58 @@ engine: knitr
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## 
+## Introducción
+
+En este módulo, aprenderás a importar datos en R desde diferentes fuentes, como archivos CSV y Excel. Importar datos es el primer paso en cualquier análisis de datos, ya que te permite cargar los datos en R para que puedas manipularlos, analizarlos y visualizarlos. 
 
 ![](https://github.com/tidyverse/datascience-box/blob/main/course-materials/_slides/u1-d01-welcome/img/data-science-cycle/data-science-cycle.002.png?raw=true)
 
-## Crear un DataFrame
+# Terminología
 
-En este código, creamos un dataframe llamado datos con tres columnas: nombre, edad y ciudad. El nombre, edad y ciudad son las variables, y Juan, María y Pedro, 25,30,35, CDMX, GDL, MTY son las observaciones de cada variable.
+## Dataset o conjunto de datos
+
+- Un dataset o conjunto de datos es una colección de datos organizados en filas y columnas.
+- Frecuentemente, estos datos son una combinación de números y caracteres.
+- Estos conjuntos de datos contienen *variables* y *observaciones*.
+
+
+## Variables
+- Las variables son las columnas de un conjunto de datos.
+- Cada variable representa una característica o atributo de los datos.
+- Por ejemplo, en la siguiente figura, tenemos 7 variables: ID, Apellido (Last Name), Nombre (First Name), Sexo, ciudad (City), Estado (State), y ocupación (Occupation).
+- Los nombres de las variables son tomados de la primera fila del conjunto de datos.
+
+![](https://jhudatascience.org/tidyversecourse/images/gslides/001.png)
+
+## Observaciones
+- Las observaciones son las filas de un conjunto de datos.
+- Cada observación representa un caso o una instancia de los datos.
+
+![](https://jhudatascience.org/tidyversecourse/images/gslides/002.png)
+
+## Visualización de un conjunto de datos
+- R tiene varios conjuntos de datos de ejemplo que puedes cargar y explorar.
+- Corre el siguiente código para ver un conjunto de datos de ejemplo llamado `mtcars`:
+
+```{webr}	
+# Leer un conjunto de datos incluido en R
+data(mtcars)
+
+# Imprimir la tabla de datos
+kable(head(mtcars))
+```
+
+## data.frame
+
+- En R, los conjuntos de datos se almacenan en objetos llamados dataframes.
+- Al igual que una hoja de cálculo, un dataframe tiene filas y columnas, donde cada fila representa una observación y cada columna representa una variable.
+
+## Crear un DataFrame
+- Podemos crear un dataframe en R utilizando la función `data.frame()`.
+- Esto se hace especificando los nombres de las columnas y las observaciones de cada columna.
+- Observa que es similar a construir vectores, donde cada columna es un vector.
+- En este código, creamos un dataframe llamado datos con tres columnas: nombre, edad y ciudad. 
+- El nombre, edad y ciudad son las variables, y Juan, María y Pedro, 25,30,35, CDMX, GDL, MTY son las observaciones de cada variable.
 
 ```{webr}
 
@@ -48,16 +92,43 @@ kable(datos)
 ```
 
 ## Leer un archivo CSV
+- Los archivos CSV (valores separados por comas) son una forma común de almacenar datos.
+- Comunmente, los datos que queresmos analizar se encuentran en archivos CSV.
+- Para leer un archivo CSV en R, puedes utilizar la función read.csv(). Esta función lee un archivo CSV y lo convierte en un dataframe que puedes manipular y analizar. 
+- Si ya tomaste la lección sobre directorios, sigue el siguiente código.
 
-Para leer un archivo CSV en R, puedes utilizar la función read.csv(). Esta función lee un archivo CSV y lo convierte en un dataframe que puedes manipular y analizar. Por ejemplo, si tienes un archivo CSV llamado datos.csv, puedes leerlo y almacenarlo en una variable llamada datos_csv de la siguiente manera:
+##
 
-```{{r}}
-#| eval: false
+Primero, vamos a usar la función `list.files()` para ver que archivos  se encuentran en el directorio actual.	
+
+```{webr}
+# Listar archivos en el directorio actual
+list.files()
+```
+
+- Veremos que hay una carpeta llamada `datos`.
+- ¿Cómo sabemos que es una carpeta y no un archivo? Los archivos se muestran con el nombre del archivo y la extensión, como `datos.csv`. 
+
+##
+
+Ahora, vamos a listar los archivos dentro de la carpeta `datos`.
+
+```{webr}
+# Listar archivos en la carpeta datos
+list.files("datos")
+```
+
+- Veremos que hay un archivo llamado `mtcars.csv` en la carpeta `datos`.
+
+## 
+- ahora que tenemos la ruta del archivo, podemos leerlo con la función `read.csv("ruta_archivo")`.
+
+```{webr}
 
 # Leer un archivo CSV
-datos_csv <- read.csv("datos.csv")
+datos_csv <- read.csv("datos/datos.csv")
 
-# Imprimir la tabla de datos con formato
+# Imprimir datos
 kable(datos_csv)
 
 ```
@@ -140,3 +211,16 @@ data10 <- read_sas('data/lond_small.sas7bdat')
 ```
 
 ::::
+
+## Funciones útiles para Dataframes
+
+Los dataframes en R tienen muchas funciones útiles que te permiten manipular y analizar los datos. Algunas de las funciones más comunes son:
+
+    head(): Muestra las primeras filas de un dataframe.
+    tail(): Muestra las últimas filas de un dataframe.
+    summary(): Proporciona un resumen estadístico de un dataframe.
+    str(): Muestra la estructura de un dataframe.
+    nrow(): Devuelve el número de filas de un dataframe.
+    ncol(): Devuelve el número de columnas de un dataframe.
+
+

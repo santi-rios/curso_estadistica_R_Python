@@ -25,7 +25,7 @@ engine: knitr
 
 ::: {.incremental}
 - Estos ejercicios son sencillos y están diseñados para introducir a los usuarios al entorno de R de una manera práctica.
-- En esta lección, aprenderás a correr código en R, asignar valores a variables y hacer operaciones con ellas y entender los errores más comunes al ejecutar código en R.
+- En esta lección, aprenderás a correr código en R, asignar valores a variables y hacer operaciones con ellas.
 
 :::
 

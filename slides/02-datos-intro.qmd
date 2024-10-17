@@ -21,105 +21,152 @@ engine: knitr
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Overview
+## Introdución
+- Antes de comenzar a trabajar con datos en R, es importante comprender los tipos de datos básicos y las estructuras de datos que se utilizan en el lenguaje.
+- R es un lenguaje de programación orientado a datos, lo que significa que está diseñado para manejar y analizar datos de manera eficiente.
+- En este módulo, exploraremos los tipos de datos básicos en R, cómo se almacenan y manipulan los datos, y cómo se utilizan las estructuras de datos clave, como los dataframes.
 
-```{webr}
-list.files("datos")
-mt <- read.csv("datos/mtcars.csv")
-mod <- glm(mpg ~ cyl, data = mt)
-summary(mod)
-```
 
 ## Tipos de Datos en R
 
-R maneja varios tipos de datos básicos que son esenciales para comenzar. Entre ellos se encuentran:
+R maneja varios tipos de datos básicos:
+- **Numéricos**: Incluyen tanto números decimales, como `4.5`, y números enteros, como `4`. 
+- **Caracteres** (o cadenas de texto o *string* en inglés): Son textos que se representan con comillas, como "algún texto". Nota que si pones un número entre comillas, R lo considerará como un carácter (p.ej. `"4"`).
+- **NA**: Representa la ausencia de un valor.
+- **Lógicos**: Son valores que pueden ser `TRUE` (verdadero) o `FALSE` (falso). Estos valores se verán más adelante. 
 
-    Numéricos: Incluyen tanto números decimales, como 4.5, y números enteros, como 4. Los enteros son también considerados numéricos.
-    Lógicos: Son valores booleanos que pueden ser TRUE o FALSE.
-    Caracteres (o cadenas de texto): Son textos que se representan con comillas, como "algún texto".
-    NA: Representa la ausencia de un valor y puede ser numérico, carácter, o lógico.
 
-R clasifica la información en estos tipos de datos para procesarla adecuadamente. Entender estos tipos es esencial para trabajar con R, especialmente cuando se trata de vectores, que son listas de datos relacionados del mismo tipo.
-Ejercicio Interactivo en R
+# Ejercicio de tipo de datos
 
-Este ejercicio te ayudará a familiarizarte con los tipos de datos básicos en R:
+Instrucciones: - Ejecuta cada bloque de código y observa la salida. - Una vez ejecutado, verifica el tipo de dato con la función `typeof()`, la cuál nos dirá el tipo de dato del objeto que pongamos entre los paréntesis. - Cambia uno de los elementos en los vectores a NA y revisa cómo cambia la naturaleza del vector.
 
-## Ejercicio de tipo de datos
-
-Instrucciones: - Ejecuta cada bloque de código y observa la salida. - Una vez ejecutado, verifica el tipo de dato con typeof(). - Cambia uno de los elementos en los vectores a NA y revisa cómo cambia la naturaleza del vector.
-
-Este ejercicio te ayudará a familiarizarte con los tipos de datos básicos y cómo R los maneja internamente.
+## Variable numérica 
 
 ```{webr}
 
-# Ejercicio: Identificar tipos de datos
-
 # Crear una variable numérica
 numero <- 4.5
+
 print(numero)  # Mostrar valor
-print(typeof(numero))  # Mostrar tipo de dato
+
+typeof(numero)  # Mostrar tipo de dato
 
 ```
 
+::: {.callout-note}
+Observa que el resultado de `typeof()` es `double`, que es el tipo de dato que R utiliza para números decimales.
+:::
+
+## Variable numérica entera
 
 ```{webr}
 
 # Crear una variable entera
+# Para esto, se agrega la letra "L" al final del número
 entero <- 4L
+
 print(entero)
-print(typeof(entero))
 
-
-```
-
-
-```{webr}
-
-# Crear una variable lógica
-logico <- TRUE
-print(logico)
-print(typeof(logico))
-
+typeof(entero)
 
 ```
 
+::: {.callout-note}
+En este caso, el resultado de `typeof()` es `integer`, que es el tipo de dato que R utiliza para números enteros. En la práctica, no es necesario especificar explícitamente que un número es entero, ya que R maneja automáticamente los números enteros y decimales.
+:::
+
+## Variable de carácter
+
+Reemplaza el guion bajo por un texto entre comillas para crear una variable de carácter. Corre el código y verifica que el tipo de dato sea correcto.
 
 ```{webr}
+#| exercise: datos_ex_1
 
 # Crear una variable de carácter
-caracter <- "Hola, mundo"
+caracter <- ______
+
 print(caracter)
-print(typeof(caracter))
+
+typeof(caracter)
 
 ```
 
 
 ```{webr}
+#| exercise: datos_ex_1
+#| check: true
 
-# Crear una variable NA numérica
-na_numerico <- NA_real_
-print(na_numerico)
-print(typeof(na_numerico))
-
+# Evaluate the student's expression to get the result
+if (identical(typeof(caracter), "character")) {
+  list(correct = TRUE, message = "Correcto! La variable es de tipo caracter.")
+} else {
+  list(correct = FALSE, message = "Incorrecto.")
+}
 ```
 
 
+##
+
+
 ```{webr}
+#| exercise: datos_ex_2
 
 # Crear un vector de caracteres
-vector_caracter <- c("R", "es", "genial")
-print(vector_caracter)
-print(typeof(vector_caracter))
+vector_caracter <- c(______, ______, ______)
+
+# Muestra los valores del vector
+print(______)
+
+# Muestra el tipo de dato del vector
+print(typeof(______))
 
 
 ```
 
-Ejercicio extra: Cambia uno de los valores en los vectores a NA y observa cómo afecta el tipo de dato
+```{webr}
+#| exercise: datos_ex_2
+#| check: true
+
+# Evaluate the student's expression to get the result
+if (identical(typeof(vector_caracter), "character")) {
+  list(correct = TRUE, message = "Correcto! El vector es de tipo caracter.")
+} else {
+  list(correct = FALSE, message = "Incorrecto.")
+}
+```
+
+##
+
+::: {.callout-note}
+Observa que si un número está entre comillas, este se convierte en un valor de caracter. Observa que si tratamos de hacer una operación aritmética con un número de caracter, obtendremos un error. Esto se debe a que R no puede sumar un número y un carácter. ¿Puedes solucionarlo y realizar la suma correctamente?
+
+```{webr}
+
+# Crear una variable numérica
+numero_caracter <- "4.5"
+
+print(numero_caracter)  # Mostrar valor
+
+typeof(numero_caracter)  # Mostrar tipo de dato
+
+# Descomenta y ejecuta la siguiente línea para ver el resultado de la suma
+# numero_caracter + 1
+```
 
 
-## NOTA
+Solución:
 
-Ten cuidado al trabajar con NA, ya que puede afectar el resultado de tus operaciones. Por ejemplo, si sumas un número y NA, el resultado será NA. Esto se conoce como "propagación de NA".
+Quitar las comillas para que el número sea tratado como un número y no como un carácter.
+
+:::
+
+## NA
+
+- NA es un valor especial en R que representa la ausencia de un valor.
+- Puedes usar NA para indicar que un valor no está disponible o no se conoce. 
+- Por ejemplo, si no tienes información sobre la edad de una persona, puedes usar NA para indicar que la edad es desconocida.
+- Ten cuidado al trabajar con NA, ya que puede afectar el resultado de tus operaciones. 
+- Por ejemplo, si sumas un número y NA, el resultado será NA. Esto se conoce como "propagación de NA".
 
 ```{webr}
 
@@ -130,90 +177,12 @@ numero + na
 
 ```
 
-Tampoco puedes realizar operaciones con tipos de datos no compatibles. Por ejemplo, si intentas sumar un número y un carácter, obtendrás un error:
-
-```{webr}
-
-# Suma de un número y un carácter
-numero <- 4
-caracter <- "cinco"
-
-numero + caracter
-
-```
-
-## Dataframes
-
-Los dataframes son una estructura de datos tabular que se utiliza para almacenar datos en R. Son similares a las hojas de cálculo de Excel y se utilizan para organizar y analizar datos. Los dataframes tienen filas y columnas, donde cada fila representa una observación y cada columna representa una variable.
-
-## CSV
-
-Los archivos CSV (valores separados por comas) son una forma común de almacenar datos tabulares. Para familiarizarte con los dataframes y los archivos CSV en R, observa las siguiente tabla que se genera cuando corres este código:
-
-## Funciones útiles para Dataframes
-
-Los dataframes en R tienen muchas funciones útiles que te permiten manipular y analizar los datos. Algunas de las funciones más comunes son:
-
-    head(): Muestra las primeras filas de un dataframe.
-    tail(): Muestra las últimas filas de un dataframe.
-    summary(): Proporciona un resumen estadístico de un dataframe.
-    str(): Muestra la estructura de un dataframe.
-    nrow(): Devuelve el número de filas de un dataframe.
-    ncol(): Devuelve el número de columnas de un dataframe.
+# Fin
+- En la siguiente lección, veremos cómo importar y trabajar con datos en R.
 
 
-## Ejericio Real
 
-Podemos crear un ejercicio que refleje cómo los tipos de datos pueden aplicarse en un contexto de ciencias biológicas de la salud, utilizando un ejemplo sencillo relacionado con datos clínicos de pacientes.
-Ejemplo en R: Datos Clínicos de Pacientes
 
-Supongamos que estamos trabajando con los siguientes datos de pacientes: edades, niveles de glucosa en sangre, y si su prueba de diabetes fue positiva o negativa.
 
-```{webr}
-# Ejemplo: Datos de Pacientes
-
-# Variables de edad (numérico)
-edades <- c(25, 38, 47, 52, 19)
-
-# Niveles de glucosa en sangre en mg/dL (numérico)
-glucosa <- c(95.0, 110.5, 78.0, 180.0, 101.3)
-
-# Resultado de la prueba de diabetes (lógico)
-# TRUE para positivo, FALSE para negativo
-resultado_diabetes <- c(FALSE, TRUE, FALSE, TRUE, FALSE)
-
-# Pacientes con glifosato NA (Ej. los pacientes no han realizado pruebas recientes)
-glucosa[3] <- NA
-
-# Mostrar información
-print("Edades de los pacientes:")
-print(edades)
-print(paste("Tipo de dato de edades:", typeof(edades)))
-
-print("Niveles de glucosa:")
-print(glucosa)
-print(paste("Tipo de dato de glucosa:", typeof(glucosa)))
-
-print("Resultados de la prueba de diabetes:")
-print(resultado_diabetes)
-print(paste("Tipo de dato de resultados:", typeof(resultado_diabetes)))
-
-# Ejercicio: ¿Cuántos pacientes tienen un resultado NA para glucosa?
-num_na_glucosa <- sum(is.na(glucosa))
-print(paste("Número de pacientes sin resultados recientes de glucosa:", num_na_glucosa))
-```
-
-## Explicación
-
-    Edades: Son almacenadas como un vector numérico, representando cada edad de los pacientes.
-    Niveles de Glucosa: También son numéricos, pero aquí demostramos cómo NA puede reflejar la falta de un valor, que en este caso podría significar que un paciente no se ha realizado la prueba recientemente.
-    Resultado de Diabetes: Usamos un vector lógico que indica si el resultado de la prueba fue positivo (TRUE) o negativo (FALSE).
-
-Actividad Interactiva:
-
-    Ejecuta el código y observa los resultados.
-    Modifica uno de los valores de edad para reflejar a un bebé de 2 años.
-    Cambia un resultado de la prueba a NA para reflejar que no se realizó la prueba y observa cómo se maneja este valor.
-    Discute cómo estos tipos de datos pueden influir en análisis posteriores en un entorno de ciencias de la salud.
 
 
