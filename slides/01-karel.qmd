@@ -2,15 +2,17 @@
 title: Conceptos básicos de programación
 subtitle: Aprende a programar con Karel
 format: html
+sidebar: false
 embed-resources: true
-navbar: false
 execute: 
   eval: false
 ---
 
+En esta lección veremos algunos conceptos de programación un tanto complejos. Dominar estos conceptos es un proceso que tarda tiempo y experiencia con un lenguaje de programación. En este curso, no esperamos que domines estos conceptos de inmediato, pero es recomendable que los conozcas para que puedas aplicarlos en el futuro.
+
 ## Conceptos básicos de programación
 
-- Qué es la programación: es la actividad por la cual las personas entregan a una computadora un conjunto de instrucciones que, al ejecutarlas, permite a la computadora resolver un problema. 
+- Programación: es la actividad por la cual las personas entregan a una computadora un conjunto de instrucciones que, al ejecutarlas, permite a la computadora resolver un problema. 
 - Los conjuntos de instrucciones que las computadoras reciben se denominan programas.
 - En programación, muchas veces se pueden seguir diferentes rutas para completar una tarea, y el programador debe imaginar cuáles son y elegir una. 
 - Algunos de estos caminos pueden ser más eficientes que otros.
