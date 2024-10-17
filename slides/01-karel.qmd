@@ -94,7 +94,7 @@ Como vimos previamente, una función en R se escribe igual que las acciones de K
 Veamos un primer ejemplo. Vamos a pedirle a Karel que avance, junte el coso y vuelva a avanzar:
 
 ```{r}
-dev.off()
+
 generar_mundo("mundo001")
 avanzar()
 juntar_coso()
@@ -104,6 +104,20 @@ ejecutar_acciones()
 ```
 
 ![](https://ropensci.github.io/karel/articles/14.gif)
+
+
+::: {.callout-warning}
+Qué pasa si intentas avanzar cuando hay una pared enfrente de Karel? Intenta hacerlo y observa el resultado.
+
+```{r}
+generar_mundo("mundo001")
+avanzar()
+juntar_coso()
+avanzar()
+avanzar()
+ejecutar_acciones()
+```
+:::
 
 ## Ejercicio 2
 
@@ -252,324 +266,65 @@ cargar_super_karel()
 
 - Con esto, podemos usar `girar_derecha()` y `darse_vuelta()` sin necesidad de crear nuestras propias funciones.
 
-## Estrucutras de control
-- Frecuentemente, cuando ejecutamos un programa, queremos que ciertas partes del código se ejecuten solo si se cumple una condición específica, o queremos que se repitan ciertas partes del código varias veces.
-- Esto se logra con estructuras de control, que son el conjunto de reglas que permiten controlar el flujo de las acciones de un algoritmo o programa.
-- Se dividen en secuenciales, condicionales e iterativas.
+## más ejercicios
 
-### Estructuras de control secuenciales
+- Antes de continuar con los siguientes temas, intenta resolver los siguientes ejercicios con lo que has aprendido hasta ahora.
+- Si tienes problemas en solucionarlos, corre el código de Karel con pocos pasos y observa lo que está haciendo bien y lo que está haciendo mal.
 
-- Estas estructuras están compuestas por un número definido de acciones que se ubican en un orden específico y se suceden una tras otra.
-- Los ejemplos anteriores están conformados por este tipo de estructura.
-
-### Estrucutras de control condicionales
-
-- Para resolver problemas, podemos necesitar que ciertas partes del código se ejecuten solo si se cumple una condición específica.
-- Podemos pedirle al código que este se ejecute solo si una condición es verdadera (`TRUE`) o falsa (`FALSE`).
-
-#### if
-
-- La estructura `if` es la más básica de las estructuras condicionales.
-- Se usa para ejecutar un bloque de código si una condición es verdadera.
-- La sintaxis básica de un `if` en R es la siguiente:
-
-```r
-if (condición) {
-  # Código que se ejecuta si la condición es TRUE
-}
-```
-
-- Si la condición es verdadera, el código dentro de las llaves `{}` se ejecutará.
-- Karel tiene las siguientes evaluaciones que podemos usar en un `if`:
-    - `frente_libre()`: Evalúa que no exista una pared frente a Karel.
-    - `izquierda_libre()`: Evalúa que no exista una pared a la izquierda de Karel.
-    - `hay_cosos()` : hay cosos donde se encuentra Karel
-    - `karel_tiene_cosos()`: Evalúa si Karel tiene al menos un coso en su mochila.
-    - `mira_este()`: Evalúa si Karel está mirando hacia el este.
-
-
-Un ejemmplode uso de `if` en R es el siguiente:
-
-Si queremos que se muestre un mensaje en la pantalla si la variable x es mayor que 5, podemos hacer lo siguiente:
-
-```r
-x <- 10
-if (x > 5) {
-  print("x es mayor que 5")
-}
-```
-
-#### if else
-
-- A veces, queremos que se ejecute un bloque de código si una condición es verdadera y otro bloque si es falsa.
-- Para esto, usamos la estructura `if else`, que significa "si no es verdadero, entonces realiza esto".
-- la sintaxis básica de un `if else` en R es la siguiente:
-
-```r
-if (condición) {
-  # Código si la condición es TRUE
-} else {
-  # Código si la condición es FALSE
-}
-```
-
-Un ejemmplode uso de `if else` en R es el siguiente:
-
-Si queremos que se muestre un mensaje en pantalla si la variable x es mayor que 5, y otro mensaje si la variable x es menor o igual que 5, podemos hacer lo siguiente:
-
-```r
-x <- 10
-if (x > 5) {
-  print("x es mayor que 5")
-}
-```
-
-
-#### if else if
-
-- A veces, queremos evaluar múltiples condiciones.
-- Para esto, usamos la estructura `if else if`, que significa "si no es verdadero, entonces evalúa esta otra condición".
-- La sintaxis básica de un `if else if` en R es la siguiente:
-
-```r
-if (condición1) {
-  # Código si condición1 es TRUE
-} else if (condición2) {
-  # Código si condición2 es TRUE
-} else {
-  # Código si ninguna condición es TRUE
-}
-```
-Un ejemmplode uso de `else if` en R es el siguiente:
-
-Si queremos que se muestre un mensaje en pantalla si la variable x es mayor que 5, otro mensaje si la variable x es igual que 5, y otro mensaje si la variable x es menor, podemos hacer lo siguiente:
-
-```r
-x <- 5
-if (x > 5) {
-  print("x es mayor que 5")
-} else if (x == 5) {
-  print("x es igual que 5")
-} else {
-  print("x es menor que 5")
-}
-```
-
-
-### Estructuras de control iterativas
-- A veces, queremos que ciertas partes del código se repitan varias veces.
-- Para esto, usamos estructuras de control iterativas, que permiten repetir un bloque de código mientras se cumpla una condición específica.
-- Las estructuras de control iterativas más comunes son `for` y `while`.
-- `for` se usa cuando sabemos cuántas veces queremos que se repita un bloque de código.
-- `while` se usa cuando no sabemos cuántas veces queremos que se repita un bloque de código.
-- La estructura de `for` en R es la siguiente:
-
-```r
-for (i in <valor_inicial>:<valor_final>) {
-    ...Acción/es...
-}
-```
-- La letra i se usa para representar la cantidad de repeticiones.
-- Por ejemplo, si queremos repetir un bloque de código 5 veces, escribimos `for (i in 1:5)`.
-- En este ejemplo, vamos a pedirle a Karel que llene los 5 agujeros.
-
-![](https://ropensci.github.io/karel/articles/21.png)
-
-- Sin utilizar la función `for`, tendríamos que escribir el siguiente código:
+- genera el mundo `mundo010` y resuelve el siguiente problema:
+- Karel debe tomar los 4 cosos y dejarlos en 4 posiciones distintas.
 
 ```{r}
-generar_mundo("mundo003")
+#| code-fold: true
+#| code-summary: "Mostrar posible Respuesta"
+generar_mundo("mundo010")
 avanzar()
-llenar_agujero()
+juntar_coso()
+juntar_coso()
+juntar_coso()
+juntar_coso()
 avanzar()
-
+poner_coso()
 avanzar()
-llenar_agujero()
+poner_coso()
 avanzar()
-
+poner_coso()
+girar_izquierda()
 avanzar()
-llenar_agujero()
-avanzar()
-
-avanzar()
-llenar_agujero()
-avanzar()
-
-avanzar()
-llenar_agujero()
-avanzar()
-ejecutar_acciones()
-```
-
-- Ahora, vamos a usar la estructura de control `for` para que Karel llene los
-
-```{r}
-generar_mundo("mundo003")
-for (i in 1:5) {
-  avanzar()
-  llenar_agujero()
-  avanzar()
-}
-ejecutar_acciones()
-```
-
-![](https://ropensci.github.io/karel/articles/22.gif)
-
-- Por otro lado, la estructura de `while` en R es la siguiente:
-
-```r
-while (condición) {
-    ...Acción/es a repetir...
-}
-```
-- Estas iteraciones pueden continuar mientras que se verifique alguna condición.
-- el conjunto de instrucciones se repite mientras que se siga evaluando como VERDADERO una condición declarada al inicio del bloque.
-- Cuando la condición ya no se cumple, el proceso deja de ejecutarse.
-- En vez de usar un for en el cual hay que especificar la cantidad de veces que el proceso debe repetirse, podemos usar un while para que Karel siga rellenando agujeros mientras que no haya una pared enfrente suyo.
-
-```{r}
-generar_mundo("mundo003")
-while (frente_abierto()) {
-  avanzar()
-  llenar_agujero()
-  avanzar()
-}
-ejecutar_acciones()
-```
-
-- En este caso, Karel seguirá avanzando y rellenando agujeros hasta que haya una pared enfrente suyo.
-- Observa que en este caso no sabemos cuántas veces Karel tendrá que avanzar y rellenar agujeros, por lo que es más conveniente usar un `while` en lugar de un `for`.
-
-::: {.callout-warning}
-- Es importante tener cuidado con las estructuras de control iterativas, ya que si no se especifica una condición de salida, el programa podría entrar en un bucle infinito.
-- Observa lo que pasa en el siguiente código.
-- Como es un loop infinito, tendrás que parar el código manualmente. Esto se hace presionando el botón de interrupción en la consola de R.
-
-```r
-# No correr esto! (o sí, para ver cómo no anda!)
-generar_mundo("mundo003")
-while (no_hay_cosos()) {
-    girar_izquierda()
-}
+poner_coso()
 ejecutar_acciones()
 ```
 :::
 
-# Ejercicios
+- Genera el mundo `mundo004` y toma el coso de la celda (1,6). Luego, Karel debe avanzar hasta la celda (1,8) y poner el coso en esa celda.
 
-## Crea funciones
-
-Intenta crear las funciones que se te piden a continuación. Si tienes problemas, puedes ver las soluciones.
-
-**Avanzar hasta encontrarse con una pared**
-- llama la función `avanzar_hasta_pared()` que permita que Karel avanzar hasta que encuentre una pared.
-
-::: {.callout collapse="true"}
 ```{r}
 #| code-fold: true
-#| code-summary: "Mostrar Respuesta"
-# Función: avanzar_hasta_pared()
-# Descripción: permite que Karel avance hasta que encuentre una pared
-# Condición inicial: ninguna
-# Condición final: Karel queda enfrentada a una pared
-avanzar_hasta_pared <- function() {
-  while (frente_abierto()) {
-    avanzar()
-  }
-}
-```
-:::
-
-**Recolectar una línea de cosos**
-- Crea una función que permite recolectar una línea consecutiva de cosos. La línea termina en la primera celda que no tiene cosos.
-- llama la función `recolectar_linea()`
-
-::: {.callout collapse="true"}
-```{r}
-#| code-fold: true
-#| code-summary: "Mostrar Respuesta"
-
-# Función: recolectar_linea()
-# Descripción: permite recolectar una línea consecutiva de cosos. La línea
-# termina en la primera celda que no tiene cosos.
-# Condición inicial: ninguna
-# Condición final: Karel está en el final de la línea con la misma dirección que
-# al inicio
-recolectar_linea <- function() {
-  while (hay_cosos()) {
-    juntar_coso()
-    if (frente_abierto()) {
-      avanzar()
-    }
-  }
-}
-```
-:::
-
-**Poner todos los cosos que tiene en la mochila en un lugar**
-- En este caso, Karel debe poner todos los cosos que tiene en la mochila en un lugar específico.
-- llama la funcón `colocar_todo()`
-
-::: {.callout collapse="true"}
-```{r}
-#| code-fold: true
-#| code-summary: "Mostrar Respuesta"
-
-# Función: colocar_todo()
-# Descripción: Karel coloca todos los cosos que tiene en su mochila en su
-# posición actual
-# Condición inicial: ninguna
-# Condición final: ninguna
-colocar_todo <- function() {
-  while (karel_tiene_cosos()) {
-    poner_coso()
-  }
-}
-```
-:::
-
-***Ponlo en práctica***
-
-- En el mundo `mundo008`, no hay paredes en el mundo de Karel pero en algunas avenidas hay columnas de cosos de cualquier altura, mientras que otras avenidas están vacías.
-
-
-### Laberinto
-- Karel está en un laberinto como el siguiente, donde el coso indica la salida.
-
-![](https://ropensci.github.io/karel/articles/29.png)
-
-- Tip: Hay una estrategia para resolver cualquier laberinto: si cuando entrás tocás con tu mano la pared a tu derecha y caminás sin dejar de tocarla nunca, eventualmente llegarás a la salida. 
-- implementa el algoritmo de la mano derecha que le ayude a Karel salir del laberinto del mundo `mundo009`.
-
-![](https://ropensci.github.io/karel/articles/30.gif)
-
-::: {.callout}
-```{r}
-#| code-fold: true
-#| code-summary: "Mostrar Respuesta"
-generar_mundo("mundo009")
-while (frente_abierto()) {
-  if (derecha_libre()) {
-    girar_derecha()
-  } else {
-    girar_izquierda()
-  }
-  avanzar()
-}
+#| code-summary: "Mostrar posible Respuesta"
+cargar_super_karel()
+generar_mundo("mundo004")
+avanzar()
+avanzar()
+avanzar()
+avanzar()
+avanzar()
+# funcion de super_karel
+girar_derecha()
+avanzar()
+juntar_coso()
+darse_vuelta()
+avanzar()
+girar_derecha()
+avanzar()
+avanzar()
+girar_derecha()
+avanzar()
+poner_coso()
 ejecutar_acciones()
 ```
-```{r}
-#| code-fold: true
-#| code-summary: "Mostrar Respuesta"
-generar_mundo("mundo009")
-while (no_hay_cosos()) {
-  girar_derecha()
-  while (frente_cerrado()) {
-    girar_izquierda()
-  }
-  avanzar()
-}
-ejecutar_acciones()
-```
-
 :::
+
+- Intenta crear funciones para las tareas repetidas. Por ejemplo, si necesitas que Karel avance 3 veces, puedes crear una función `avanzar_tres()` que haga avanzar a Karel 3 veces.
+
+- Extra: Inenta solucionar el siguiente ejercicio. Carga el mundo `mundo009` e intenta que karel llegue al final del laberinto (donde se encuentra el coso) y lo tome. En la siguiente lección veremos cómo hacer esto de manera más eficiente.
+- Trata de cargar más mundos y explora! 
