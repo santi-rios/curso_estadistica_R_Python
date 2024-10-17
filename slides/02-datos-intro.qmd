@@ -14,8 +14,6 @@ webr:
 #         - matplotlib
 #         - seaborn
 #         - statsmodels
-resources:
-  - datos
 engine: knitr
 ---
 

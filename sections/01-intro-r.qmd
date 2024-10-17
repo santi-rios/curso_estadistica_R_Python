@@ -123,3 +123,5 @@ https://github.com/nlarrea/R-desde-cero/blob/main/TEORIA/06-graficos/README.md#g
 ## Ejercicios
 
 https://minecr.shinyapps.io/dsbox-01-edibnb/#section-data-visualisation
+
+{{< revealjs file="../slides/02-evaluacion-intro.html" height="500px">}}

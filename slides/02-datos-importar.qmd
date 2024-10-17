@@ -17,6 +17,8 @@ format:
         lang: es
         logo: "https://readr.tidyverse.org/logo.png"
         # code-link: true
+resources:
+  - datos
 # webr:
 #     packages: 
 #         - dplyr
