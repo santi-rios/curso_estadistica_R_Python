@@ -1,7 +1,7 @@
 ---
-title: "Visualización de Datos"
+title: "Visualización de Datos II"
 format: live-html
-
+sidebar: false
 webr:
   packages:
   - ggplot2
@@ -20,13 +20,13 @@ Argentina <- gapminder %>%
 
 ## Introducción
 
-Vamos a utilizar el paquete `ggplot2` que implementa la _gramática de los gráficos_ desarrollada por Leland Wilkinson.  Esta gramática define un _conjunto de reglas_ para construir _gráficos estadísticos combinando_ diferentes tipos de _capas_.
+Practiquemos un poco más el paquete `ggplot2` para realizar gráficos en R.  En este tutorial vamos a aprender a realizar gráficos de puntos, líneas, barras y áreas utilizando la gramática de los gráficos.
 
-La gramática nos dice que:
+Recordemos lo siguiente: 
 
 > Un gráfico es un *mapeo* de variables de *datos* a atributos *estéticos* de objetos *geométricos*. 
 
-Específicamente, podemos *dividir un gráfico* en los siguientes *tres componentes esenciales*:
+Tiene *tres componentes principales*:
 
 1. *Datos (_data_*, en inglés): el conjunto de datos compuesto por variables que mapeamos.
 
@@ -36,7 +36,7 @@ Específicamente, podemos *dividir un gráfico* en los siguientes *tres componen
 
 ### Ejemplo de la gramática en un gráfico
 
-Vamos a ver un ejemplo de estos componentes en un gráfico, para ello vamos a utilizar el paquete `gapminder` que ya instalamos y cargamos por ti.
+Vamos a ver un ejemplo de estos componentes en un gráfico, para ello vamos a utilizar el paquete `gapminder` que ya instalamos y cargamos por ti en este ejercicio.
 
 Para ver los datos de `gapminder`, escribe `gapminder` en el bloque de código que aparece abajo y luego haz click en el botón _"Run Code"_.
 
@@ -47,13 +47,6 @@ Para ver los datos de `gapminder`, escribe `gapminder` en el bloque de código q
 
 ```
 
-### Buen trabajo!
-
-Usaremos fragmentos de código interactivos como este en el tutorial. Siempre que encuentres uno, puedes hacer clic en _Run Code_ para ejecutar el código escrito. 
-
-Si hay un botón _Hint_ o _Solution_, puedes hacer clic para recibir ayuda y/o ver la respuesta.
-
-## A graficar
 
 ### Veamos un gráfico a través de la gramática de los gráficos.
 

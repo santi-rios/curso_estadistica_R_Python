@@ -25,6 +25,7 @@ engine: knitr
 
 ::: {.incremental}
 - Las *distribuciones de probabilidad* describen cómo se distribuyen los valores posibles de una variable aleatoria. 
+- Una variable aleatoria es una variable cuyos valores son el resultado de un fenómeno aleatorio, como el lanzamiento de un dado o la altura de una persona.
 - Son fundamentales en el análisis estadístico, ya que facilitan el entendimiento y modelado de los datos. 
 - En esta lección, abordaremos algunas de las distribuciones más comunes y cómo trabajarlas en R.
 
@@ -48,7 +49,7 @@ Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tiny
 :::
 
 
-## Ejemplo Visual II
+## Ejemplo Visual II {.smaller}
 
 ::: {.incremental}
 - ¿Cómo podemos visualizar los 100 datos para ver cuál es la altura más común?.
@@ -59,7 +60,24 @@ Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tiny
 
 :::
 
-```{{webr}}
+
+##
+
+::: {.panel-tabset}
+
+## Gráfico
+
+```{webr}
+histograma_plot
+
+```
+
+## Código usado para el gráfico
+
+
+```{webr}
+#| autorun: true
+
 library(plotly)
 library(tweenr)
 
@@ -83,7 +101,7 @@ dft <- dft[dft$y != 23, ]
 
 m <- list(l = 50, r = 50, b = 10, t = 10, pad = 4)
 
-p <- 
+histograma_plot <- 
   dft %>% 
   plot_ly(x = ~x, y = ~y, frame = ~.frame, color = ~type, 
           colors = c("green3", "turquoise3"), 
@@ -97,17 +115,17 @@ p <-
   animation_slider(hide = T) %>%
   animation_button(x = 1, xanchor = "right", y = 0, yanchor = "bottom")
 
-p
 
 ```
 
 
+:::
 
 ::: {.footer}
 Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html) si deseas profundizar en el tema.
 :::
 
-## Ejemplo Visual III
+## Ejemplo Visual III {.smaller}
 
 ::: {.incremental}
 - El grafico que acabamos de ver (**histograma**) muestra la *distribución* o forma de nuestros datos.
@@ -115,20 +133,26 @@ Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tiny
     - Cuál es el valor mínimo y máximo de las alturas (`6-20 cm`). 
     - La altura más común es diferente para las firafas de la isla 1 y 2.
     - Hay una variabilidad en las alturas, con algunas jirafas más altas y otras más bajas.
+:::
+
+![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/normal_hist.png)
+
+##
+
 - Dependiendo de la forma de la distribución, se le da un nombre a esta distribución de los datos. La más común y utilizada es la **distribución normal**.
 - Cada distribución tiene sus propias características y propiedades, lo que las hace únicas y útiles para diferentes situaciones.
 - Exploremos las características de la distribución normal con nuestro ejemplo de alturas de jirafas. Estas características son:
     - Tiene un solo pico o punto más alto donde se concentran los datos.
     - Los datos se distribuyen simétricamente alrededor de este punto medio. 
-:::
 
-![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/normal_hist.png)
-
-## Graficar un histograma - Introducción a ggplot2
+# Graficar un histograma - Introducción a ggplot2
 
 - Ahora vamos a aprender a graficar un histograma en R.
-- Para esto, utilizaremos el paquete `ggplot2`. 
+- Para esto, utilizaremos el paquete `ggplot2` (parte del `tidyverse`). 
 - Este paquete será la base de muchos de nuestros gráficos en R, ya que nos permite crear visualizaciones de datos de manera sencilla y flexible.
+
+##
+
 - Primero tenemos que instalar y cargar el paquete `ggplot2`. Si no lo tienes instalado, puedes hacerlo con el siguiente comando: `install.packages("ggplot2")`.
 - Luego, cargamos el paquete con `library(ggplot2)`.
 - A continuación, iremos paso por paso en la construcción del gráfico con ggplot. Una vez que entiendas esta base, verás que graficar cualquier tipo de gráfico en R es muy similar.

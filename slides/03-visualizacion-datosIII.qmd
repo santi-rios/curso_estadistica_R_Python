@@ -1,0 +1,120 @@
+---
+title: "Visualización de Datos III"
+subtitle: "Ejercicio"
+format: live-html
+sidebar: false
+webr:
+  packages:
+  - ggplot2
+  - gapminder
+  - dplyr
+  - ggseg
+  - ggridges
+  - ggstream
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+```{webr}
+#| include: false
+Argentina <- gapminder %>%
+  filter(country == 'Argentina')
+```
+
+
+- Como haz visto, ggplot proporciona una forma sencilla y flexible de crear gráficos en R.
+- En general, la estructura de un gráfico en ggplot sigue la siguiente forma:
+    - Datos: el conjunto de datos que se utilizará para el gráfico.
+    - Estética: los atributos visuales que se mapean a las variables del conjunto de datos.
+    - Geometría: el tipo de gráfico que se desea crear.
+- Por lo general, se sigue el siguiente formato:
+    - `ggplot(data = datos, mapping = aes(x = variable_x, y = variable_y)) + geom_tipo()`
+
+
+## Diferentes gráficos, código muy similar
+- Observa cómo el código para diferentes tipos de gráficos es muy similar.
+- Para mostrar esto usaremos los datos de `gapminder` y el dataset `Argentina` que ya hemos cargado por ti.
+- Vamos a realizar un gráfico de puntos, un gráfico de líneas, un gráfico de barras y un gráfico de áreas.
+
+```{webr}
+#| autorun: true
+
+ggplot(data = gapminder, 
+       mapping = aes(x = gdpPercap, y = lifeExp, 
+                     color = continent, 
+                     size = pop)) +
+    geom_point()
+
+```
+
+```{webr}	
+#| autorun: true
+
+ggplot(data = Argentina, 
+       mapping = aes(x = year, y = pop)) +
+    geom_line()
+
+```
+
+```{webr}
+#| autorun: true
+
+ggplot(data = Argentina, 
+       mapping = aes(x = year, y = pop)) +
+    geom_col()
+
+```	
+
+## Más ejemplos
+
+- En los siguientes ejemplos vamos a utilizar disintos paquetes de R que utilizan una gramática muy similar a ggplot.
+- El objetivo es que veas cómo la gramática de los gráficos es muy similar en diferentes paquetes de R.
+- Sin embargo, el resultado visual puede ser muy diferente.
+
+```{webr}
+library(ggseg)
+
+ggplot() +
+  geom_brain(atlas = dk) +
+  guides(fill = guide_legend(ncol = 4)) +
+  theme_void() +
+  theme(legend.position = "bottom",
+        legend.text = element_text(size = 8))
+
+```
+
+
+```{webr}
+#| warning: false
+
+library(ggridges)
+
+df <- diamonds[1:100, c("color", "depth")]
+
+ggplot(df, aes(x = depth, y = color, fill = stat(x))) +
+  geom_density_ridges_gradient() +
+  scale_fill_viridis_c(name = "Depth", option = "C")
+
+```
+
+
+```{webr}
+library(ggstream)
+
+cols <- c("#FFB400", "#FFC740", "#C20008", "#FF020D", "#13AFEF")
+
+ggplot(blockbusters, aes(x = year, y = box_office, fill = genre)) +
+  geom_stream(color = 1, lwd = 0.25) +
+  scale_fill_manual(values = cols) +
+  theme_minimal()
+
+```
+
+## Ejercicio
+
+- Explora [este enlace](https://r-charts.com/ggplot2/) y [este enlace](https://r-graph-gallery.com/ggplot2-package.html) y busca algunas gráficas que te parezcan interesantes.
+- Intenta reeplicar la gráfica en tu RStudio de tu computadora.
+- Estas páginas vienen con el código necesario para replicar las gráficas.
+- Intenta modificar los datos y los atributos visuales para ver cómo cambia la gráfica.
+- Elige alguna gráfica que tenga un codigo facil de entender con una estructura similar a la que hemos visto en este ejercicio.

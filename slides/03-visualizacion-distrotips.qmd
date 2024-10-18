@@ -27,7 +27,13 @@ La función `geom_density()` de `ggplot2` permite visualizar la distribución de
 
 Este gráfico de densidad muestra la forma de la distribución de nuestros datos simulados, que siguen una distribución normal con una media de 50 y una desviación estándar de 10.
 
-La diferencia con un histograma es que la densidad es una estimación suavizada de la distribución de los datos, lo que puede ser útil para visualizar la forma general de la distribución. Esto se logra mediante el uso de un *kernel* para suavizar la distribución de los datos. ¿Qué significa que la densidad sea una "estimación suavizada de la distribución"? Imagina que tienes muchos puntos en una gráfica y quieres saber cómo están distribuidos, pero en lugar de hacer bloques como en un histograma, quieres dibujar una línea suave que pase por encima de todos esos puntos. Esa línea suaviza las variaciones de los datos y te da una idea más general de cómo se distribuyen, sin mostrarte cada "salto" de las barras como en el histograma. ¿Qué es el "kernel" que se usa para suavizar? Es una función matemática que se aplica a los datos para suavizarlos y obtener una estimación de la distribución. El kernel es como una pequeña campana o curva que se coloca en cada punto de tus datos para suavizar la distribución. En lugar de contar cada punto individualmente, el kernel ayuda a distribuir la "influencia" de cada punto hacia sus alrededores, creando una curva suave cuando sumas todas esas campanas. 
+## {.smaller}
+
+La diferencia con un histograma es que la densidad es una estimación suavizada de la distribución de los datos, lo que puede ser útil para visualizar la forma general de la distribución. Esto se logra mediante el uso de un *kernel* para suavizar la distribución de los datos. 
+- ¿Qué significa que la densidad sea una "estimación suavizada de la distribución"? Imagina que tienes muchos puntos en una gráfica y quieres saber cómo están distribuidos, pero en lugar de hacer bloques como en un histograma, quieres dibujar una línea suave que pase por encima de todos esos puntos. Esa línea suaviza las variaciones de los datos y te da una idea más general de cómo se distribuyen, sin mostrarte cada "salto" de las barras como en el histograma. ¿
+- Qué es el "kernel" que se usa para suavizar? Es una función matemática que se aplica a los datos para suavizarlos y obtener una estimación de la distribución. El kernel es como una pequeña campana o curva que se coloca en cada punto de tus datos para suavizar la distribución. En lugar de contar cada punto individualmente, el kernel ayuda a distribuir la "influencia" de cada punto hacia sus alrededores, creando una curva suave cuando sumas todas esas campanas. 
+
+##
 
 ```{webr}
 # Crear un gráfico de densidad de una variable normal
@@ -51,6 +57,8 @@ ggplot(data = data.frame(x = datos_normales), aes(x = x)) +
 En ocasiones, es útil superponer un histograma y una gráfica de densidad para comparar la distribución de los datos de manera más efectiva. Esto puede ayudarte a visualizar la forma de la distribución y cómo se ajusta la densidad a los datos observados en el histograma.
 
 ```{webr}
+#| warning: false
+
 # Crear un histograma y una densidad superpuestos
 ggplot(data = data.frame(x = datos_normales), aes(x = x)) +
   geom_histogram(aes(y = ..density..), fill = "lightgray", color = "black", bins = 30) +
@@ -81,6 +89,8 @@ ggplot() +
 En ocasiones, es útil comparar la distribución de los datos con una distribución normal teórica. Esto puede ayudarte a evaluar si los datos siguen una distribución normal o si hay desviaciones significativas. NOTA: esto no es una prueba formal de normalidad, pero puede darte una idea general de cómo se ajustan los datos a una distribución normal.
 
 ```{webr}
+#| warning: false
+
 # Crear un histograma y una densidad superpuestos
 ggplot(data = data.frame(x = datos_normales), aes(x = x)) +
   geom_histogram(aes(y = ..density..), fill = "lightgray", color = "black", bins = 30) +
@@ -102,9 +112,11 @@ ggplot(data = data.frame(x = datos_normales), aes(x = x)) +
   )`
 
 
-## tangle
+## Ejercicio
 
 ### The Normal Distribution
+
+- La distribución normal tiene 2 parámetros, la media $\mu$ y la desviación estándar $\sigma$.
 
 The normal distribution has 2 parameters, the mean $\mu$ and the standard deviation $\sigma$.
 For a normal distribution with mean $\mu =$

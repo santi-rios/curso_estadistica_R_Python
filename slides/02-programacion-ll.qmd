@@ -22,111 +22,18 @@ engine: knitr
 
 ## Introducción
 
-La programación funcional es un paradigma que trata la computación como la evaluación de funciones matemáticas y evita cambiar estados y datos mutables. En R, donde las funciones son elementos fundamentales del lenguaje, este enfoque permite escribir código más claro, modular y reutilizable.
+- Si ya entendiste los conceptos básicos de programación, es hora de explorar la programación funcional en R.
+- A diferencia de los ejercicios que realizamos en las lecciones pasadas, veras que en R tenemos librerías que facilitan la programación funcional.
 
----
-
-## Principios de la Programación Funcional
-
-
-
-    Funciones como Ciudadanos de Primera Clase: En R, las funciones son tratadas como objetos. Puedes asignarlas a variables, pasarlas como argumentos a otras funciones, y devolverlas desde funciones.
-
-    Funciones Puras: Estas son funciones que, dada la misma entrada, siempre devuelven la misma salida y no tienen efectos colaterales —es decir, no afectan el estado fuera de la función.
-
-    Inmutabilidad: Evita modificar datos directamente. En su lugar, crea nuevas estructuras de datos.
-
-    Composición de Funciones: Combinar funciones simples para construir operaciones más complejas es una práctica común en la programación funcional.
-
-
----
-
-## Herramientas de Programación Funcional en R
-
-R tiene varias funciones y paquetes que facilitan la programación funcional, destacando el paquete purrr, que ofrece un conjunto de herramientas para trabajar con funciones de manera más efectiva.
-Ejemplo Práctico
-
-Para ilustrar estos conceptos, usaremos el conjunto de datos mtcars nuevamente:
-
-```{webr}
-# Cargar el paquete purrr
-library(purrr)
-
-# Función simple pura: cuadrado de un número
-cuadrado <- function(x) {
-  return(x * x)
-}
-
-# Programación funcional usando map de purrr
-# Aplicar una función a cada elemento de una lista o vector
-numeros <- list(1, 2, 3, 4, 5)
-numeros_cuadrados <- map(numeros, cuadrado)
-print(numeros_cuadrados)
-
-# Usando funciones anónimas para transformar elementos
-doble <- map_dbl(numeros, function(x) x * 2)
-print(doble)
-
-# Ejemplo de composición de funciones usando pipe ( %>% )
-# Calcular el promedio y desviación estándar de los caballos de fuerza
-mtcars %>%
-  transmute(hp_doble = hp * 2) %>%
-  summarize(promedio_hp = mean(hp_doble), sd_hp = sd(hp_doble)) %>%
-  print()
-
-
-```
-
-## Ejercicio: Aplicación de Conceptos de Programación Funcional
-
-
-
-    Usa map para calcular el logaritmo natural (log()) de cada elemento en una lista de números.
-    Crea una función pura que convierta la temperatura de Celsius a Fahrenheit y aplícala a un vector de temperaturas.
-    Usa la canalización (pipe) para filtrar el conjunto de datos mtcars para coches con más de 100 caballos de fuerza, y después calcula el promedio de mpg de estos coches.
-
-Código del Ejercicio:
-
-Código del Ejercicio:
-
-```{webr}
-# Solución del Ejercicio
-
-# 1. Usar map para calcular logaritmos
-numeros <- list(1, 10, 100, 1000)
-log_numeros <- map_dbl(numeros, log)
-print(log_numeros)
-
-# 2. Función pura para conversión de temperatura
-celsius_a_fahrenheit <- function(temp_c) {
-  return((temp_c * 9/5) + 32)
-}
-
-# Aplicar la función al vector de temperaturas
-temperaturas_celsius <- c(0, 100, 37)
-temperaturas_fahrenheit <- map_dbl(temperaturas_celsius, celsius_a_fahrenheit)
-print(temperaturas_fahrenheit)
-
-# 3. Usar chaining (pipe) en mtcars
-mtcars %>%
-  filter(hp > 100) %>%
-  summarize(promedio_mpg = mean(mpg)) %>%
-  print()
-
-```
 
 ## Estructuras de Control
 
-Además de las funciones, las estructuras de control son fundamentales en la programación funcional. En R, puedes usar las funciones `ifelse()`, `case_when()` y `map_if()` para controlar el flujo de ejecución de tu código.
-
-En programación, las estructuras de control nos permiten gestionar el flujo de ejecución de un programa. Aunque R es conocido por su enfoque hacia la programación funcional, comprender las estructuras de control como los bucles y las sentencias condicionales es esencial para realizar tareas específicas donde el control detallado del flujo es necesario.
-Sentencias Condicionales: if, else if y else
-
-Las sentencias condicionales se utilizan para ejecutar ciertas porciones de código solo si se cumple una condición específica.
+- Además de las funciones, las estructuras de control son fundamentales en la programación funcional. En R, puedes usar las funciones `if`, `ifelse()`, que son similares a los casos que vimos con el robot Karel.
+- R también facilita el uso de estas estructuras de control con sus paquetes y funciones integradas.
 
 
 ## Sintaxis Básica
-
+Recuerda como se ve la sintaxis básica de un condicional en R:
 
 ```{webr}
 :| eval: false
@@ -154,106 +61,166 @@ if (condición1) {
 
 ```
 
-## Ejemplo: Determinar si un número es positivo, negativo o cero.
+## Contar valores únicos
 
-```{webr}
+- Una tarea común en análisis de datos es contar los valores únicos en un vector o columna de un data frame.
+- En lugar de usar bucles, podemos usar la función `count()` de `dplyr` para contar los valores únicos en un vector.
 
-numero <- 5
+```{webr}	
+library(dplyr)
 
-if (numero > 0) {
-  print("El número es positivo.")
-} else if (numero < 0) {
-  print("El número es negativo.")
-} else {
-  print("El número es cero.")
-}
+starwars %>% count(species)
 
 ```
 
-## Bucles: for y while
+##
 
-Los bucles permiten repetir una secuencia de código varias veces.
+- podemos agregar el argumento `sort = TRUE` para ordenar los resultados por frecuencia.
 
-Bucle for: Ejecuta un bloque de código para cada elemento en una secuencia.
+```{webr}
+starwars %>% count(species, sort = TRUE)
+
+```
+
+##
+
+Podemos evaluar más de una variable a la vez, por ejemplo, para contar los valores únicos de dos variables, `sex` y `gender`, podemos hacer lo siguiente:
 
 ```{webr}	
 
-# Sintaxis básica de 'for'
-for (elemento in secuencia) {
-  # Código que se ejecuta en cada iteración
-}
-
-# Ejemplo: Imprimir números del 1 al 5
-for (i in 1:5) {
-  print(i)
-}
+starwars %>% count(sex, gender, sort = TRUE)
 
 ```
 
-## Bucle while
-
-Ejecuta un bloque de código mientras una condición es TRUE.
+## group_by() 
+- Si queremos contar los valores únicos de una variable en función de otra variable, podemos usar la función `group_by()` de `dplyr`.
+- Es decir, agrupamos los datos por una variable y luego contamos los valores únicos de otra variable.
 
 ```{webr}
-#| eval: false
+starwars %>%
+  group_by(species) %>%
+  count(sex, sort = TRUE)
 
-# Sintaxis básica de 'while'
-while (condición) {
-  # Código que se ejecuta mientras la condición es TRUE
-}
+```
+
+## mutate() 
+
+- Si queremos crear una nueva variable, usamos la función `mutate()` de `dplyr`.
+- Por ejemplo, podemos crear una nueva variable que indique si un personaje es humano o no.
+
+```{webr}
+starwars %>%
+  mutate(is_human = ifelse(species == "Human", "Yes", "No")) %>%
+  select(name, species, is_human)
+
+```
+
+## across()
+
+- La función `across()` de `dplyr` nos permite aplicar una función a múltiples columnas de un data frame.
+- Por ejemplo, podemos calcular la media de las variables numéricas en un data frame.
+- En este caso, usamos la función `across()` para seleccionar todas las columnas numéricas y luego aplicamos la función `mean()` a cada una de ellas.
+
+```{webr}
+starwars %>%
+  select_if(is.numeric) %>%
+  summarise(across(everything(), mean, na.rm = TRUE))
+
 ```
 
 ```{webr}
-# Ejemplo: Imprimir números del 1 al 5
-contador <- 1
-while (contador <= 5) {
-  print(contador)
-  contador <- contador + 1
-}
+# A named list of functions
+iris %>%
+  group_by(Species) %>%
+  summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd)))
 
 ```
 
-## Ejercicio: Uso de Estructuras de Control
+## pull()
 
-    Usa un bucle for para recorrer los números del 1 al 10 y mostrar si son pares o impares.
-    Usa un while para sumar números del 1 al 10.
-    Usa una estructura condicional para evaluar un número dado y clasificarlo como "Bajo", "Medio" o "Alto", según su valor.
+- La función `pull()` de `dplyr` nos permite extraer una columna de un data frame como un vector.
 
-Código del Ejercicio:
+```{webr}
+iris %>%
+  pull(Sepal.Length)
+
+```
+
+## case_when()
+
+- La función `case_when()` de `dplyr` es útil para realizar múltiples comparaciones y asignaciones en un data frame.
+- Por ejemplo, podemos crear una nueva variable que indique si una flor es grande, mediana o pequeña en función de su longitud del sépalo.
+- La función `case_when()` es similar a una serie de declaraciones `ifelse()` anidadas.
+- En este caso, usamos `case_when()` para asignar una categoría a cada flor en función de su longitud del sépalo.
+
+```{webr}
+iris %>%
+  mutate(size = case_when(
+    Sepal.Length > 6 ~ "Large",
+    Sepal.Length > 5 ~ "Medium",
+    TRUE ~ "Small"
+  )) %>%
+  select(Sepal.Length, size)
+
+```
+
+
+- Un paquete muy popular para la programación funcional en R es `purrr`, que ofrece un conjunto de herramientas para trabajar con funciones de manera más efectiva.
+
+![](https://purrr.tidyverse.org/logo.png)
+
+## 
+
+Primero, carga el paquete `purrr` para comenzar a explorar la programación funcional en R. recuerda que es parte del `tidyverse`, por lo que si ya has instalado el tidyverse, no necesitas instalarlo nuevamente.
+
+```{webr}
+# Cargar el paquete purrr
+library(purrr)
+
+```
+
+##
+
+- Ahora, vamos a crear una función simple que calcule el cuadrado de un número. Luego, usaremos la función `map()` de `purrr` para aplicar esta función a cada elemento de una lista de números.
+- La función `map()` remplaza el uso de bucles `for` y `while` en la programación funcional, lo que facilita la aplicación de funciones a múltiples elementos de una lista o vector.
+
 
 ```{webr}
 
-# 1. Bucle 'for' para determinar si un número es par o impar
-for (i in 1:10) {
-  if (i %% 2 == 0) {
-    print(paste(i, "es par."))
-  } else {
-    print(paste(i, "es impar."))
-  }
+# Función simple pura: cuadrado de un número
+cuadrado <- function(x) {
+  return(x * x)
 }
 
-# 2. Bucle 'while' para sumar números del 1 al 10
-suma <- 0
-contador <- 1
-while (contador <= 10) {
-  suma <- suma + contador
-  contador <- contador + 1
-}
-print(paste("La suma es:", suma))
-
-# 3. Estructura condicional para clasificar un número
-valor <- 15
-if (valor < 10) {
-  print("El número es Bajo.")
-} else if (valor <= 20) {
-  print("El número es Medio.")
-} else {
-  print("El número es Alto.")
-}
+# Programación funcional usando map de purrr
+# Aplicar una función a cada elemento de una lista o vector
+numeros <- list(1, 2, 3, 4, 5)
+numeros_cuadrados <- map(numeros, cuadrado)
+print(numeros_cuadrados)
 
 ```
 
----
+## Ejercicio:
+
+- Crea una función pura que convierta la temperatura de Celsius a Fahrenheit y aplícala a un vector de temperaturas.
+- La función para convertir de Celsius a Fahrenheit es: `F = (C * 9/5) + 32`.
+- `map_dbl()` es una versión de `map()` que devuelve un vector numérico en lugar de una lista.
+
+```{webr}
+
+celsius_a_fahrenheit <- function(temp_c) {
+  return((temp_c * 9/5) + 32)
+}
+
+# Aplicar la función al vector de temperaturas
+temperaturas_celsius <- c(0, 100, 37)
+temperaturas_fahrenheit <- map_dbl(temperaturas_celsius, celsius_a_fahrenheit)
+print(temperaturas_fahrenheit)
+
+
+```
+
+
 
 
 ## Reflexión

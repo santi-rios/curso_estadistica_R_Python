@@ -24,10 +24,10 @@ engine: knitr
 
 Medidas de Dispersión
 
-    Rango: Diferencia entre el valor máximo y mínimo.
-    Varianza: Mide la dispersión promedio de los datos respecto a la media.
-    Desviación estándar: Raíz cuadrada de la varianza; mide la dispersión en las mismas unidades que los datos.
-    Rango Intercuartílico (IQR): Diferencia entre el tercer y primer cuartil; mide la dispersión en la mitad central de los datos.
+- Rango: Diferencia entre el valor máximo y mínimo.
+- Varianza: Mide la dispersión promedio de los datos respecto a la media.
+- Desviación estándar: Raíz cuadrada de la varianza; mide la dispersión en las mismas unidades que los datos.
+- Rango Intercuartílico (IQR): Diferencia entre el tercer y primer cuartil; mide la dispersión en la mitad central de los datos.
 
 ---
 

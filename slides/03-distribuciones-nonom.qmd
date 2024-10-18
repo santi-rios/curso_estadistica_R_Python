@@ -21,7 +21,7 @@ engine: knitr
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Introducción y Objetivos
+## Introducción y Objetivos {.smaller}
 
 ::: {.incremental}
 - A pesar de que la distribución normal es la más conocida y utilizada para los datos en biología y medicina, existen muchas otras distribuciones de probabilidad que se pueden aplicar a diferentes tipos de datos.
@@ -40,7 +40,7 @@ engine: knitr
 - Algunas de las distribuciones de probabilidad más comunes incluyen la distribución binomial, la distribución de Poisson, la distribución exponencial, entre otras.
 :::
 
-## Distribución Normal
+## Distribución Normal {.smaller}
 
 ::: {.incremental}
 - La distribución normal, también conocida como distribución gaussiana, es una de las distribuciones más importantes en estadística.
@@ -52,21 +52,32 @@ engine: knitr
 
 :::
 
+##
+
 Generaremos datos simulados que sigan una distribución normal.
 
 ```{webr}
+#| warning: false
+
 # Generar datos de una distribución normal
 set.seed(42)
 datos_normales <- rnorm(1000, mean = 50, sd = 10)
 
-# Visualizar la distribución
-hist(datos_normales, breaks = 30, probability = TRUE,
-     col = "skyblue", main = "Distribución Normal",
-     xlab = "Valores", ylab = "Densidad")
-lines(density(datos_normales), col = "darkblue", lwd = 2)
+# Visualizar la distribución con ggplot2
+library(ggplot2)
+
+# Crear un data frame con los datos
+df_normales <- data.frame(valor = datos_normales)
+
+# Graficar la distribución
+ggplot(df_normales, aes(x = valor)) +
+        geom_histogram(aes(y = ..density..), bins = 30, fill = "skyblue", color = "black") +
+        geom_density(color = "darkblue", size = 1) +
+        labs(title = "Distribución Normal", x = "Valores", y = "Densidad") +
+        theme_minimal()
 ```
 
-## Distribución Binomial
+## Distribución Binomial {.smaller}
 
 ::: {.incremental}
 - La distribución binomial describe el número de éxitos en una secuencia de ensayos independientes.
@@ -78,17 +89,25 @@ lines(density(datos_normales), col = "darkblue", lwd = 2)
 
 :::
 
-```{webr}	
+```{webr}
+library(ggplot2)	
+
 # Simular resultados de una distribución binomial
 resultados_binomiales <- rbinom(1000, size = 10, prob = 0.5)
 
-# Visualizar la distribución
-barplot(table(resultados_binomiales) / 1000,
-        col = "lightgreen", main = "Distribución Binomial",
-        xlab = "Número de Éxitos", ylab = "Probabilidad")
+# Crear un data frame con los datos
+df_binomial <- data.frame(valor = resultados_binomiales)
+
+# Graficar la distribución
+ggplot(df_binomial, aes(x = valor)) +
+        geom_histogram(aes(y = ..density..), bins = 30, fill = "lightgreen", color = "black") +
+        geom_density(color = "darkgreen", size = 1) +
+        labs(title = "Distribución Binomial", x = "Valores", y = "Densidad") +
+        theme_minimal()
+
 ```
 
-## Distribución de Poisson
+## Distribución de Poisson {.smaller}
 
 ::: {.incremental}
 - La distribución de Poisson describe el número de eventos que ocurren en un intervalo de tiempo o espacio fijo.
@@ -99,16 +118,26 @@ barplot(table(resultados_binomiales) / 1000,
 
 :::
 
+##
+
 Simularemos datos utilizando una distribución Poisson.
 
 ```{webr}
+library(ggplot2)
+
 # Generar datos de una distribución Poisson
 datos_poisson <- rpois(1000, lambda = 4)
 
-# Visualizar la distribución
-barplot(table(datos_poisson) / 1000,
-        col = "salmon", main = "Distribución Poisson",
-        xlab = "Número de Eventos", ylab = "Probabilidad")
+# Crear un data frame con los datos
+df_poisson <- data.frame(valor = datos_poisson)
+
+# Graficar la distribución
+ggplot(df_poisson, aes(x = valor)) +
+        geom_histogram(aes(y = ..density..), bins = 30, fill = "lightcoral", color = "black") +
+        geom_density(color = "darkred", size = 1) +
+        labs(title = "Distribución de Poisson", x = "Valores", y = "Densidad") +
+        theme_minimal()
+
 ```
 
 

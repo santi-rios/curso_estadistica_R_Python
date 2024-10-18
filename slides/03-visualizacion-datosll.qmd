@@ -47,7 +47,6 @@ Gráfico de Cajas
 
 ```{webr}
 # Cargar paquete necesario
-install.packages("ggplot2")
 library(ggplot2)
 
 # Datos: conjunto `mtcars`
