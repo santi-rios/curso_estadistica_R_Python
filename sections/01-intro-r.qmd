@@ -64,6 +64,8 @@ https://github.com/nlarrea/R-desde-cero/blob/main/TEORIA/04-importar-exportar-da
 
 {{< revealjs file="../slides/01-karel.html" height="500px">}}
 
+{{< revealjs file="../slides/01-karel-ii.html" height="500px">}}
+
 {{< revealjs file="../slides/02-programacion-intro.html" height="500px">}}
 
 https://stanford.edu/~cpiech/karel/lessons.html#/english/unit2/lesson3
