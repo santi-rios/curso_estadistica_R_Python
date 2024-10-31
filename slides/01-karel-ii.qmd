@@ -59,6 +59,7 @@ ejecutar_acciones()
 - El primer caso, es un ejemplo de una estructura de control secuencial, mientras que el segundo es un ejemplo de una estructura de control iterativa. Vamos a revisarlas:
 
 
+
 ## Estrucutras de control
 - Frecuentemente, cuando ejecutamos un programa, queremos que ciertas partes del código se ejecuten solo si se cumple una condición específica, o queremos que se repitan ciertas partes del código varias veces.
 - Esto se logra con estructuras de control, que son el conjunto de reglas que permiten controlar el flujo de las acciones de un algoritmo o programa.
@@ -100,6 +101,7 @@ ejecutar_acciones()
 
 - Por otro lado, la estructura de `while` en R es la siguiente:
 
+
 ```r
 while (condición) {
     ...Acción/es a repetir...
@@ -111,27 +113,20 @@ while (condición) {
 - En vez de usar un for en el cual hay que especificar la cantidad de veces que el proceso debe repetirse, podemos usar un while para que Karel siga avanza hasta que encuentre una pared en el mundo `mundo014`.
 
 - El paquete de Karel nos da algunas condiciones que podemos evaluar:
-    - `frente_libre()`: Evalúa que no exista una pared frente a Karel.
-    - `izquierda_libre()`: Evalúa que no exista una pared a la izquierda de Karel.
-    - `hay_cosos()` : hay cosos donde se encuentra Karel
-    - `karel_tiene_cosos()`: Evalúa si Karel tiene al menos un coso en su mochila.
-    - `mira_este()`: Evalúa si Karel está mirando hacia el este.
-
-Función en R 	Devuelve VERDADERO (TRUE) si…
-frente_abierto() 	…no hay una pared enfrente de Karel
-frente_cerrado() 	… hay una pared enfrente de Karel
-izquierda_abierto() 	…no hay una pared a la izquierda de Karel
-izquierda_cerrado() 	…hay una pared a la izquierda de Karel
-derecha_abierto() 	…no hay una pared a la derecha de Karel
-derecha_cerrado() 	…hay una pared a la derecha de Karel
-hay_cosos() 	…hay cosos donde se encuentra Karel
-no_hay_cosos() 	…no hay cosos donde se encuentra Karel
-karel_tiene_cosos() 	…Karel tiene cosos en su mochila
-karel_no_tiene_cosos() 	…Karel no tiene cosos en su mochila
-mira_al_este() 	…Karel está mirando al este
-mira_al_norte() 	…Karel está mirando al norte
-mira_al_oeste() 	…Karel está mirando al oeste
-mira_al_sur() 	…Karel está mirando al sur
+    - `frente_abierto()` 	…no hay una pared enfrente de Karel
+    - `frente_cerrado()` 	… hay una pared enfrente de Karel
+    - `izquierda_abierto()` 	…no hay una pared a la izquierda de Karel
+    - `izquierda_cerrado()` 	…hay una pared a la izquierda de Karel
+    - `derecha_abierto()` 	…no hay una pared a la derecha de Karel
+    - `derecha_cerrado()` 	…hay una pared a la derecha de Karel
+    - `hay_cosos()` 	…hay cosos donde se encuentra Karel
+    - `no_hay_cosos()` 	…no hay cosos donde se encuentra Karel
+    - `karel_tiene_cosos()` 	…Karel tiene cosos en su mochila
+    - `karel_no_tiene_cosos()` 	…Karel no tiene cosos en su mochila
+    - `mira_al_este()` …Karel está mirando al este
+    - `mira_al_norte()`	…Karel está mirando al norte
+    - `mira_al_oeste()`	…Karel está mirando al oeste
+    - `mira_al_sur() `…Karel está mirando al sur
 
 - Vamos a ver un ejemplo de cómo usar un `while` para que Karel avance hasta que encuentre una pared en el mundo `mundo014`.
 
@@ -143,9 +138,21 @@ while (frente_abierto()) {
 ejecutar_acciones()
 ```
 
+::: {.callout-tip}
+A veces es más facil visualizar el flujo de un script con un diagrama de flujo. Por ejemplo, el siguiente diagrama de flujo representa el código anterior:
+
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214436.jpg)
+
+:::
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/fileb94f755d7b.gif)	
+
 - En este caso, Karel avanzará hasta que encuentre una pared en lugar de tener que escribir `avanzar()` 19 veces.
 - Este código es más flexible ya que Karel seguirá avanzando hasta que encuentre una pared, sin importar cuántas veces tenga que avanzar.
 - Si desconociéramos cuántas veces Karel tiene que avanzar, sería más conveniente usar un `while` en lugar de un `for`.
+
+
 
 ::: {.callout-warning}
 - Es importante tener cuidado con las estructuras de control iterativas, ya que si no se especifica una condición de salida, el programa podría entrar en un bucle infinito.
@@ -164,7 +171,7 @@ ejecutar_acciones()
 
 :::
 
-- Ahora, imageina que Karel está en un mundo totalmente rodeado de paredes.
+- Ahora, imagina que Karel está en un mundo totalmente rodeado de paredes.
 - Qué pasa si ejecutamos el siguiente código?
 
 ```r
@@ -176,6 +183,8 @@ while (frente_abierto()) {
 }
 
 ```
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Rplot01cubo.png)
 
 - Como ves, Karel no puede avanzar porque no hay un espacio libre frente a él.
 - En este caso, algo que nos resultaría útil es primero preguntar si hay un espacio libre frente a Karel.
@@ -212,7 +221,6 @@ if (condición) {
 - Mira como podemos modificar el código anterior para que Karel avance solo si hay un espacio libre frente a él.
 
 ```r
-generar_mundo("mundo015")
 
 generar_mundo("mundo013")
 if (frente_abierto()) {
@@ -221,8 +229,16 @@ if (frente_abierto()) {
 }
 
 ```
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214652.jpg)
+
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Rplot01cubo.png)
+
 - Observa que Karel no avanza porque la condición de `frente_abierto()` es falsa. En este caso, no tenemos error en el código, simplemente no se ejecuta la acción de avanzar.
 - Algo útil que podríamos hacer es decirle a Karel que, si no hay un espacio libre frente a él, nos diga que no puede avanzar.
+
+
 
 #### if else
 
@@ -251,7 +267,12 @@ if (frente_abierto()) {
 }
 ```
 
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214523.jpg)
+
 - Ahora Karel nos dirá que no tiene espacio para avanzar si no hay un espacio libre frente a él.
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Rplot01cubo.png)
+
 
 #### if else if
 
@@ -275,12 +296,15 @@ if (condición1) {
 - Si no es verdadero, preguntar si hay derecha_abierto(), si es verdadero, girar_derecha() y avanzar.
 - Si no es verdadero, girar_izquierda() y avanzar.
 
+![](http://orcaasesina.com/wp-content/uploads/2024/10/ifelseif1.png)
+
 ```{r}
 generar_mundo("mundo024")
 
 if (frente_abierto()) {
   avanzar()
 } else if (derecha_abierto()) {
+  girar_derecha()
   avanzar()
 } else {
   girar_izquierda()
@@ -292,10 +316,16 @@ ejecutar_acciones()
 
 ```	
 
+![NOTA. En la condición Derecha abierta le falta un girar derecha antes de avanzar, como en el código](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214606.jpg)
+
 - Cómo podemos mejorar este código para que Karel avance hasta que encuentre una pared y en el proceso recolecte todos los cosos que encuentre?
 - En este caso, podemos usar un `while` para que Karel avance hasta que encuentre una pared y un `if` para que recolecte los cosos que encuentre y revise que haya frente libre.
 - Vamos a solucionar los problemas por partes y luego los juntaremos.
 - El primer problema que tenemos que resolver es que Karel avanze mientras tenga frente abierto.
+
+
+
+
 
 ```{r}
 generar_mundo("mundo024")
@@ -325,6 +355,11 @@ moverse_hasta_pared()
 ejecutar_acciones()
 ```
 
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214753.jpg)
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/file6fd05cfa553e.gif)
+
+
 - Podemos hacer más eficiente el código anterior con una condición `if` que evalúe si hay izquierda_abierto() y si es verdadero, girar_izquierda() y avanzar().
 
 ```{r}
@@ -347,6 +382,12 @@ if (frente_abierto()) {
 ejecutar_acciones()
 
 ```
+
+
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/file6fd04f137e0d.gif)
+
+
 
 - Pero ahora, considera que podemos mejorar este código. Imagina que Karel no tiene el frente izquierdo libre, no podría avanzar.
 - Podemos hacer esto con un `if` `else` `if`.
@@ -411,6 +452,12 @@ explorar_laberinto()
 ejecutar_acciones()  # Ejecuta las acciones en el mundo de Karel
 ```
 
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-213917.jpg)
+
+
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/file6fd029632c04.gif)
+
 
 
 - Como observarás, este es un caso en el que se combinan estructuras de control secuenciales, condicionales e iterativas.
@@ -420,7 +467,7 @@ ejecutar_acciones()  # Ejecuta las acciones en el mundo de Karel
 
 - Karel está en un laberinto como el siguiente, donde el coso indica la salida.
 
-![](https://ropensci.github.io/karel/articles/29.png)
+![](http://orcaasesina.com/wp-content/uploads/2024/10/laberinto.png)
 
 - Tip: Hay una estrategia para resolver cualquier laberinto: si cuando entrás tocás con tu mano la pared a tu derecha y caminás sin dejar de tocarla nunca, eventualmente llegarás a la salida. 
 - implementa el algoritmo de la mano derecha que le ayude a Karel salir del laberinto del mundo `mundo009`.
@@ -428,6 +475,15 @@ ejecutar_acciones()  # Ejecuta las acciones en el mundo de Karel
 ![](https://ropensci.github.io/karel/articles/30.gif)
 
 
+
+
+
+::: {.callout-tip}
+El flujo del código debe representar la siguiente lógica:
+
+![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214844.jpg)
+
+:::
 
 
 ```{r}
@@ -446,44 +502,40 @@ ejecutar_acciones()
 
 
 
+
 ## Ejercicios Extra
 
 - en el mundo 'mundo021', crea una función que le permita a karel recolectar todos los cosos.
 - Intenta lo mismo en el `mundo018`
 - Haz que Karel recorra los bordes del `mundo020`.
 - Vuelve a realizar los ejercicios de las últimas dos lecciones y trata de resolverlos con distintas estructuras de control.
-
-##
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214844.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214753.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214652.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214606.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214523.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214436.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-214258.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Screenshot-2024-10-17-213917.jpg)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Rplot01cubo.png)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/Rplot.png)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/laberinto.png)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/ifelseif1.png)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/file6fd029632c04.gif)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/file6fd05cfa553e.gif)
-
-![](http://orcaasesina.com/wp-content/uploads/2024/10/file6fd04f137e0d.gif)
+- Si tienes problemas, trata de resolver el código por pequeñas partes. Una vez que tengas una parte del código funcionando, puedes agregar más partes. En cada paso puedes usar la función `ejecutar_acciones()` para ver cómo se comporta Karel en cada paso.
+- Adicionalmente, trata de construir un diagrama de flujo para cada uno de los ejercicios que realices.
 
 ![](http://orcaasesina.com/wp-content/uploads/2024/10/22.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
