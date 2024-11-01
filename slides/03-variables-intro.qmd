@@ -1,9 +1,7 @@
 ---
-title: "Variables en Estadística"
-subtitle: "Conceptos Clave de Variables"
-format: 
-    live-revealjs: 
-        scrollable: true
+title: "Introducción a los Tipos de Variables en Estadística con R"
+format: live-html
+sidebar: false
 webr:
     packages: 
         - dplyr
@@ -21,22 +19,30 @@ engine: knitr
 
 ## Introducción
 
-- En ciencia, para poner a prueba hipótesis, medimos variables, que son elementos que pueden cambiar. 
-- Estas variables pueden diferir entre personas de una misma población (como la altura), entre lugares (como el desempleo), o con el tiempo (como el estado de ánimo). 
-- Generalmente, las hipótesis se expresan en términos de dos variables: una causa propuesta y un resultado propuesto.
+En ciencia, para poner a prueba hipótesis y responder preguntas de investigación, medimos variables, que son elementos que pueden cambiar o variar. Estas variables pueden diferir entre personas dentro de una población (como la altura), entre lugares (como los niveles de desempleo) o con el tiempo (como el estado de ánimo a lo largo del día).
+
+Las hipótesis generalmente se formulan en términos de dos variables: una que se propone como la causa y otra como el efecto o resultado.
 
 ---
 
 ## Conceptos Clave
 
-- Variable Independiente: Esta es la variable que se considera la causa; su valor no depende de otras variables. En términos experimentales, es la que se manipula para observar su efecto sobre otra variable.
+### Variable Independiente (VI)
 
-- Variable Dependiente: Esta es la variable que se piensa es afectada por cambios en la variable independiente. Es el resultado que se mide en el experimento.
+- Es la variable que se considera la causa en una relación. 
+- En experimentos, la variable independiente es aquella que se manipula deliberadamente para observar su impacto en otra variable.
+- Ejemplo: En un experimento sobre el impacto de las horas de estudio en el rendimiento académico, las "horas de estudio" serían la variable independiente.
 
-- Variable Predictora y de Resultado: En investigaciones donde no se manipulan variables directamente, los términos "variable independiente" y "variable dependiente" pueden no ser adecuados. En su lugar, se usan los términos "variable predictora" (equivalente a la independiente) y "variable de resultado" (equivalente a la dependiente). Esta terminología es útil en estudios donde una o más variables se utilizan para predecir el resultado.
-- Por ejemplo, en un experimento, puedes examinar el efecto de horas de estudio (variable predictora) sobre la calificación de un examen (variable de resultado).
+### Variable Dependiente (VD)
 
----
+- Es la variable que se cree que es afectada por la variable independiente. Es el resultado que se mide.
+- Ejemplo: Continuando con el ejemplo anterior, la "calificación en el examen" sería la variable dependiente, ya que depende de las horas de estudio.
+
+
+### Variable Predictora y de Resultado
+- En estudios donde no se manipulan las variables directamente (como en estudios observacionales o correlacionales), los términos "variable independiente" y "variable dependiente" pueden no ser los más adecuados.
+- En su lugar, se utilizan los términos variable predictora (equivalente a la independiente) y variable de resultado (equivalente a la dependiente). Este enfoque es útil en estudios donde una o más variables se utilizan para predecir el resultado.
+- Ejemplo: En un estudio donde se analiza si el nivel socioeconómico predice el rendimiento académico, el nivel socioeconómico sería la variable predictora, mientras que el rendimiento académico sería la variable de resultado.
 
 
 
@@ -44,22 +50,45 @@ engine: knitr
 
 ## Introducción
 
-Las variables pueden clasificarse en diferentes tipos, que nos ayudan a comprender y analizar adecuadamente los datos en estadística.
+Las variables pueden clasificarse en diferentes tipos, lo que nos ayuda a comprender mejor los datos y a aplicar las técnicas estadísticas adecuadas.
 
-##
-- Variables Categóricas:
-  - Nominales: Estas no tienen un orden específico. Por ejemplo, nombre de especies de animales.
-  - Ordinales: Tienen un orden, pero no proporcionan información sobre las diferencias entre categorías. Por ejemplo, puesto en una carrera (primero, segundo, tercero), o descripciones en una escala psicológica (feliz, neutro, triste).
-  - Binarias: Solo tienen dos categorías excluyentes. Por ejemplo, vivo o muerto.
-- Observa la siguiente imagen que ilustra estos conceptos:
+### Variables Categóricas (Cualitativas)
+
+Estas variables representan categorías o grupos. Pueden clasificarse en diferentes subtipos:
+
+1. Nominales:
+- No tienen un orden particular. Las categorías son solo nombres o etiquetas.
+- Ejemplo: Tipo de mascota (perro, gato, pájaro).
+
+2. Ordinales:
+- Tienen un orden o jerarquía, pero las diferencias entre categorías no son cuantificables o no son iguales.
+- Ejemplo: Puesto en una carrera (primero, segundo, tercero).
+- Ejemplo: Grados de satisfacción (muy insatisfecho, insatisfecho, satisfecho, muy satisfecho).
 
 ![](http://orcaasesina.com/wp-content/uploads/2024/10/38f5ed46-9dcd-4981-9ae0-497fb20aa65c_rw_1920.png)
 
-##
-- Variables Continuas: estas pueden tomar cualquier valor dentro de un rango específico. Por ejemplo, la altura, el peso, la temperatura, etc.
-- Discretas: Solo pueden tomar ciertos valores específicos. Por ejemplo, número de hijos, que siempre es un número entero.
+### Variables Binarias (Dicotómicas)
+
+- Solo tienen dos categorías mutuamente excluyentes.
+- Ejemplo: Estado civil (casado/no casado), resultado de un examen (aprobado/reprobado).
+
+### Variables Cuantitativas (Numéricas)
+
+Estas variables representan cantidades o valores numéricos. Pueden ser de dos tipos:
+
+1. Continuas:
+- Pueden tomar cualquier valor dentro de un rango. Es decir, entre dos valores cualesquiera, puede haber infinitos valores intermedios.
+- Ejemplo: Altura, peso, temperatura.
+2. Discretas:
+- Solo pueden tomar ciertos valores específicos, generalmente enteros.
+- Ejemplo: Número de hijos, número de autos en una familia.
 
 ![](http://orcaasesina.com/wp-content/uploads/2024/10/5c0b4bea-b51d-42cb-b0bb-1bc1d59ac0c5_rw_1920.png)
+
+
+### Importancia de los Tipos de Variables
+
+Es fundamental comprender el tipo de variable que estamos analizando, ya que esto influirá en las técnicas estadísticas que debemos utilizar. Por ejemplo, las pruebas aplicables a datos categóricos pueden ser diferentes de las que aplicamos a datos numéricos.
 
 ## Ejercicio Práctico en R: Trabajando con Diferentes Tipos de Variables
 
@@ -95,14 +124,13 @@ datos_tipos_variables <- data.frame(
 
 
 ```{webr}
-#| autorun: true
 
 head(datos_tipos_variables)
 
 ```
 
 
-##
+
 - A dimple vista, podemos determinar lo siguiente:
 - `ID`: Es una variable discreta.
 - `Resultado_Examen`: Es una variable categórica ordinal.
@@ -113,19 +141,18 @@ head(datos_tipos_variables)
 
 Sin embargo, existen diferentes formas de explorar los tipos de datos con diferentes funciones en R.
 
-## str()
+### str()
 - Podemos usar la función `str()` para obtener una descripción de las variables en el conjunto de datos.
 - Esta función nos proporciona información sobre el tipo de variable y los primeros valores de cada columna.
 
 
 ```{webr}
-#| autorun: true
 
 str(datos_tipos_variables)
 
 ```
 
-##
+
 - Observa que nos dice:
 - El número de observaciones (100).
 - El número de variables (6).
@@ -134,50 +161,47 @@ str(datos_tipos_variables)
 - Resultado_Examen, Estado_Civil y Vivo_Muerto son factores. Los factores son variables categóricas. También nos muestra los niveles de cada factor, que son las categorías o valores que puede tomar la variable. Por ejemplo, Resultado_Examen tiene 4 niveles: Fail, Pass, Merit, Distinction. La palabra Ord. significa que es una variable ordinal.
 - Las variables Temperatura y Anxiety_Score son numéricas (num).
 
-## summary()
+### summary()
 - Esta función nos proporciona un resumen de las variables en el conjunto de datos.
 - Observa que para las variables categóricas, nos muestra la frecuencia de cada nivel, es decir, cuántas veces aparece cada categoría en el conjunto de datos.
 - Para las variables numéricas, nos muestra un resumen estadístico, incluyendo la media, la mediana, los cuartiles, el mínimo y el máximo.
 
 ```{webr}
-#| autorun: true
 
 summary(datos_tipos_variables)
 
 ```
 
-## glimpse()
+### glimpse()
 
 - Podemos usar la función `glimpse()` del paquete `dplyr` para obtener un resumen de las variables en el conjunto de datos.
 - Una ventaja de ver los datos con esta función es que nos muestra el tipo de variable que R ha asignado a cada columna.
 - NOTa: en esta presentación no se alcanza a visualizar la salida completa de la función `glimpse()`, pero en tu computadora podrás verla completa.
 
 ```{webr}
-#| autorun: true
 library(dplyr)
 datos_tipos_variables %>% glimpse()
 
 ```
 
-## sapply() y class()
+### sapply() y class()
 - sapply() es una función que aplica una función a cada elemento de una lista o vector.
 - class() es una función que nos permite obtener el tipo de variable de un objeto en R.
 - Podemos usar sapply() con class() para obtener el tipo de variable de cada columna en el conjunto de datos.
 
 ```{webr}
-#| autorun: true
 
 sapply(datos_tipos_variables, class)
 
 ```
 
 
-## Cambiando el Tipo de Variable
+## Cambiando el Tipo de Variable (recodificar)
 - A veces, necesitamos cambiar el tipo de variable de una columna en un conjunto de datos.
 - Por ejemplo, si una variable categórica se ha leído como numérica, necesitamos cambiarla.
+- Esto se conoce como *recodificar*.
 
 ```{webr}
-#| autorun: true
 
 # Cambiar la variable ID a factor con recode
 
@@ -188,4 +212,89 @@ str(datos_nuevos)
 
 ```
 
-# Fin
+
+# Ejercicio
+
+
+## Ejercicio 1: Variables de Carácter
+
+En este ejercicio, los estudiantes deben crear una **variable de carácter** y verificar su tipo de dato.
+
+### Instrucciones: 
+
+1. Reemplaza el guion bajo (`______`) por un texto entre comillas para crear una variable de carácter.
+2. Corre el código para verificar que el tipo de dato sea correcto.
+
+```{webr}
+#| exercise: eval_variables_ex3
+
+# Crear una variable de carácter
+caracter <- "______"
+
+print(caracter)
+
+# Verificamos el tipo de dato
+typeof(caracter)
+```
+
+El tipo de dato debería ser `character`. Si el estudiante ha hecho todo correctamente, la salida de `typeof(caracter)` será `"character"`.
+
+
+```{webr}
+#| exercise: eval_variables_ex3
+#| check: true
+
+# Evaluamos si la variable es de tipo 'character'
+if (identical(typeof(caracter), "character")) {
+  list(correct = TRUE, message = "¡Correcto! La variable es de tipo carácter.")
+} else {
+  list(correct = FALSE, message = "Incorrecto. Asegúrate de que la variable sea de tipo carácter.")
+}
+```
+
+
+## Ejercicio 2: Variables Numéricas
+
+En este ejercicio, los estudiantes deben crear una **variable numérica** y verificar su tipo de dato.
+
+### Instrucciones:
+
+1. Reemplaza el guion bajo (`______`) por un número para crear una variable numérica.
+2. Corre el código para verificar que el tipo de dato sea correcto.
+
+```{webr}
+#| exercise: eval_vars_ex4
+
+# Crear una variable numérica
+numerica <- ______
+
+print(numerica)
+
+# Verificamos el tipo de dato
+typeof(numerica)
+
+# Verificamos la clase de la variable
+class(numerica)
+```
+
+El tipo de dato debería ser `numeric`. Si el estudiante ha hecho todo correctamente, la salida de `typeof(numerica)` y `class(numerica)` será `"double"` o `"numeric"`.
+
+
+```{webr}
+#| exercise: eval_vars_ex4
+#| check: true
+
+# Evaluamos si la variable es de clase 'numeric'
+if (identical(class(numerica), "numeric")) {
+  list(correct = TRUE, message = "¡Correcto! La variable es de tipo numérica.")
+} else {
+  list(correct = FALSE, message = "Incorrecto. Asegúrate de que la variable sea de tipo numérica.")
+}
+```
+
+
+### Explicación:
+
+- En el **Ejercicio 1**, el objetivo es que creen una variable que contenga texto, lo que en términos de programación en R se denomina una *variable de carácter*. El texto siempre debe ir entre comillas dobles o simples.
+- En el **Ejercicio 2**, deben crear una variable que contenga un número, lo que en R se conoce como una *variable numérica*. En este caso, pueden usar cualquier número (decimales o enteros).
+

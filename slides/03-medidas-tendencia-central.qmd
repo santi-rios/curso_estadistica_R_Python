@@ -125,3 +125,14 @@ histograma
     Mediana: El valor central cuando los datos están ordenados. No es afectada por valores atípicos.
     Moda: El valor que ocurre con más frecuencia en el conjunto de datos. Algunos conjuntos pueden ser multimodales (tener más de una moda).
 
+
+```{webr}
+
+library(dplyr)
+
+# Calcular la mediana y la moda
+PlantGrowth %>%
+  summarize(mediana = median(weight),
+            moda = table(weight) %>% as.data.frame() %>% filter(Freq == max(Freq)) %>% pull(weight))
+
+```

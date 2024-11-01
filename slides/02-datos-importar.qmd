@@ -1,5 +1,5 @@
 ---
-title: "Importar"
+title: "Importar datos en R"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com
@@ -7,16 +7,11 @@ author:
       - name: Cursos Orca
         city: CDMX
         url: orcaasesina.com
-format: 
-    live-revealjs: 
-        theme: serif
-        scrollable: true
-        progress: true
-        slide-number: true
-        incremental: true
-        lang: es
-        logo: "https://readr.tidyverse.org/logo.png"
-        # code-link: true
+format: live-html
+sidebar: false
+webr:
+    packages: 
+        - dplyr
 resources:
   - datos
 # webr:
@@ -43,6 +38,7 @@ En este módulo, aprenderás a importar datos en R desde diferentes fuentes, com
 
 
 ## Variables
+
 - Las variables son las columnas de un conjunto de datos.
 - Cada variable representa una característica o atributo de los datos.
 - Por ejemplo, en la siguiente figura, tenemos 7 variables: ID, Apellido (Last Name), Nombre (First Name), Sexo, ciudad (City), Estado (State), y ocupación (Occupation).

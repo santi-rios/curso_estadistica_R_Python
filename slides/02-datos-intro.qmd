@@ -28,9 +28,13 @@ engine: knitr
 ## Tipos de Datos en R
 
 R maneja varios tipos de datos básicos:
+
 - **Numéricos**: Incluyen tanto números decimales, como `4.5`, y números enteros, como `4`. 
+
 - **Caracteres** (o cadenas de texto o *string* en inglés): Son textos que se representan con comillas, como "algún texto". Nota que si pones un número entre comillas, R lo considerará como un carácter (p.ej. `"4"`).
+
 - **NA**: Representa la ausencia de un valor.
+
 - **Lógicos**: Son valores que pueden ser `TRUE` (verdadero) o `FALSE` (falso). Estos valores se verán más adelante. 
 
 

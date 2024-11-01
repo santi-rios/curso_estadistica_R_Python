@@ -1,0 +1,242 @@
+---
+title: "Resumen Dplyr"
+subtitle: "Introducción a la Programación"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    html: 
+        lang: es
+---
+
+
+# Introducción
+
+
+![](https://datasciencebox.org/course-materials/_slides/u2-d06-grammar-wrangle/img/dplyr-part-of-tidyverse.png)
+
+```{r}
+library(dplyr)
+
+# Cargar un conjunto de datos de ejemplo
+data("iris") # Conjunto de datos que contiene medidas de flores
+```
+
+
+- El primer argumento siempre es un dataframe. Sin embargo, si utiliza el operador %>% (pipe), puede omitir el primer argumento ya que se detecta automáticamente. Ejemplo:
+
+```{r}
+
+# Con pipa
+iris %>% filter(Species == "setosa") 
+
+# Sin pipa
+filter(iris, Species == "setosa") 
+
+
+```
+
+# Inspeccionar Datos
+
+## glimpse()
+- La función `glimpse()` de `dplyr` proporciona una descripción concisa de un conjunto de datos.
+- Muestra el tipo de datos de cada columna y las primeras observaciones.
+
+```{r}
+
+# Inspeccionar los datos con glimpse()
+glimpse(iris)
+
+```
+
+utils::View(iris)
+Observa el conjunto de datos en lo que parece una hoja
+de cálculo (nota la V mayúscula).
+
+```{r}
+
+
+```
+
+dplyr::arrange(mtcars, mpg)
+Ordena filas por valores de una
+columna (bajo a alto).
+
+dplyr::rename(tb, y = year)
+Cambia el nombre de columnas de
+un data frame.
+
+
+## Filtrar Datos
+dplyr::select(iris, Sepal.Width, Petal.Length, Species)
+Selecciona columnas por nombre o funciones de ayuda
+
+![](https://paocorrales.github.io/deExcelaR/img/dplyr-select.png)
+
+select(iris, contains("."))
+Selecciona columnas cuyos nombres contienen una cadena de caracteres.
+select(iris, ends_with("Length"))
+Selecciona columnas cuyos nombres terminan con una cadena de caracteres.
+select(iris, everything())
+Selecciona todas las columnas.
+select(iris, matches(".t."))
+Selecciona columnas cuyo nombre cumple con una expresión regular.
+select(iris, num_range("x", 1:5))
+Selecciona columna con nombres x1, x2, x3, x4, x5.
+select(iris, one_of(c("Species", "Genus")))
+Selecciona columnas cuyos nombres están en un grupo de nombres.
+select(iris, starts_with("Sepal"))
+Selecciona columnas cuyos nombres comienzan con una cadena de caracteres.
+select(iris, Sepal.Length:Petal.Width)
+Selecciona todas las columnas entre Sepal.Length and Petal.Width (incluyente).
+select(iris, -Species)
+Selecciona todas las columnas excepto Species.
+
+dplyr::filter(iris, Sepal.Length > 7)
+Extrae filas que cumplen criterios lógicos.
+dplyr::distinct(iris)
+Remueve filas duplicadas.
+dplyr::sample_frac(iris, 0.5, replace = TRUE)
+Selecciona una fracción de filas al azar.
+dplyr::sample_n(iris, 10, replace = TRUE)
+Selecciona n filas al azar.
+dplyr::slice(iris, 10:15)
+Selecciona filas por posición.
+dplyr::top_n(storms, 2, date)
+Selecciona y ordena las n entradas mas altas (por grupo si los
+datos estan agrupados)
+
+## Resumiendo Datos
+
+dplyr::summarise(iris, avg = mean(Sepal.Length))
+Resume datos a una sola fila de valores.
+dplyr::summarise_each(iris, funs(mean))
+Aplica la función summary a cada columna.
+dplyr::count(iris, Species, wt = Sepal.Length)
+Cuenta el número de valores únicos para cada variable
+(con o sin ponderación)
+
+dplyr::first
+Primer valor de un vector.
+dplyr::last
+Último valor de un vector.
+dplyr::nth
+N-avo valor de un vector.
+dplyr::n
+# de valores en u vector.
+dplyr::n_distinct
+# valores distintos en un
+vector
+IQR
+IQR de un vector
+min
+Valor mínimo en un vector.
+max
+Valor máximo en un vector.
+mean
+Valor promedio de un vector.
+median
+Valores mediano en un
+vector.
+var
+Varianza de un vector.
+sd
+Desviación estándar de un
+vector
+
+## Agrupando Datos
+
+dplyr::group_by(iris, Species)
+Agrupo datos en filas por los valores en Species.
+dplyr::ungroup(iris)
+Remueve la agrupación del data frame.
+iris %>% group_by(Species) %>% summarise(…)
+Calcula una fila separada con el resumen para cada grupo
+
+## Crear Nuevas Variables
+
+dplyr::mutate(iris, sepal = Sepal.Length + Sepal. Width)
+Calcula y añade una o mas columnas nuevas.
+dplyr::mutate_each(iris, funs(min_rank))
+Aplica una función de ventana a cada columna.
+dplyr::transmute(iris, sepal = Sepal.Length + Sepal. Width)
+Calcula una o más columnas nuevas, borra columnas
+originales.
+
+Mutate usa funciones de ventana, funciones que toman un
+vector de valores y devuelven otro vector de valores com
+
+dplyr::lead
+Copia con valores adelantados por
+1.
+dplyr::lag
+Copia con valores atrasados por 1.
+dplyr::dense_rank
+Rangos sin brechas.
+dplyr::min_rank
+Rangos. Empates reciben rango min.
+dplyr::percent_rank
+Rangos con escala del [0, 1].
+dplyr::row_number
+Rangos. Empates van al primer
+valor.
+dplyr::ntile
+Separa vector en n baldes.
+dplyr::between
+Los valores están entre a y b?
+dplyr::cume_dist
+Distribución cumulativa.
+dplyr::cumall
+all cumulativo
+dplyr::cumany
+any cumulativo
+dplyr::cummean
+mean cumulativo
+cumsum
+sum cumulativo
+cummax
+max cumulativo
+cummin
+min cumulativo
+cumprod
+prod cumulativo
+pmax
+max por elementos
+pmin
+min por elementos
+
+
+rel_inc_long <- rel_inc_long %>%
+  mutate(religion = case_when(
+    religion == "Evangelical Protestant"           ~ "Ev. Protestant",
+    religion == "Historically Black Protestant"    ~ "Hist. Black Protestant",
+    religion == 'Unaffiliated (religious "nones")' ~ "Unaffiliated",
+    TRUE                                           ~ religion
+  ))
+
+
+# tidy
+
+![](https://datasciencebox.org/course-materials/_slides/u2-d09-tidying/img/tidyr-part-of-tidyverse.png)
+
+
+![](https://datasciencebox.org/course-materials/_slides/u2-d09-tidying/img/tidyr-longer-wider.gif)
+
+
+
+Pivot longer
+
+rel_inc %>%
+  rename(
+    religion = `Religious tradition`,
+    n = `Sample Size`
+  ) %>%
+  pivot_longer( 
+    cols = -c(religion, n),   # all but religion and n 
+    names_to = "income",  
+    values_to = "proportion" 
+  )

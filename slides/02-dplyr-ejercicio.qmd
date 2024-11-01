@@ -1,0 +1,185 @@
+---
+execute: 
+  eval: false
+---
+
+
+## grades
+
+```{r edibnb-nrow, exercise=TRUE}
+
+```
+
+```{r edibnb-nrow-hint-1}
+nrow(___)
+```
+
+```{r edibnb-nrow-check}
+grade_this({
+  if(identical(.result, 13245) | identical(.result, 13245L)) {
+    pass("There are 13245 observations in the dataset.")
+  }
+  if(identical(.result, 10) | identical(.result , 10L)) {
+    fail("There are 13245 observations in the dataset.")
+  }
+  fail("Not quite. Each observation is represented in one row. Can you remember which function we use to calculate the number of rows?")
+})
+```
+
+
+The variables and their descriptions are given below:
+
+| Variable Name   |  Description
+|:----------------|:--------------------------------
+| `id` | ID number of the listing
+| `price` | Price, in GBP, for one night stay
+| `neighbourhood` | Neighbourhood listing is located in
+| `accommodates` | Number of people listing accommodates
+| `bathrooms` | Number of bathrooms
+| `bedrooms` | Number of bedrooms
+| `beds` | Number of beds (which can be different than the number of bedrooms)
+| `review_scores_rating` | Average rating of property
+| `number_of_reviews` | Number of reviews
+| `listing_url` | Listing URL
+
+## Cargar librería y datos
+- Carga la librería `dplyr` y el conjunto de datos `iris`.
+
+```{webr}
+
+library(dplyr)
+
+# Cargar un conjunto de datos de ejemplo
+data("iris") # Conjunto de datos que contiene medidas de flores
+
+```
+
+- inspecciona los datos con `glimpse()`.
+
+
+
+```{webr}
+
+
+```
+
+- limpia los datos con janitor::clean_names() y vuelva a inspeccionarlos con `glimpse()`.
+
+
+```{webr}
+
+
+```
+
+
+- número de observaciones
+
+- How many accidents were recorded in Edinburgh in 2018? Use the following code chunk to submit your answer.
+
+- How many variables are recorded on these crashes? Use the code chunk below!
+
+- Construye un histograma
+
+```{webr}
+ggplot(data = ___, mapping = aes(x = ___)) +
+  geom_histogram() +
+  labs(
+    x = "Airbnb listing price, in £",
+    y = "Frequency",
+    title = "Distribution of Airbnb nightly rates in Edinburgh"
+  )
+
+```
+
+- Responde:
+
+ Which of the following describes the shape of the distribution of nightly rates of Airbnb edibnb in Edinburgh? Check all that apply.
+Right skewed
+Left skewed
+Symmetric
+Unimodal
+Bimodal
+Multimodal
+Which of the following is false?
+There are no listings with a nightly rate above £1,250.
+More than 50% of listings have a nightly rate below £250.
+More than 25% of listings have a nightly rate above £500.
+It is possible that some of the listings have a nightly rate of £0.
+
+
+How many accidents with 2 or more vehicles occurred in an urban area? Use the code chunk below to find out!
+
+___ %>%
+  ___(___, ___) %>%
+  nrow()
+  
+  Summary Statistics
+  
+  We can also calculate summary statistics for this distribution using the summarise function:
+  R Code
+ollege_recent_grads %>%
+  summarise(min = min(median), max = max(median),
+            mean = mean(median), med = median(median),
+            sd = sd(median), 
+            q1 = quantile(median, probs = 0.25),
+            q3 = quantile(median, probs = 0.75))
+
+
+  Based on the shape of the histogram you created above, which set of summary statistics will be more useful for describing the distribution?
+  Mean and standard deviation
+  Median and interquartile range
+
+
+Recoding data
+Recode season
+
+Recode the season variable to be a factor with meaningful level names as outlined in the codebook, with spring as the baseline level.
+
+dcbikeshare <- ___ %>%
+  ___(
+    season = ___(
+    ___
+    ),
+    season = ___(___)
+  )
+  
+  
+  Create raw values for temperature, humidity, and windspeed
+  
+  Calculate raw temperature, feeling temperature, humidity, and windspeed as their values given in the dataset multiplied by the maximum raw values stated in the codebook for each variable. Instead of writing over the existing variables, create new ones called temperature_raw, feeling_temperature_raw, humidity_raw, windspeed_raw.
+  
+  
+  dcbikeshare <- ___ %>%
+    ___(
+      ___
+    )
+
+Penguin measurements
+Body mass
+
+The body mass of penguins are measured and recorded in grams in the body_mass_g variable.
+
+In the following code block, use mutate() to add the new variable body_mass_g as that records body mass in kilograms.
+
+Note that 1 gram = 0.001 kilogram.
+
+
+penguins <- penguins %>% 
+  ___ 
+
+
+The penguins’ flipper lengths, bill lengths and bill depths are measured in millimetres. Similar to what you did for body mass, introduce new variables flipper_length_cm, bill_length_cm and bill_depth_cm that record these variables in centimetres.
+
+Note that 1 millimetre = 0.1 centimetre.
+
+Flipper length
+
+Using the mutate() function, create the variable flipper_length_cm.
+
+penguins <- penguins %>%
+  ___ 
+
+
+Bill length
+
+Create the variable bill_length_cm.
