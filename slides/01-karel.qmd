@@ -36,7 +36,9 @@ En esta lección veremos algunos conceptos de programación un tanto complejos. 
 
 ## Instalar Karel en R
 
-Primero, necesitas instalar y cargar el paquete `karel` en R. Para hacerlo, ejecuta el siguiente código. Un paquete se instala una sola vez, pero cada vez que lo queramos usar debemos cargarlo para que las herramientas que trae queden a nuestra disposición.
+Primero, necesitas instalar y cargar el paquete `karel` en R. Esta es una de las pocas lecciones que requieren que tengas R instalado en tu computadora ya que el código de Karel genera una animación que no se puede visualizar en la versión en línea. Si tienes problemas en instalarlo, no dudes en comunicarte con nosotros.
+
+Para instalar Karel, ejecuta el siguiente código. Un paquete se instala una sola vez, pero cada vez que lo queramos usar debemos cargarlo para que las herramientas que trae queden a nuestra disposición.
 
 ::: {.callout-tip}
 Cuando veas un bloque de código como el que sigue, puedes copiarlo y pegarlo en la consola de R para ejecutarlo. Si acercas el cursor al bloque, verás un botón para copiar el código en la parte superior derecha.

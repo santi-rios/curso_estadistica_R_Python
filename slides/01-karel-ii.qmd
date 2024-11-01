@@ -15,6 +15,8 @@ Carga el mundo `mundo001` y ejecuta el siguiente código:
 ```{r}
 library(karel)
 
+cargar_super_karel() # cargar funciones especiales de karel
+
 generar_mundo("mundo014")
 
 ```
