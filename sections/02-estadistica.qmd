@@ -53,11 +53,16 @@ Módulo 3: Modelos Estadísticos y Análisis Avanzados
 Este módulo proporcionaría una comprensión más profunda y técnica de cómo aplicar modelos estadísticos y análisis avanzados en datos reales, fortaleciendo aún más las habilidades de los estudiantes en análisis de datos y estadística con R.
 
 
+{{< revealjs file="../slides/01-r-comparacionotros.html" height="500px">}}
+
+
 ## Variables
 
 {{< revealjs file="../slides/03-variables-intro.html" height="500px">}}
 
 ## Distribuciones de Probabilidad
+
+
 
 ### i - Distribución Normal
 

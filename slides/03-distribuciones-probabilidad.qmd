@@ -1,6 +1,6 @@
 ---
 title: "Distribuciones de Probabilidad"
-subtitle: "Distrbución Normal y cómo visualizarla en R, primeros pasos con ggplot2"
+subtitle: "Distrbución Normal"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com
@@ -8,22 +8,12 @@ author:
       - name: Cursos Or ca
         city: CDMX
         url: orcaasesina.com
-title-slide-attributes:
-  data-background-image: "https://r-charts.com/en/miscellaneous/brickr_files/figure-html/brickr.png"
-  data-background-size: contain
-  data-background-opacity: "0.5"
-format: 
-    live-revealjs: 
-        theme: serif
-        scrollable: true
-        progress: true
-        slide-number: true
-        incremental: true
-        lang: es
-        logo: "https://cran.r-project.org/Rlogo.svg"
+format: live-html
+sidebar: false
 webr:
     packages: 
         - ggplot2
+        - dplyr
         # - plotly
         # - tweenr
 # pyodide: 
@@ -38,18 +28,18 @@ engine: knitr
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## Introducción y Objetivos {.smaller}
 
-::: {.incremental}
+![](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/fa7b5022-e604-44d4-8659-985f427a673f_rw_1920.png?h=bd0561fd403aa4d7607c5609ea1ea292)
+
+## Introducción y Objetivos 
+
+
 - Antes de comenzar con las lecciones de estadística, es importante entender las **distribuciones de probabilidad**.
 - Las *distribuciones de probabilidad* describen cómo se distribuyen los valores posibles de una variable aleatoria. Estas representan la probabilidad de los valores que puede tomar una variable, siendo algunos valores más probables que otros.
-- Una variable aleatoria es una variable cuyos valores son el resultado de un fenómeno aleatorio, como el lanzamiento de un dado o la altura de una persona.
-- En esta lección, abordaremos algunas de las distribuciones más comunes y cómo trabajarlas en R.
+- Una **variable aleatoria** es una variable (lección anterior) cuyos valores son el resultado de un fenómeno aleatorio, como el lanzamiento de un dado o la altura de una persona.
+- En las siguientes lecciones, abordaremos algunas de las distribuciones más comunes y cómo trabajarlas en R.
 - Para ello, nos enfocaremos en un ejemplo fictício de alturas de jirafas "miniatura" en 2 diferentes islas.
 
-:::
-
-## {.smaller}
 
 Imagina que tomas *aleatoriamente* la altura de 100 jirafas: 50 pertenecienctes a la isla A y 50 a la isla B, como se muestra en las imágenes. 
 
@@ -61,25 +51,21 @@ Imagina que tomas *aleatoriamente* la altura de 100 jirafas: 50 pertenecienctes 
 
 
 
-::: {.footer}
-Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html) si deseas profundizar en el tema.
-:::
+
+Gráficos por [tinystats](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html) si deseas profundizar en el tema.
 
 
-## {.smaller}
 
-::: {.incremental}
+
+
+
 - ¿Cómo podemos visualizar los 100 datos para ver cuál es la altura más común, la menos común y el rango de las alturas?
 - Una forma practica sería la siguiente: tomas la altura de cada jirafa y llevas un conteo de cuántas veces se repite cada altura (**frecuencia**).
 - Para simplificar este conteo, vamos a redondear las alturas a números enteros (por ejemplo, 6 cm, 7 cm, 8 cm, etc.).
 - Esta es la base de un gráfico conocido como **histograma**, que muestra la distribución de los datos. Como verás, hay valores que se repiten más que otros, lo que se observa como picos en el gráfico.
 - Ejecuta el código de la siguiente diapositiva y observa cómo se va construyendo el histograma. Cada "bolita" que aparece en el gráfico representa un dato de altura. Si hay más de un dato para esa altura, se apila para llevar el conteo o frecuencia. No te preocupes por el código, solo observa el gráfico.
-- NOTA: Puedes hacer clic en el botón de reproducción para ver la animación. Después de ejecutar el código, tarda unos segundos en cargar la animación.
+- NOTA: Puedes hacer click en el botón de reproducción (`play`) para ver la animación después de ejecutar el código; tarda unos segundos en cargar la animación.
 
-:::
-
-
-##
 
 ::: {.panel-tabset}
 
@@ -136,66 +122,45 @@ histograma_plot <-
 
 ```
 
-
 :::
 
-::: {.footer}
-Gráficos por tinystats. Puedes revisar su módulo en [este enlace](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html) si deseas profundizar en el tema.
-:::
 
-## {.smaller}
-
-::: {.incremental}
 - El grafico que acabamos de ver (**histograma**) muestra la *distribución* o forma de nuestros datos.
 - A partir de la distribución de nuestra variable de altura, podemos observar lo siguiente:
-    - Cuál es el valor mínimo y máximo de las alturas (`6-20 cm`). 
+    - Dónde se concentran la mayoría de los valores de altura para cada isla. 
     - La altura más común es diferente para las firafas de la isla 1 y 2.
     - Hay una variabilidad en las alturas, con algunas jirafas más altas y otras más bajas.
-:::
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/normal_hist.png)
 
-## {.smaller}
 
-- Dependiendo de la forma de la distribución, se le da un nombre a esta distribución de los datos. La más común y utilizada es la **distribución normal**.
+- Dependiendo de la forma de la distribución, se le da un nombre a esta distribución de los datos. La más común y utilizada es la **distribución normal**, también conocida como **campana de Gauss**.
 - Cada distribución tiene sus propias características y propiedades, lo que las hace únicas y útiles para diferentes situaciones.
+- Podemos describir la distribución normal con solo dos parámetros: la media y la desviación estándar que se verán a continuación.
 - Exploremos las características de la distribución normal con nuestro ejemplo de alturas de jirafas. Estas características son:
     - Tiene un solo pico o punto más alto donde se concentran los datos.
       - NOTA: En nuestro gráfico se observan 2 picos, pero esto es porque estamos observando las alturas de 2 grupos de jirafas diferentes. Sin embargo, cada grupo tiene un único pico. 
     - Los datos se distribuyen simétricamente alrededor de este punto medio. 
 
-## Reflexión {.smaller}
-
-- Toma en cuenta que en nuestro ejemplo de las jirafas, es probable que no hayamos tomado las alturas de TODAS las jirafas de las islas.
-- Por lo tanto, nuestro histograma es una *aproximación* de la verdadera distribución de alturas.
-- Esta aproximación está basada en nuestro muestreo aleatorio de las alturas. Esto es común en la estadística, donde trabajamos con **muestras** de datos en lugar de la población completa.
-- Existe la posibilidad de que nuestro muestreo no sea adecuado para representar la verdadera distribución de alturas en la población. Esto es un tema importante en la estadística y se conoce como **error de muestreo**.
-- Debido a esto, es importante tomar una muestra lo suficientemente grande y representativa.
-
-##
-
-Para ilustrar este concepto, observa cómo cambia la forma del histograma al tomar muestras de diferentes tamaños de los datos de las jirafas. El siguiente gráfico muestra el histograma de las jirafas, asumiendo que realizamos un muestreo aleatorio de las alturas varias veces (cada cuadro del GIF representa un muestreo diferente, es decir, cada vez que vamos a la isla y tomamos la altura de N jirafas). En cada muestreo, el número de alturas de jirafas tomadas varía, denotado por la letra N, que indica el tamaño de la muestra. Observa cómo con una muestra pequeña, la forma del histograma cambia drásticamente, mientras que con una muestra grande, se mantiene constante y asemeja la forma de la distribución normal.
-
-![](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve_files/figure-html/unnamed-chunk-10-.gif)
 
 
 ## Describir los datos 
 
-- Una vez que hemos visualizado la distribución de los datos, el siguiente paso es describir las alturas con medidas numéricas.
+- Una vez que hemos visualizado la distribución de los datos de nuestra variable, el siguiente paso es describir las alturas con medidas numéricas.
 - Para esto, utilizamos las **medidas de tendencia central** y **dispersión**.
-- Estas medidas nos ayudan a comprender tanto el "centro" de los datos como la "dispersión". 
+- Estas medidas nos ayudan a comprender tanto el "centro" de los datos como la "dispersión" de estos. 
 
-## Medidas de Tendencia Central {.smaller}
+## Medidas de Tendencia Central 
 
 - Las medidas de tendencia central nos ayudan a resumir la "ubicación" de los datos, en especial, dónde se concentran los datos. Las medidas más comunes son:
     - **Media**: el promedio de los datos.
     - **Mediana**: el valor que se encuentra en el centro de los datos.
     - **Moda**: el valor que se repite con mayor frecuencia.
-- En una distribución normal ideal, la media, mediana y moda son iguales. Sin embargo, en la práctica, suelen ser diferentes, aunque cercanas.
+- En una distribución normal teórica, la media, mediana y moda son idénticas. Sin embargo, en la práctica, suelen ser diferentes, aunque cercanas.
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/03_mean/mean_hist.png)
 
-## Media {.smaller}
+### Media o Promedio
 - La media es el promedio de todos los valores en un conjunto de datos.
 - Se calcula sumando todos los valores y dividiendo por el número total de observaciones.
 - Puede ser calculada fácilmente en R con la función `mean()`, la cuál podemos usar denrtro de las funciones de manipulación de datos de `dplyr` como ya hemos visto.
@@ -223,20 +188,49 @@ alturas_df <- df %>%
 
 alturas_df %>%
  group_by(isla) %>% # agrupamos por isla
- summarise(mean = mean(altura)) # calculamos la media de las alturas
+ summarise(media = mean(altura)) # calculamos la media de las alturas
 
 ```
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/giraffe_variance1.jpg)
 
+::: {.callout-note}
 
-## NOTA
-- Cuando nos referimos a la media, podemos hablar de la media poblacional o la media muestral.
-- La media poblacional es el promedio de todos los valores en una población completa y se denota con el símbolo `μ` (mu). Esta media es desconocida en la práctica, ya que rara vez tenemos acceso a todos los datos de una población.
-- La media muestral es el promedio de los valores en una muestra de la población y se denota con el símbolo `x̄` (x barra). Esta es la media que calculamos con nuestros datos y la que usamos para estimar la media poblacional.
-- De manera similar, cuando nos referimos al tamaño de la población, usamos `N`, y cuando nos referimos al tamaño de la muestra, usamos `n`.
+- Cuando nos referimos a la media, podemos hablar de la *media poblacional* o la *media muestral*.
 
-## Mediana {.smaller}
+- La media *poblacional* es el promedio de todos los valores en una población completa y se denota con el símbolo `μ` (mu). Esta media es desconocida en la práctica, ya que rara vez tenemos acceso a todos los datos de una población.
+
+- La media *muestral* es el promedio de los valores en una muestra de la población y se denota con el símbolo `x̄` (x barra). Esta es la media que calculamos con nuestros datos.
+
+- De manera similar, cuando nos referimos al tamaño de la *población*, usamos `N`, y cuando nos referimos al tamaño de la *muestra*, usamos `n` (en nuestro caso, `n = 100`).
+
+:::
+
+Podemos visualizar la media en nuestro histograma de alturas de jirafas. La línea vertical en el gráfico representa la media de las alturas de las jirafas en cada isla. Observa cómo la media se encuentra en el centro de la distribución de los datos. **Nota**: en la próxima lección veremos y explicaremos cómo realizar estos gráficos.
+
+```{webr}
+#| autorun: true
+
+# Calcular media para cada isla
+media_alturas <- alturas_df %>%
+  group_by(isla) %>%
+  summarise(
+    media = mean(altura, na.rm = TRUE)
+  )
+# Graficar el histograma e incluir líneas para la media y mediana
+ggplot(alturas_df, aes(x = altura, fill = isla)) +
+  geom_histogram(binwidth = 1, alpha = 0.6, position = "identity") +
+  geom_vline(data = medidas_alturas, aes(xintercept = media, color = isla), linetype = "dashed", size = 1.2) +  # Línea de la media
+  labs(title = "Distribución de Alturas de Jirafas con Media",
+       x = "Altura (cm)",
+       y = "Frecuencia",
+       fill = "Isla") +
+  theme_classic()
+
+```
+
+### Mediana 
+
 - La mediana es el valor que se encuentra en el centro de los datos cuando estos están ordenados de menor a mayor.
 - Es una medida de tendencia central robusta, ya que no se ve afectada por valores extremos o atípicos.
 - En R, podemos calcular la mediana con la función `median()`.
@@ -249,42 +243,56 @@ alturas_df %>%
 
 ```
 
-## Moda {.smaller}
+Para graficarlo (observa que el valor de la mediana es muy similar al de la media):
+
+```{webr}
+#| autorun: true
+
+# Calcular mediana para cada isla
+mediana_alturas <- alturas_df %>%
+  group_by(isla) %>%
+  summarise(
+    mediana = median(altura, na.rm = TRUE)
+  )
+# Graficar el histograma e incluir líneas para lamediana
+ggplot(alturas_df, aes(x = altura, fill = isla)) +
+  geom_histogram(binwidth = 1, alpha = 0.6, position = "identity") +
+  geom_vline(data = mediana_alturas, aes(xintercept = mediana, color = isla), linetype = "dashed", size = 1.2) +  # Línea de la media
+  labs(title = "Distribución de Alturas de Jirafas con Mediana",
+       x = "Altura (cm)",
+       y = "Frecuencia",
+       fill = "Isla") +
+  theme_classic()
+
+```
+
+## Moda 
 - La moda es el valor que se repite con mayor frecuencia en un conjunto de datos.
 - Puede haber más de una moda en un conjunto de datos, lo que se conoce como distribución multimodal.
-- En R, podemos calcular la moda con la función `Mode()`.
+- En R, podemos calcular la moda con la función `Mode()`. **NOTA**: esta función no está disponible en R por defecto, por lo que debemos definirla manualmente.
 
 ```{webr}
 
-Mode <- function(x) {
-  ux <- unique(x)
-  ux[which.max(tabulate(match(x, ux)))]
+# Definir función para calcular la moda
+mode <- function(variable){
+  which.max(tabulate(variable)) # devuelve el valor que más se repite
 }
 
 alturas_df %>%
  group_by(isla) %>% # agrupamos por isla
- summarise(moda = Mode(altura)) # calculamos la moda de las alturas
+ summarise(moda = Mode(altura)) # calculamos la moda de las alturas # calculamos la moda de las alturas
 
-mode <- function(variable){
-  which.max(tabulate(variable))
-}
 
-alturas_df %>%
-  group_by(isla) %>%
-  summarise(mode = mode(altura))
 ```
 
 
-## Medida de Dispersión {.smaller}
-- Las medidas de dispersión nos ayudan a entender cuánto varían los datos alrededor de la media.
-- Las medidas más comunes de dispersión son:
-    - **Rango**: la diferencia entre el valor máximo y mínimo.
-    - **Desviación Estándar**: mide cuánto se desvían los datos de la media.
-    - **Rango Intercuartílico (IQR)**: la diferencia entre el tercer y primer cuartil.
+## Medidas de Dispersión 
+- Las medidas de dispersión nos ayudan a entender cuánto varían los datos (qué tan dispersos están).
+- En la siguiente figura, se muestran 3 distribuciones de probabilidad de una variable con la misma media pero diferente dispersión. La distribución de la izquierda tiene una menor dispersión que la del centro, aunque la figura de la derecha es la que menor dispersión tiene. Vamos a ver qué significa esto en términos de medidas de dispersión.
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/bells_edited-04.png)
 
-## Varianza {.smaller}
+### Varianza 
 - La varianza mide cuánto varían los datos alrededor de la media.
 - Se calcula sumando las diferencias al cuadrado entre cada valor y la media, y luego dividiendo por el número total de observaciones.
 - La varianza es una medida de dispersión cuadrática, ya que considera la magnitud de las diferencias al cuadrado. Esto se hace para evitar que las diferencias positivas y negativas se cancelen entre sí.
@@ -300,24 +308,10 @@ alturas_df %>%
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/giraffe_variance2.jpg)
 
-## Rango {.smaller}
-- El rango es la diferencia entre el valor máximo y mínimo en un conjunto de datos.
-- Es una medida simple de dispersión, pero no considera la distribución de los datos.
-- En R, podemos calcular el rango con las funciones `max()` y `min()`.
-
-```{webr}
-
-alturas_df %>%
- group_by(isla) %>% # agrupamos por isla
- summarise(rango = max(altura) - min(altura)) # calculamos el rango de las alturas
-
-```
-
-## Desviación Estándar {.smaller}
+## Desviación Estándar
 
 - El problema con la varianza es que está en unidades al cuadrado, lo que puede ser difícil de interpretar. Por eso, a menudo usamos la desviación estándar, que es la raíz cuadrada de la varianza.
 - La desviación estándar mide cuánto se desvían los datos de la media.
-- Es una medida de dispersión más robusta que el rango, ya que considera la distribución de los datos.
 - En R, podemos calcular la desviación estándar con la función `sd()`.
 
 ```{webr}
@@ -330,7 +324,33 @@ alturas_df %>%
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/giraffe_variance3.jpg)
 
-## Significado de la Desviación Estándar {.smaller}
+Podemos graficarlo de esta manera, donde se muestra la media y la desviación estándar de las alturas de las jirafas en cada isla como una línea punteada alrededor de la media. Observa cómo la desviación estándar nos da una idea de cuánto varían las alturas alrededor de la media (varían más en la isla 1 que en la isla 2).
+
+```{webr}
+#| autorun: true
+
+# Calcular media y desviación estándar para cada isla
+medidas_alturas <- alturas_df %>%
+  group_by(isla) %>%
+  summarise(
+    media = mean(altura, na.rm = TRUE),
+    sd = sd(altura, na.rm = TRUE)
+  )
+# Graficar el histograma e incluir líneas para la media y mediana
+ggplot(alturas_df, aes(x = altura, fill = isla)) +
+  geom_histogram(binwidth = 1, alpha = 0.6, position = "identity") +
+  geom_vline(data = medidas_alturas, aes(xintercept = media, color = isla), linetype = "dashed", size = 1.2) +  # Línea de la media
+  geom_vline(data = medidas_alturas, aes(xintercept = media + sd, color = isla), linetype = "dotted", size = 1) +  # Media + 1 SD
+  geom_vline(data = medidas_alturas, aes(xintercept = media - sd, color = isla), linetype = "dotted", size = 1) +  # Media - 1 SD
+  labs(title = "Distribución de Alturas de Jirafas con Media y Desviación Estándar",
+       x = "Altura",
+       y = "Frecuencia",
+       fill = "Isla") +
+  theme_classic()
+
+```
+
+## Significado de la Desviación Estándar 
 - La desviación estándar nos indica cuánto se desvían los datos de la media.
 - Puede ser usada para predecir que tan raro o común es un valor en la distribución.
 - Para una distribución normal, un 97.7% de los datos caen dentro de 3 desviaciones estándar de la media; un 95.4% caen dentro de 2 desviaciones estándar; y un 68.3% caen dentro de 1 desviación estándar.
@@ -338,37 +358,64 @@ alturas_df %>%
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/General_empirical.jpg)
 
-
-## Tip para obtener todos los estadísticos {.smaller}
-- Si deseas obtener todas las medidas de tendencia central y dispersión en un solo paso, puedes usar la función `summary()` en R.
+Observa este fenómeno en nustros datos con este gráfico, donde se muestran las alturas de las jirafas en cada isla y las líneas punteadas representan la media y las líneas de puntos representan 1, 2 y 3 desviaciones estándar de la media. Observa cómo la mayoría de los datos caen dentro de 1, 2 y 3 desviaciones estándar de la media. Este concepto sera muy importante cuando veamos inferencia estadística ya que nos permitirá hacer predicciones sobre los datos. Por ejemplo, si sabemos que la altura promedio de las jirafas en la isla 1 es de 10 cm con una desviación estándar de 2 cm, podemos predecir que la mayoría de las jirafas tendrán alturas entre 8 y 12 cm (1 desviación estándar), entre 6 y 14 cm (2 desviaciones estándar), y entre 4 y 16 cm (3 desviaciones estándar). Si encontramos una jirafa con una altura de 20 cm, sabemos que es un valor raro, ya que está a más de 5 desviaciones estándar de la media. 
 
 ```{webr}
+#| autorun: true
 
-alturas_df %>%
-  group_by(isla) %>% # agrupamos por isla
-  summarise(across(altura, 
-                    list(mean = mean, 
-                        median = median, 
-                        Mode = Mode, 
-                        varianza = var, 
-                        rango = ~max(.) - min(.), 
-                        desviacion_estandar = sd)))
 
-alturas_df %>%
-  group_by(isla) %>% # agrupamos por isla
-  summarise(across(altura, 
-                    list(mean = mean, 
-                        median = median, 
-                        varianza = var, 
-                               n = n_distinct,
-                        desviacion_estandar = sd)))
+# Paso 1: Calcular media y desviación estándar para cada isla
+medidas_alturas <- alturas_df %>%
+  group_by(isla) %>%
+  summarise(
+    media = mean(altura, na.rm = TRUE),
+    sd = sd(altura, na.rm = TRUE)
+  )
+
+# Paso 2: Crear un data frame con las desviaciones estándar (1, 2, y 3)
+desviaciones_df <- medidas_alturas %>%
+  tidyr::crossing(desviaciones = 1:3) %>%  # Añadimos una columna con los valores 1, 2, y 3
+  mutate(
+    lim_inf = media - desviaciones * sd,  # Límite inferior (media - n desviaciones estándar)
+    lim_sup = media + desviaciones * sd   # Límite superior (media + n desviaciones estándar)
+  )
+
+# Paso 3: Graficar el histograma con las líneas correspondientes a 1, 2, y 3 desviaciones estándar
+ggplot(alturas_df, aes(x = altura, fill = isla)) +
+  geom_histogram(binwidth = 1, alpha = 0.6, position = "identity") +
+  geom_vline(data = desviaciones_df, aes(xintercept = media, color = isla), linetype = "dashed", size = 1.2) +  # Línea de la media
+  geom_vline(data = desviaciones_df, aes(xintercept = lim_inf, color = isla), linetype = "dotted", size = 1) +  # Línea de límite inferior
+  geom_vline(data = desviaciones_df, aes(xintercept = lim_sup, color = isla), linetype = "dotted", size = 1) +  # Línea de límite superior
+  facet_wrap(~ desviaciones, labeller = label_both, ncol = 1) +  # Facet para 1, 2 y 3 desviaciones estándar
+  labs(title = "Distribución de Alturas de Jirafas con Diferentes Desviaciones Estándar",
+       subtitle = "Comparación de 1, 2, y 3 desviaciones estándar",
+       x = "Altura",
+       y = "Frecuencia",
+       fill = "Isla") +
+  theme_classic()
 
 ```
 
 
 
-## inferencia
+## Inferencia Estadística
+
 - La distribución normal es una de las más importantes en estadística y se utiliza en muchos campos, desde la ciencia de datos hasta la investigación científica.
-- A partir de la distribución normal, podemos hacer inferencias sobre los datos, como estimar la probabilidad de que un valor caiga dentro de cierto rango o comparar dos grupos de datos.
-- Además, la distribución normal es la base de muchos métodos estadísticos, como la regresión lineal y los intervalos de confianza.
-- Adicionalmente, podemos describir la distribución normal con solo dos parámetros: la media y la desviación estándar.
+- A partir de la distribución normal, podemos hacer inferencias sobre los datos, es decir, sacar conclusiones sobre la población basadas en nuestra muestra de datos.
+-  Por ejemplo, podemos estimar la probabilidad de que un valor caiga dentro de cierto rango o comparar dos grupos de datos.
+- En las próximas lecciones, veremos cómo hacer inferencias estadísticas con la distribución normal y cómo usarla en la práctica.
+
+
+## Reflexión
+
+- Toma en cuenta que en nuestro ejemplo de las jirafas, es probable que no hayamos tomado las alturas de TODAS las jirafas de las islas.
+- Por lo tanto, nuestro histograma es una *aproximación* de la verdadera distribución de alturas.
+- Esta aproximación está basada en nuestro muestreo aleatorio de las alturas. Esto es común en la estadística, donde trabajamos con **muestras** de datos en lugar de la población completa.
+- Existe la posibilidad de que nuestro muestreo no sea adecuado para representar la verdadera distribución de alturas en la población. Esto es un tema importante en la estadística y se conoce como **error de muestreo**.
+- Debido a esto, es importante tomar una muestra lo suficientemente grande y representativa.
+
+
+
+Para ilustrar este concepto, observa cómo cambia la forma del histograma al tomar muestras de diferentes tamaños de los datos de las jirafas. El siguiente gráfico muestra el histograma de las jirafas, asumiendo que realizamos un muestreo aleatorio de las alturas varias veces (cada cuadro del GIF representa un muestreo diferente, es decir, cada vez que vamos a la isla y tomamos la altura de N jirafas). En cada muestreo, el número de alturas de jirafas tomadas varía, denotado por la letra N, que indica el tamaño de la muestra. Observa cómo con una muestra pequeña, la forma del histograma cambia drásticamente, mientras que con una muestra grande, se mantiene constante y asemeja la forma de la distribución normal. Esto también se verá más adelante.
+
+![](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve_files/figure-html/unnamed-chunk-10-.gif)

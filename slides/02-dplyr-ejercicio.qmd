@@ -1,185 +1,745 @@
 ---
-execute: 
-  eval: false
+title: "Ejercicio dplyr"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Or ca
+        city: CDMX
+        url: orcaasesina.com
+format: live-html 
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - dplyr
+        - datos
+        - ggplot2
+engine: knitr
 ---
 
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## grades
+En esta sección pondrás en práctica lo aprendido en este módulo. El objetivo es que puedas aplicar las funciones de `dplyr` a un conjunto de datos real. Esto será importante para las próximas secciones, donde aprenderás a realizar análisis estadísticos y visualizaciones de datos. Sin embargo, antes de que veamos estos temas, es importante que te sientas cómodo trabajando con `dplyr`, manejando datos y realizando transformaciones básicas.
 
-```{r edibnb-nrow, exercise=TRUE}
+Vamos a simular el flujo de trabajo que seguirías en un proyecto de análisis de datos. Al terminar este ejercicio, se recomienda que repitas el proceso con tus propios datos o con otros conjuntos de datos que te interesen en tu computadora utilizando RStudio.
 
+
+
+## Cargar librería y datos
+
+Para este ejercicio, vamos a trabajar con 2 librerías: `dplyr` y `datos`. La librería datos (`install.packages("datos")` en tu RStudio, en esta sesión ya está instalada) contiene varios conjuntos de datos en español. En este caso, vamos a trabajar con el conjunto de datos `pinguinos` que contiene medidas de tamaño de pingüinos adultos en busca de comida cerca de la estación Palmer en la Antártica.
+
+![](https://allisonhorst.github.io/palmerpenguins/logo.png)
+
+**Carga la librería `dplyr` y la librería `datos`**
+
+```{webr}
+#| autorun: true
+
+library(dplyr)
+library(datos)
+
+str(pinguinos)
 ```
 
-```{r edibnb-nrow-hint-1}
-nrow(___)
+::: {.callout-tip}
+
+Para conocer más sobre un conjunto de datos, puedes utilizar la función `help(pinguinos)` o `?pinguinos`.
+
+```{webr}
+help(pinguinos)
 ```
 
-```{r edibnb-nrow-check}
-grade_this({
-  if(identical(.result, 13245) | identical(.result, 13245L)) {
-    pass("There are 13245 observations in the dataset.")
-  }
-  if(identical(.result, 10) | identical(.result , 10L)) {
-    fail("There are 13245 observations in the dataset.")
-  }
-  fail("Not quite. Each observation is represented in one row. Can you remember which function we use to calculate the number of rows?")
-})
-```
+:::
 
 
-The variables and their descriptions are given below:
+El conjunto de datos pinguinos contiene las siguientes variables:
 
 | Variable Name   |  Description
 |:----------------|:--------------------------------
-| `id` | ID number of the listing
-| `price` | Price, in GBP, for one night stay
-| `neighbourhood` | Neighbourhood listing is located in
-| `accommodates` | Number of people listing accommodates
-| `bathrooms` | Number of bathrooms
-| `bedrooms` | Number of bedrooms
-| `beds` | Number of beds (which can be different than the number of bedrooms)
-| `review_scores_rating` | Average rating of property
-| `number_of_reviews` | Number of reviews
-| `listing_url` | Listing URL
+| `especie` | Especie de pingüino
+| `isla` | Isla donde se encontró el pingüino
+| `largo_pico_mm` | Longitud del pico en milímetros
+| `alto_pico_mm` | Profundidad del pico en milímetros
+| `largoo_aleta_mm` | Longitud de la aleta en milímetros
+| `masa_corporal_g` | Masa corporal en gramos
+| `sexo` | Sexo del pingüino
+| `anio` | Año de la medición
 
-## Cargar librería y datos
-- Carga la librería `dplyr` y el conjunto de datos `iris`.
+![](https://allisonhorst.github.io/palmerpenguins/reference/figures/culmen_depth.png)
 
-```{webr}
 
-library(dplyr)
 
-# Cargar un conjunto de datos de ejemplo
-data("iris") # Conjunto de datos que contiene medidas de flores
-
-```
-
-- inspecciona los datos con `glimpse()`.
-
+***Inspecciona los datos con `glimpse()`***
 
 
 ```{webr}
+#| exercise: pinguinos_glimpse
 
-
-```
-
-- limpia los datos con janitor::clean_names() y vuelva a inspeccionarlos con `glimpse()`.
-
-
-```{webr}
-
+______(pinguinos)
 
 ```
 
 
-- número de observaciones
+```{webr}
+#| exercise: pinguinos_glimpse
+#| check: true
+if (identical(.result, glimpse(pinguinos))) {
+  list(correct = TRUE, message = "Correcto")
+} else {
+  list(correct = FALSE, message = "Incorrecto.")
+}
+```
 
-- How many accidents were recorded in Edinburgh in 2018? Use the following code chunk to submit your answer.
 
-- How many variables are recorded on these crashes? Use the code chunk below!
-
-- Construye un histograma
+> Utiliza la siguiente consola para contestar esta pregunta: ¿Cuántas especies de pingüinos hay en el conjunto de datos? Recuerda que los nombres de las especies están en la variable `especie`. Puedes usar cualquier método que prefieras para encontrar la respuesta. Cuando tengas la respuesta, escribe los nombres de las especies en la línea punteada en la consola de abajo y checa tu respuesta. **NOTA**. Asegurate de usar mayúsculas y no poner acentos en los nombres de las especies. 
 
 ```{webr}
-ggplot(data = ___, mapping = aes(x = ___)) +
-  geom_histogram() +
-  labs(
-    x = "Airbnb listing price, in £",
-    y = "Frequency",
-    title = "Distribution of Airbnb nightly rates in Edinburgh"
+
+
+```
+
+
+
+```{webr}
+#| exercise: pinguinos_especies
+
+# Reemplaza la variable nombre_especies con los nombres de las especies
+nombre_especies <- c(______)
+
+print(nombre_especies)
+
+```
+
+
+```{webr}
+#| exercise: pinguinos_especies
+#| check: true
+
+# Valores correctos que esperamos en la variable nombre_especies
+valores_correctos <- c("Adelia", "Barbijo", "Papua")
+
+# Verificación: comprobar si la variable nombre_especies es idéntica a los valores correctos
+if (identical(nombre_especies, valores_correctos)) {
+  list(correct = TRUE, message = "Correcto!.")
+} else {
+  list(correct = FALSE, message = "Incorrecto. Asegura de usar mayusculas y sin acentos")
+}
+
+```
+
+
+
+::: { .hint exercise="pinguinos_especies"}
+::: { .callout-note collapse="false"}
+
+## Pista 1
+
+recuerda las siguientes funciones de dplyr:
+
+```r
+distinct()
+count()
+pull()
+```
+:::
+:::
+
+::: { .hint exercise="pinguinos_especies"}
+::: { .callout-note collapse="false"}
+
+## Pista 2
+
+Recuerda usar pipas `%>%` para encadenar funciones de dplyr de manera más eficiente.
+
+```r
+
+datos %>%
+  distinct(columna)
+
+```
+:::
+:::
+
+::: { .solution exercise="pinguinos_especies" }
+::: { .callout-tip collapse="false"}
+
+## Solución
+
+
+```r
+pinguinos %>%
+  distinct(especie)
+```
+
+```r
+nombre_especies <- c("Adelia", "Barbijo", "Papua")
+print(nombre_especies)
+```
+
+
+:::
+:::
+
+
+![](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
+
+
+> Utiliza la siguiente consola para contestar esta pregunta: ¿Cuántos pingüinos hembras hay? Recuerda que los sexos en la variable `sexo`. Puedes usar cualquier método que prefieras para encontrar la respuesta. Cuando tengas la respuesta, escribe el valor en la línea punteada en la consola de abajo y checa tu respuesta. 
+
+```{webr}
+
+
+```
+
+
+
+```{webr}
+#| exercise: pinguinos_sexos
+
+# Reemplaza la línea punteada con tu respuesta
+
+numero_pinguinos_hembras <- ______
+
+print(numero_pinguinos_hembras)
+
+```
+
+
+```{webr}
+#| exercise: pinguinos_sexos
+#| check: true
+
+# Valores correctos que esperamos en la variable numero_pinguinos_hembras
+valores_hembras <- 165
+
+# Verificación: comprobar si la variable numero_pinguinos_hembras es idéntica a los valores correctos
+if (identical(numero_pinguinos_hembras, valores_hembras)) {
+  list(correct = TRUE, message = "Correcto!.")
+} else {
+  list(correct = FALSE, message = "Incorrecto. Asegura de usar mayusculas y sin acentos")
+}
+
+```
+
+
+
+::: { .hint exercise="pinguinos_sexos"}
+::: { .callout-note collapse="false"}
+
+## Pista 1
+
+recuerda las siguientes funciones de dplyr:
+
+```r
+
+count()
+
+```
+:::
+:::
+
+::: { .hint exercise="pinguinos_sexos"}
+::: { .callout-note collapse="false"}
+
+## Pista 2
+
+Recuerda usar pipas `%>%` para encadenar funciones de dplyr de manera más eficiente.
+
+```r
+
+datos %>%
+  count(columna)
+
+```
+:::
+:::
+
+::: { .solution exercise="pinguinos_sexos" }
+::: { .callout-tip collapse="false"}
+
+## Solución
+
+
+```r
+pinguinos %>%
+  distinct(sexo)
+```
+
+```r
+numero_pinguinos_hembras <- 165
+
+print(numero_pinguinos_hembras)
+```
+
+
+:::
+:::
+
+
+> en nuestros datos, la variable `anio` está registrada como una variable numérica. Aunque esto no está mal, queremos recodificarla a una variable de tipo `factor`. Escribe tu respuesta en la línea punteada en la consola de abajo y checa tu respuesta. 
+
+
+```{webr}
+#| exercise: pinguinos_factor
+
+# Reemplaza la línea punteada con tu respuesta
+
+pinguinos_factor <- pinguinos %>%
+  mutate(anio = as.______(______))
+
+# revisa los datos
+str(pinguinos_factor)
+
+
+
+```
+
+
+```{webr}
+#| exercise: pinguinos_factor
+#| check: true
+
+# Primero verificamos cómo está la columna 'anio'
+if (is.factor(pinguinos_factor$anio)) {
+  list(correct = TRUE, message = "Correcto! La columna 'anio' ha sido recodificada como un factor.")
+} else {
+  list(correct = FALSE, message = "Incorrecto. La columna 'anio' no es un factor.")
+}
+
+
+```
+
+
+
+::: { .solution exercise="pinguinos_factor" }
+::: { .callout-tip collapse="false"}
+
+## Solución
+
+
+```r
+pinguinos_factor <- pinguinos %>%
+  mutate(anio = as.factor(anio))
+```
+
+
+:::
+:::
+
+
+> En el siguiente ejercicio, elimina todas las observaciones con `NA` (observaciones faltantes) en nuestro dataset para que en el futuro evitemos errores. Primero corre el código siguiente para explorar cuántos datos faltantes hay en cada variable. Cuando tengas tu respuesta, escribe el valor en la línea punteada en la consola de abajo y checa tu respuesta. Recuerda la función `na_omit()` para eliminar los datos faltantes.
+
+
+```{webr}
+
+pinguinos %>%
+  summarise_all(~ sum(is.na(.)))
+
+```
+
+```{webr}
+#| exercise: pinguinos_na
+
+# Reemplaza la línea punteada con tu respuesta
+
+pinguinos_na <- pinguinos %>%
+  ______()
+
+# No debería haber datos faltantes
+pinguinos_na %>% 
+  summarise_all(~ sum(is.na(.)))
+
+```
+
+
+```{webr}
+#| exercise: pinguinos_na
+#| check: true
+
+pinguinos_na_revisar <- pinguinos %>%
+  na.omit()
+
+if (identical(pinguinos_na_revisar, pinguinos_na)) {
+  list(correct = TRUE, message = "Correcto!.")
+} else {
+  list(correct = FALSE, message = "Incorrecto.")
+}
+
+```
+
+
+
+::: { .solution exercise="pinguinos_na" }
+::: { .callout-tip collapse="false"}
+
+## Solución
+
+
+```r
+pinguinos_na <- pinguinos %>%
+  na.omit()
+```
+
+
+:::
+:::
+
+
+
+> Ahora, vamos a realizar lo siguiente: pasa todas las variables que miden longitud y masa a centímetros y kilogramos, respectivamente. Recuerda que 1 milímetro es igual a 0.1 centímetros y 1 gramo es igual a 0.001 kilogramos. 
+> Después de calcular las nuevas variables, caulcula el promedio y desviación estándar de estas nuevas variables. 
+> revisa los datos con `glimpse()` para asegurarte de que los cambios se hayan realizado correctamente.
+> Escribe tu respuesta en la línea punteada en la consola de abajo y checa tu respuesta.
+
+```{webr}
+#| exercise: pinguinos_conversion
+
+# Convertir longitudes y masas a cm y kg, respectivamente
+
+pinguinos_limpio <- pinguinos %>%
+  ______() %>%  # Eliminar datos faltantes
+  mutate(
+    largo_pico_cm = largo_pico_mm * ______,   # Convertir milímetros a centímetros
+    alto_pico_cm = ______ * ______,     # Convertir milímetros a centímetros
+    largo_aleta_cm = ______,  # Convertir milímetros a centímetros
+    masa_corporal_kg = ______  # Convertir gramos a kilogramos
   )
 
+# Revisa los datos con 'glimpse()' para verificar que los cambios se realizaron correctamente.
+glimpse(pinguinos_limpio)
+
+# Calcula el promedio y desviación estándar de las nuevas variables
+
+pinguinos_resumen <- pinguinos_limpio %>%
+  ______(
+    pico_promedio = mean(largo_pico_cm),
+    pico_sd = ______(______),
+    alto_promedio = ______(______),
+    alto_sd = ______,
+    aleta_promedio = ______,
+    aleta_sd = ______,
+    masa_promedio = ______,
+    masa_sd = ______
+  ) 
+
+glimpse(pinguinos_resumen)
+
 ```
 
-- Responde:
+```{webr}
+#| exercise: pinguinos_conversion
+#| check: true
 
- Which of the following describes the shape of the distribution of nightly rates of Airbnb edibnb in Edinburgh? Check all that apply.
-Right skewed
-Left skewed
-Symmetric
-Unimodal
-Bimodal
-Multimodal
-Which of the following is false?
-There are no listings with a nightly rate above £1,250.
-More than 50% of listings have a nightly rate below £250.
-More than 25% of listings have a nightly rate above £500.
-It is possible that some of the listings have a nightly rate of £0.
+# Convertir longitudes y masas a cm y kg, respectivamente
 
-
-How many accidents with 2 or more vehicles occurred in an urban area? Use the code chunk below to find out!
-
-___ %>%
-  ___(___, ___) %>%
-  nrow()
-  
-  Summary Statistics
-  
-  We can also calculate summary statistics for this distribution using the summarise function:
-  R Code
-ollege_recent_grads %>%
-  summarise(min = min(median), max = max(median),
-            mean = mean(median), med = median(median),
-            sd = sd(median), 
-            q1 = quantile(median, probs = 0.25),
-            q3 = quantile(median, probs = 0.75))
-
-
-  Based on the shape of the histogram you created above, which set of summary statistics will be more useful for describing the distribution?
-  Mean and standard deviation
-  Median and interquartile range
-
-
-Recoding data
-Recode season
-
-Recode the season variable to be a factor with meaningful level names as outlined in the codebook, with spring as the baseline level.
-
-dcbikeshare <- ___ %>%
-  ___(
-    season = ___(
-    ___
-    ),
-    season = ___(___)
+pinguinos_limpio_rev <- pinguinos %>%
+  na.omit() %>%  # Eliminar datos faltantes
+  mutate(
+    largo_pico_cm = largo_pico_mm * 0.1,   # Convertir milímetros a centímetros
+    alto_pico_cm = alto_pico_mm * 0.1,     # Convertir milímetros a centímetros
+    largo_aleta_cm = largo_aleta_mm * 0.1,  # Convertir milímetros a centímetros
+    masa_corporal_kg = masa_corporal_g * 0.001  # Convertir gramos a kilogramos
   )
+
+pinguinos_resumen_rev <- pinguinos_limpio_rev %>%
+  summarize(
+    pico_promedio = mean(largo_pico_cm),
+    pico_sd = sd(largo_pico_cm),
+    alto_promedio = mean(alto_pico_cm),
+    alto_sd = sd(alto_pico_cm),
+    aleta_promedio = mean(largo_aleta_cm),
+    aleta_sd = sd(largo_aleta_cm),
+    masa_promedio = mean(masa_corporal_kg),
+    masa_sd = sd(masa_corporal_kg)
+  ) 
+
+
+# Evaluación: verificar si las columnas fueron correctamente convertidas
+if (all(colnames(pinguinos_transformados) %in% colnames(pinguinos))) {
+  list(correct = TRUE, message = "¡Correcto! Las variables fueron convertidas y los resúmenes calculados.")
+} else {
+  list(correct = FALSE, message = "Incorrecto. Algo falló en la conversión de las variables.")
+}
+```
+
+
+
+::: { .solution exercise="pinguinos_conversion"}
+::: { .callout-tip collapse="false"}
+
+## Solución
+
+```r
+# Convertir longitudes y masas a cm y kg, respectivamente
+
+pinguinos_limpio <- pinguinos %>%
+  na.omit() %>%  # Eliminar datos faltantes
+  mutate(
+    largo_pico_cm = largo_pico_mm * 0.1,   # Convertir milímetros a centímetros
+    alto_pico_cm = alto_pico_mm * 0.1,     # Convertir milímetros a centímetros
+    largo_aleta_cm = largo_aleta_mm * 0.1,  # Convertir milímetros a centímetros
+    masa_corporal_kg = masa_corporal_g * 0.001  # Convertir gramos a kilogramos
+  )
+
+# Revisa los datos con 'glimpse()' para verificar que los cambios se realizaron correctamente.
+glimpse(pinguinos_limpio)
+
+# Calcula el promedio y desviación estándar de las nuevas variables
+
+pinguinos_resumen <- pinguinos_limpio %>%
+  summarize(
+    pico_promedio = mean(largo_pico_cm),
+    pico_sd = sd(largo_pico_cm),
+    alto_promedio = mean(alto_pico_cm),
+    alto_sd = sd(alto_pico_cm),
+    aleta_promedio = mean(largo_aleta_cm),
+    aleta_sd = sd(largo_aleta_cm),
+    masa_promedio = mean(masa_corporal_kg),
+    masa_sd = sd(masa_corporal_kg)
+  ) 
+
+
+glimpse(pinguinos_resumen)
+
+```
+
+:::
+:::
+
+::: {.callout-tip collapse="true"}
+## Tip Haz click para expandir
+
+Podemos usar condiciones lógicas para realizar más facil este código. Por ejemplo, podemos usar `ends_with()` para seleccionar columnas que terminan con un patrón específico ("mm" y "g"). Después, utilizamos `.names` para asignar nombres a las nuevas columnas con el formato "nuevo_{.col}_cm" y "nuevo_{.col}_kg". Este argumento crea automáticamente nombres con el patrón nuevo+nombre de la columna original+_cm o _kg. Se hace lo mismo para las columnas que terminan con "g".
+
+
+```{webr}
+#| autorun: true
+
+pinguinos %>%
+  na.omit() %>%  # Eliminar datos faltantes
+  mutate(
+    across(ends_with("mm"), ~ . * 0.1, .names = "nuevo_{.col}_cm"),   # Crear nuevas columnas *_cm
+    across(ends_with("g"), ~ . * 0.001, .names = "nuevo_{.col}_kg")   # Crear nuevas columnas *_kg
+  )  %>%
+  summarize(across(ends_with("mm"), list(mean = mean, sd = sd)),
+            across(ends_with("g"), list(mean = mean, sd = sd))
+  ) %>%
+  glimpse()
+
+```
+
+
+:::
+
+
+> Ahora, vamos a construir un histograma de las masas corporales de los pingüinos en cada especie. En el próximo módulo veremos cómo construir estos gráficos a detalle. Por el momento, solo corre el siguiente código y observa el histograma que se genera. A partir de éste, contesta las siguientes preguntas.
+
+```{webr}
+#| warning: false
+
+library(ggplot2)
+library(viridis)
+
+# Calcular la media por especie
+medias <- pinguinos %>%
+  group_by(especie) %>%
+  summarize(media_masa = mean(masa_corporal_g, na.rm = TRUE))
+
+# Graficar el histograma con las densidades y las líneas de la media
+ggplot(pinguinos, aes(x = masa_corporal_g)) +
+  geom_histogram(aes(y = ..density..), fill = "lightgray", color = "black", bins = 30) +
+  geom_density(aes(fill = especie), color = "darkblue", alpha = 0.5) +
+  geom_vline(data = medias, aes(xintercept = media_masa, color = especie), linetype = "dashed", size = 1) +
+  labs(title = "Distribución de masas corporales de pingüinos",
+       subtitle = "Histograma y densidad por especie",
+       caption = "La linea punteada indica la media por especie",
+       x = "Masa corporal (g)",
+       y = "Densidad",
+       fill = "especie") +
+  facet_grid(~especie, scales = "free_x") +
+  theme_classic() +
+  theme(legend.position = "top") +
+  scale_fill_viridis(option = "turbo", discrete = TRUE) +
+  scale_color_viridis(option = "turbo", discrete = TRUE)
+
+```
+
+> Responde: Con base en las masas corporales de los pingüinos en cada especie, ¿cuál de las siguientes afirmaciones es verdadera?
+>
+> 1. Los pingüinos de la especie Adelia tienen una masa corporal promedio mayor que los de la especie Papúa.
+> 2. Los pingüinos de la especie Papúa tienen una masa corporal promedio mayor que los de la especie Barbijo.
+> 3. No se puede determinar la masa corporal promedio de los pingüinos en cada especie a partir del histograma.
+
+
+```{webr}
+#| edit: false
+#| output: false
+#| define:
+#|   - do_respuesta
+
+
+# Función para verificar las respuestas de las masas corporales
+do_respuesta <- function(respuesta) {
+  if (is.null(respuesta) || respuesta == "") {
+    return("<em>Por favor selecciona una respuesta.</em>")
+  } else if (respuesta == "2 es verdadero") {
+    return("<strong>¡Correcto!</strong> La especie Papúa tiene una masa corporal promedio mayor que los pingüinos Barbijo.")
+  } else if (respuesta == "1 es verdadero") {
+    return("<em>Incorrecto.</em> Los pingüinos Papúa tienen una masa corporal promedio mayor que los Adelia.")
+  } else if (respuesta == "3 es verdadero") {
+    return("<em>Incorrecto.</em> Sí podemos determinar la masa corporal promedio de los pingüinos en cada especie a partir del histograma.")
+  } else {	
+    return("<em>Por favor selecciona una respuesta válida.</em>")
+  }
+}
+
+
+```
+
+```{ojs}
+//| echo: false
+
+// Preguntas adaptadas sobre las masas corporales de los pingüinos
+viewof respuesta = Inputs.radio(
+  [
+    "1 es verdadero", 
+    "2 es verdadero", 
+    "3 es verdadero",
+    "Ninguna de las anteriores"
+  ],
+  { 
+    value: "Ninguna de las anteriores",  // Valor inicial vacío para evitar errores de renderizado
+    label: "Marca tu respuesta", 
+    class: "vertical-radio" 
+  }
+);
+
+html`${await do_respuesta(respuesta)}`
+
+```
+
+
+
+
+Por último, realiza este ejercicio.
+
+El código que visualiza las distribuciones de alturas con líneas que representan 1, 2 y 3 desviaciones estándar nos permite entender cómo se distribuyen los datos alrededor de la media de cada especie. Esto es muy útil para formular preguntas sobre la **variabilidad** y la **dispersión** de los datos alrededor de la media, así como para identificar qué porcentaje de los datos cae dentro de uno, dos o tres desviaciones estándar de la media, según la regla empírica (68-95-99.7% para distribuciones normales). Ejecuta el siguiente código y observa los histogramas con las líneas de las desviaciones estándar.
+
+::: {.panel-tabset}
+
+## Gráfico
+
+```{webr}
+#| autorun: true
+
+histogramas_desviaciones
+
+```
+
+## Código utilizado
+
+```{webr}
+#| warning: false
+#| autorun: true
+
+library(viridis)
+
+# Calcular la media y desviación estándar por especie
+medidas_pinguinos <- pinguinos %>%
+  group_by(especie) %>%
+  summarise(
+    media_masa = mean(masa_corporal_g, na.rm = TRUE),
+    sd_masa = sd(masa_corporal_g, na.rm = TRUE)
+  )
+
+# Crear un data frame con las posiciones de las líneas de 1, 2 y 3 desviaciones estándar
+desviaciones_pinguinos <- medidas_pinguinos %>%
+  tidyr::crossing(desviaciones = 1:3) %>%  # Añadir una columna con los valores de 1, 2 y 3 desviaciones
+  mutate(
+    lim_inf = media_masa - desviaciones * sd_masa,  # Límite inferior (media - n desviaciones estándar)
+    lim_sup = media_masa + desviaciones * sd_masa   # Límite superior (media + n desviaciones estándar)
+  )
+
+# Graficar el histograma con las densidades, la media y las desviaciones estándar
+histogramas_desviaciones <- ggplot(pinguinos, aes(x = masa_corporal_g)) +
+  geom_histogram(aes(y = ..density..), fill = "lightgray", color = "black", bins = 30) +
+  geom_density(aes(fill = especie), color = "darkblue", alpha = 0.5) +
   
+  # Líneas de la media
+  geom_vline(data = medidas_pinguinos, aes(xintercept = media_masa, color = especie),
+             linetype = "dashed", size = 1) +
   
-  Create raw values for temperature, humidity, and windspeed
+  # Líneas de 1, 2 y 3 desviaciones estándar (inferior y superior)
+  geom_vline(data = desviaciones_pinguinos, aes(xintercept = lim_inf, color = especie),
+             linetype = "dotted", size = 0.8) +
+  geom_vline(data = desviaciones_pinguinos, aes(xintercept = lim_sup, color = especie),
+             linetype = "dotted", size = 0.8) +
   
-  Calculate raw temperature, feeling temperature, humidity, and windspeed as their values given in the dataset multiplied by the maximum raw values stated in the codebook for each variable. Instead of writing over the existing variables, create new ones called temperature_raw, feeling_temperature_raw, humidity_raw, windspeed_raw.
-  
-  
-  dcbikeshare <- ___ %>%
-    ___(
-      ___
-    )
+  labs(title = "Distribución de masas corporales de pingüinos",
+       subtitle = "Histograma y densidad con líneas de 1, 2, y 3 desviaciones estándar",
+       caption = "La línea punteada indica la media y las líneas punteadas finas indican las desviaciones estándar",
+       x = "Masa corporal (g)",
+       y = "Densidad",
+       fill = "Especie") +
+  theme_classic() +
+  theme(legend.position = "top") +
+  facet_wrap(desviaciones ~ especie) +
+  scale_fill_viridis(option = "cividis", discrete = TRUE) +
+  scale_color_viridis(option = "cividis", discrete = TRUE)
 
-Penguin measurements
-Body mass
+```
 
-The body mass of penguins are measured and recorded in grams in the body_mass_g variable.
+:::
 
-In the following code block, use mutate() to add the new variable body_mass_g as that records body mass in kilograms.
+> Con base en los histogramas y las líneas que representan las desviaciones estándar (1, 2 y 3), ¿cuál de las siguientes afirmaciones es correcta?
 
-Note that 1 gram = 0.001 kilogram.
-
-
-penguins <- penguins %>% 
-  ___ 
-
-
-The penguins’ flipper lengths, bill lengths and bill depths are measured in millimetres. Similar to what you did for body mass, introduce new variables flipper_length_cm, bill_length_cm and bill_depth_cm that record these variables in centimetres.
-
-Note that 1 millimetre = 0.1 centimetre.
-
-Flipper length
-
-Using the mutate() function, create the variable flipper_length_cm.
-
-penguins <- penguins %>%
-  ___ 
+1. Aproximadamente el 68% de los datos de **todas las especies** cae dentro de 1 desviación estándar de la media.
+2. Aproximadamente el 95% de los datos de **todas las especies** cae dentro de 2 desviaciones estándar de la media.
+3. Aproximadamente el 99.7% de los datos de **todas las especies** cae dentro de 3 desviaciones estándar de la media.
 
 
-Bill length
+```{webr}
+#| edit: false
+#| output: false
+#| define:
+#|   - do_respuestados
 
-Create the variable bill_length_cm.
+# Función para verificar la respuestados
+do_respuestados <- function(respuestados) {
+  if (is.null(respuestados) || respuestados == "") {
+    return("<em>Por favor selecciona una respuestados.</em>")
+  } else if (respuestados == "Aproximadamente el 68% de los datos de todas las especies cae dentro de 1 desviación estándar de la media.") {
+    return("<strong>¡Correcto!</strong> Esto es cierto según la regla empírica.")
+  } else if (respuestados == "Aproximadamente el 95% de los datos de todas las especies cae dentro de 2 desviaciones estándar de la media.") {
+    return("<strong>¡Correcto!</strong> Esto es cierto según la regla empírica.")
+  } else if (respuestados == "Aproximadamente el 99.7% de los datos de todas las especies cae dentro de 3 desviaciones estándar de la media.") {
+    return("<strong>¡Correcto!</strong> Esto es cierto según la regla empírica.")
+  } else {
+    return("<em>Vuelve a intentar</em>.")
+  }
+}
+```
+
+```{ojs}
+//| echo: false
+
+// Pregunta sobre las desviaciones estándar y la distribución normal
+viewof respuestados = Inputs.radio(
+  [
+    "Aproximadamente el 68% de los datos de todas las especies cae dentro de 1 desviación estándar de la media.", 
+    "Aproximadamente el 95% de los datos de todas las especies cae dentro de 2 desviaciones estándar de la media.", 
+    "Aproximadamente el 99.7% de los datos de todas las especies cae dentro de 3 desviaciones estándar de la media.",
+    "Ninguna de las anteriores"
+  ],
+  { 
+    value: "Ninguna de las anteriores",  // Valor inicial vacío
+    label: "Marca tu respuesta", 
+    class: "vertical-radio" 
+  }
+);
+
+html`${await do_respuestados(respuestados)}`
+```
+

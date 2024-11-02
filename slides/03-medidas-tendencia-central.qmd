@@ -1,9 +1,15 @@
 ---
 title: "Medidas de Tendencia central"
 subtitle: "Media, moda, mediana, varianza, desviación estándar y rango intercuartílico"
-format: 
-    live-revealjs: 
-        scrollable: true
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Or ca
+        city: CDMX
+        url: orcaasesina.com
+format: live-html
+sidebar: false
 webr:
     packages: 
         - ggplot2
