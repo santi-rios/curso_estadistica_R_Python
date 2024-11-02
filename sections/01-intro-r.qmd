@@ -121,7 +121,7 @@ https://github.com/nlarrea/R-desde-cero/blob/main/TEORIA/06-graficos/README.md#g
 {{< revealjs file="../slides/02-programacion-ll.html" height="500px">}}
 
 
-{{< revealjs file="../slides/02-dplyr-resumen.qmd.html" height="500px">}}
+{{< revealjs file="../slides/02-dplyr-resumen.html" height="500px">}}
 
 {{< revealjs file="../slides/02-dplyr-ejercicio.html" height="500px">}}
 
