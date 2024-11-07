@@ -64,21 +64,27 @@ Este módulo proporcionaría una comprensión más profunda y técnica de cómo 
 
 
 
-### i - Distribución Normal
+### i - Distribuciones
 
 {{< revealjs file="../slides/03-distribuciones-probabilidad.html" height="500px">}}
 
-### ii - Otras Distribuciones
+{{< revealjs file="../slides/03-histogramas-ggplot.html" height="500px">}}
 
 {{< revealjs file="../slides/03-distribuciones-nonom.html" height="500px">}}
 
-### iii - Visualización de Datos, introducción a ggplot
+{{< revealjs file="../slides/03-teorema-limite.html" height="500px">}}
+
+{{< revealjs file="../slides/03-visualizacion-datosll.html" height="500px">}}
 
 {{< revealjs file="../slides/03-visualizacion-datos.html" height="500px">}}
 
 {{< revealjs file="../slides/03-visualizacion-datosIII.html" height="500px">}}
 
-{{< revealjs file="../slides/03-visualizacion-datosll.html" height="500px">}}
+
+### iii - Visualización de Datos, introducción a ggplot
+
+
+
 
 Algunos tips...
 

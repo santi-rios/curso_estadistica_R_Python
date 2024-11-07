@@ -14,8 +14,9 @@ webr:
     packages: 
         - ggplot2
         - dplyr
+        - tidyr
         # - plotly
-        # - tweenr
+        - tweenr
 # pyodide: 
 #     packages: 
 #         - scikit-learn
@@ -36,7 +37,7 @@ engine: knitr
 
 - Antes de comenzar con las lecciones de estadística, es importante entender las **distribuciones de probabilidad**.
 - Las *distribuciones de probabilidad* describen cómo se distribuyen los valores posibles de una variable aleatoria. Estas representan la probabilidad de los valores que puede tomar una variable, siendo algunos valores más probables que otros.
-- Una **variable aleatoria** es una variable (lección anterior) cuyos valores son el resultado de un fenómeno aleatorio, como el lanzamiento de un dado o la altura de una persona.
+- Una **variable aleatoria** es una variable ([lección previa](https://riverorca.com/mod/hvp/view.php?id=224)) cuyos valores son el resultado de un fenómeno aleatorio, como el lanzamiento de un dado o la altura de un grupo de personas.
 - En las siguientes lecciones, abordaremos algunas de las distribuciones más comunes y cómo trabajarlas en R.
 - Para ello, nos enfocaremos en un ejemplo fictício de alturas de jirafas "miniatura" en 2 diferentes islas.
 
@@ -52,7 +53,7 @@ Imagina que tomas *aleatoriamente* la altura de 100 jirafas: 50 pertenecienctes 
 
 
 
-Gráficos por [tinystats](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html) si deseas profundizar en el tema.
+Gráficos por [tinystats](https://tinystats.github.io/teacups-giraffes-and-statistics/02_bellCurve.html).
 
 
 
@@ -131,20 +132,33 @@ histograma_plot <-
     - La altura más común es diferente para las firafas de la isla 1 y 2.
     - Hay una variabilidad en las alturas, con algunas jirafas más altas y otras más bajas.
 
-![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/normal_hist.png)
 
 
-- Dependiendo de la forma de la distribución, se le da un nombre a esta distribución de los datos. La más común y utilizada es la **distribución normal**, también conocida como **campana de Gauss**.
+
+- Dependiendo de la forma de la distribución, se le da un nombre a esta distribución de los datos. 
+- La más común y utilizada en ciencias biomédicas es la **distribución normal**, también conocida como **campana de Gauss**. Muchas variables en la naturaleza siguen una distribución normal, como la altura de las personas, el peso de los animales, la temperatura, etc. Sin embargo, no todas las variables siguen una distribución normal, por lo que es importante verificar la forma de la distribución de los datos antes de realizar cualquier análisis estadístico.
+- Observa el siguiente gráfico de la distribución normal, que muestra la forma típica de esta distribución. En lo que resta de la lección veremos las características de esta distribución y cómo se relaciona con nuestros datos de alturas de jirafas. 
+
+```{webr}	
+#| autorun: true
+
+ggplot(data = data.frame(x = c(-3, 3)), aes(x)) +
+  stat_function(fun = dnorm, n = 101, args = list(mean = 0, sd = 1)) + ylab("") +
+  scale_y_continuous(breaks = NULL) +
+  theme_classic()
+
+```
+
 - Cada distribución tiene sus propias características y propiedades, lo que las hace únicas y útiles para diferentes situaciones.
-- Podemos describir la distribución normal con solo dos parámetros: la media y la desviación estándar que se verán a continuación.
-- Exploremos las características de la distribución normal con nuestro ejemplo de alturas de jirafas. Estas características son:
+- En el caso de la distribución normal, podemos describirla con dos parámetros: la **media** y la **desviación estándar** que se verán a continuación.
+- Exploremos la distribución normal con nuestro ejemplo de alturas de jirafas. Podemos observar las siguientes características:
     - Tiene un solo pico o punto más alto donde se concentran los datos.
       - NOTA: En nuestro gráfico se observan 2 picos, pero esto es porque estamos observando las alturas de 2 grupos de jirafas diferentes. Sin embargo, cada grupo tiene un único pico. 
     - Los datos se distribuyen simétricamente alrededor de este punto medio. 
 
+![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/02_bellCurve/normal_hist.png)
 
 
-## Describir los datos 
 
 - Una vez que hemos visualizado la distribución de los datos de nuestra variable, el siguiente paso es describir las alturas con medidas numéricas.
 - Para esto, utilizamos las **medidas de tendencia central** y **dispersión**.
@@ -269,7 +283,7 @@ ggplot(alturas_df, aes(x = altura, fill = isla)) +
 ## Moda 
 - La moda es el valor que se repite con mayor frecuencia en un conjunto de datos.
 - Puede haber más de una moda en un conjunto de datos, lo que se conoce como distribución multimodal.
-- En R, podemos calcular la moda con la función `Mode()`. **NOTA**: esta función no está disponible en R por defecto, por lo que debemos definirla manualmente.
+- En R, podemos calcular la moda con la función `mode()`. **NOTA**: esta función no está disponible en R por defecto, por lo que debemos definirla manualmente.
 
 ```{webr}
 
@@ -280,7 +294,7 @@ mode <- function(variable){
 
 alturas_df %>%
  group_by(isla) %>% # agrupamos por isla
- summarise(moda = Mode(altura)) # calculamos la moda de las alturas # calculamos la moda de las alturas
+ summarise(moda = mode(altura)) # calculamos la moda de las alturas # calculamos la moda de las alturas
 
 
 ```
@@ -306,12 +320,17 @@ alturas_df %>%
 
 ```
 
-![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/giraffe_variance2.jpg)
+![La varianza es una medida de qué tanto se aleja cada medición de la media](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/giraffe_variance2.jpg)
+
+::: {.callout-note}
+Cuando se habla de varianza, también se puede hacer referencia a la *varianza poblacional* y la *varianza muestral*. La varianza *poblacional* es la varianza de todos los valores en una población completa y se denota con el símbolo $\sigma^2$ (sigma al cuadrado). La varianza *muestral* es la varianza de los valores en una muestra de la población y se denota con el símbolo $s^2$. En la práctica, usamos la varianza muestral, ya que rara vez tenemos acceso a todos los datos de una población.
+
+:::
 
 ## Desviación Estándar
 
 - El problema con la varianza es que está en unidades al cuadrado, lo que puede ser difícil de interpretar. Por eso, a menudo usamos la desviación estándar, que es la raíz cuadrada de la varianza.
-- La desviación estándar mide cuánto se desvían los datos de la media.
+- La desviación estándar mide cuánto se desvían los datos de la media, pero en las mismas unidades que los datos.
 - En R, podemos calcular la desviación estándar con la función `sd()`.
 
 ```{webr}
@@ -322,7 +341,12 @@ alturas_df %>%
 
 ```
 
-![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/giraffe_variance3.jpg)
+![La desviación estándar mide la dispersión de los datos alrededor de la media](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/giraffe_variance3.jpg)
+
+::: {.callout-note}
+Cuando se habla de desviación estándar, también se puede hacer referencia a la *desviación estándar poblacional* y la *desviación estándar muestral*. La desviación estándar *poblacional* es la desviación estándar de todos los valores en una población completa y se denota con el símbolo $\sigma$ (sigma). La desviación estándar *muestral* es la desviación estándar de los valores en una muestra de la población y se denota con el símbolo $s$. En la práctica, usamos la desviación estándar muestral, ya que rara vez tenemos acceso a todos los datos de una población.
+
+:::
 
 Podemos graficarlo de esta manera, donde se muestra la media y la desviación estándar de las alturas de las jirafas en cada isla como una línea punteada alrededor de la media. Observa cómo la desviación estándar nos da una idea de cuánto varían las alturas alrededor de la media (varían más en la isla 1 que en la isla 2).
 
@@ -358,7 +382,11 @@ ggplot(alturas_df, aes(x = altura, fill = isla)) +
 
 ![](https://tinystats.github.io/teacups-giraffes-and-statistics/images/04_variance/General_empirical.jpg)
 
-Observa este fenómeno en nustros datos con este gráfico, donde se muestran las alturas de las jirafas en cada isla y las líneas punteadas representan la media y las líneas de puntos representan 1, 2 y 3 desviaciones estándar de la media. Observa cómo la mayoría de los datos caen dentro de 1, 2 y 3 desviaciones estándar de la media. Este concepto sera muy importante cuando veamos inferencia estadística ya que nos permitirá hacer predicciones sobre los datos. Por ejemplo, si sabemos que la altura promedio de las jirafas en la isla 1 es de 10 cm con una desviación estándar de 2 cm, podemos predecir que la mayoría de las jirafas tendrán alturas entre 8 y 12 cm (1 desviación estándar), entre 6 y 14 cm (2 desviaciones estándar), y entre 4 y 16 cm (3 desviaciones estándar). Si encontramos una jirafa con una altura de 20 cm, sabemos que es un valor raro, ya que está a más de 5 desviaciones estándar de la media. 
+- Observa este fenómeno en nustros datos con el siguiente gráfico, donde se muestran las alturas de las jirafas en cada isla y las líneas punteadas representan la media y las líneas de puntos representan 1, 2 y 3 desviaciones estándar de la media. Observa cómo la mayoría de los datos caen dentro de 1, 2 y 3 desviaciones estándar de la media. 
+- Este concepto sera muy importante cuando veamos inferencia estadística ya que nos permitirá hacer predicciones sobre los datos. Por ejemplo, si sabemos que la altura promedio de las jirafas en la isla 1 es de 10 cm con una desviación estándar de 2 cm, podemos predecir que la mayoría de las jirafas tendrán alturas entre 8 y 12 cm (1 desviación estándar), entre 6 y 14 cm (2 desviaciones estándar), y entre 4 y 16 cm (3 desviaciones estándar). Si encontramos una jirafa con una altura de 20 cm, sabemos que es un valor raro, ya que está a más de 5 desviaciones estándar de la media. 
+- Esto es la base de la inferencia estadística, que veremos en futuras lecciones. La inferencia estadística es el proceso de hacer predicciones o sacar conclusiones sobre una población basadas en una muestra de datos.
+- A partir de la distribución normal, podemos hacer inferencias sobre los datos, es decir, sacar conclusiones sobre la población basadas en nuestra muestra de datos.
+-  Por ejemplo, podemos estimar la probabilidad de que un valor caiga dentro de cierto rango o comparar dos grupos de datos.
 
 ```{webr}
 #| autorun: true
@@ -398,13 +426,137 @@ ggplot(alturas_df, aes(x = altura, fill = isla)) +
 
 
 
-## Inferencia Estadística
+## Distribución normal estandarizada o Distribución Z 
 
-- La distribución normal es una de las más importantes en estadística y se utiliza en muchos campos, desde la ciencia de datos hasta la investigación científica.
-- A partir de la distribución normal, podemos hacer inferencias sobre los datos, es decir, sacar conclusiones sobre la población basadas en nuestra muestra de datos.
--  Por ejemplo, podemos estimar la probabilidad de que un valor caiga dentro de cierto rango o comparar dos grupos de datos.
-- En las próximas lecciones, veremos cómo hacer inferencias estadísticas con la distribución normal y cómo usarla en la práctica.
 
+- Hasta ahora, hemos visto cómo calcular la media y la desviación estándar de una distribución normal. Sin embargo, en la práctica, a menudo necesitamos comparar diferentes distribuciones normales.
+- Para facilitar la comparación, podemos **estandarizar** cualquier distribución normal en una **distribución normal estandarizada** o **distribución Z**.
+- La distribución normal estandarizada es una versión especial de la distribución normal donde la media es 0 y la desviación estándar es 1.
+  
+
+Esto se logra al **transformar** cualquier distribución normal general en una distribución normal estandarizada mediante la siguiente fórmula:
+
+$$
+Z = \frac{X - \mu}{\sigma}
+$$
+
+Donde:
+
+- $Z$ es el valor estandarizado (con media 0 y desviación estándar 1).
+- $X$ es el valor original de la variable.
+- $\mu$ es la **media** de la distribución original.
+- $\sigma$ es la **desviación estándar** de la distribución original.
+
+**¿Por qué se hace esto?**
+
+La razón por la que se estandarizan las distribuciones es para **facilitar la comparación** entre diferentes conjuntos de datos. Cuando diferentes distribuciones normales se transforman a una forma común (media = 0 y desviación estándar = 1), es más fácil comparar resultados de diferentes estudios o poblaciones.
+
+**Ejemplo**
+
+- Imagina que estamos trabajando con alturas de personas en un país, donde la media es 170 cm y la desviación estándar es 10 cm.
+- Si una persona mide 180 cm, podemos estandarizar su altura con la fórmula:
+  
+  $$
+  Z = \frac{180 - 170}{10} = 1
+  $$
+
+  Esto significa que esta persona está **1 desviación estándar por encima de la media**.
+
+- Si otra persona mide 160 cm:
+
+  $$
+  Z = \frac{160 - 170}{10} = -1
+  $$
+
+  Esta persona está **1 desviación estándar por debajo de la media**.
+
+- Al estandarizar las alturas, podemos comparar fácilmente las alturas de estas dos personas, ya que están en la misma escala de puntuaciones Z.
+
+- En R, podemos estandarizar una distribución normal con la función `scale()`. Observa cómo estandarizamos las alturas de las jirafas en cada isla en el siguiente código.
+- En este código, hemos estandarizado las alturas de cada jirafa con la función `scale()`. La función hace lo siguiente: Para cada isla, calculará la media y desviación estándar de las alturas de los individuos. Luego, para cada valor de altura, restará la media de la isla correspondiente y dividirá el resultado por la desviación estándar de esa isla, obteniendo los valores estandarizados.
+
+```{webr}
+
+alturas_df %>%
+  group_by(isla) %>%
+  mutate(
+    alturas_estandarizadas = scale(altura)  # Estandarizamos las alturas individuales
+  )
+
+
+```
+
+Ahora, observa qué pasa si calculamos la media y la desviación estándar de las alturas estandarizadas. En una distribución normal estandarizada, la media es 0 y la desviación estándar es 1. Observa cómo se cumple esto en nuestro ejemplo de las alturas de las jirafas.	**Nota**: verás que las medias no son exactamente 0 debido a la precisión de los cálculos en R. Sin embargo, los valores son exponentes muy pequeños, lo que indica que son cercanos a 0.
+
+```{webr}	
+
+alturas_estandarizadas_df <- alturas_df %>%
+  group_by(isla) %>%
+  mutate(
+    alturas_estandarizadas = scale(altura)  # Estandarizamos las alturas individuales
+  ) %>%
+  group_by(isla) %>%
+  summarise(
+    media = mean(alturas_estandarizadas, na.rm = TRUE),
+    sd = sd(alturas_estandarizadas, na.rm = TRUE)
+  )
+
+alturas_estandarizadas_df
+
+```
+
+
+- Ahora, vamos a graficar estas alturas estandarizadas. Observa cómo ahora es más fácil comparar las alturas de las jirafas en cada isla, ya que todas están en la misma escala de puntuaciones Z. 
+- Además, observa cómo la distribución normal estandarizada tiene una media de 0 y una desviación estándar de 1, lo que facilita la comparación entre las alturas de las jirafas en cada isla. 
+- Se resaltan las áreas correspondientes a 1, 2 y 3 desviaciones estándar de la media, que corresponden al 68.27%, 95.45% y 99.73% de los datos en una distribución normal.
+- No te preocupes por el código. En las próximas lecciones veremos una introducción a la visualización de datos en R. Este es un gráfico un poco más complejo que los que veremos en las primeras lecciones. Sin embargo, más adelante con la práctica, podrás entender y crear gráficos como este en las últimas lecciones del curso. 
+- El gráfico utiliza curvas de densidad, que son estimaciones suavizadas de los histogramas.
+
+```{webr}
+# Cargar librerías necesarias
+library(ggplot2)
+library(dplyr)
+library(tidyr)
+
+# Estandarizar las alturas por isla
+alturas_df_estandarizadas <- alturas_df %>%
+  group_by(isla) %>%
+  mutate(altura_estandarizada = scale(altura))
+
+# Crear un data frame con las desviaciones estándar (1, 2 y 3)
+desviaciones_df <- tibble(desviaciones = 1:3) %>%
+  crossing(isla = unique(alturas_df_estandarizadas$isla)) %>%
+  mutate(
+    lim_inf = -desviaciones,  # Límite inferior (de -1, -2, -3)
+    lim_sup = desviaciones    # Límite superior (de 1, 2, 3)
+  )
+# unir dataframes
+alturas_desviaciones_unidas <- full_join(alturas_df_estandarizadas, desviaciones_df, relationship = "many-to-many")
+
+# Crear el gráfico de densidades estandarizadas para cada isla y desviación estándar
+ggplot(alturas_desviaciones_unidas, aes(x = altura_estandarizada)) +
+  geom_density(aes(fill = isla), alpha = 0.5) +  # Densidad estandarizada por isla
+  # Resaltar las áreas correspondientes a 1, 2 y 3 desviaciones estándar
+  geom_rect(
+            aes(xmin = lim_inf, xmax = lim_sup, ymin = 0, ymax = Inf, fill = isla),
+            alpha = 0.3) +
+  # Añadir la distribución normal estandarizada
+  stat_function(fun = dnorm, args = list(mean = 0, sd = 1), color = "black", size = 1) +
+  # Títulos y etiquetas
+  labs(
+    title = "Distribución Normal Estandarizada por Isla y Nivel de Desviación",
+    subtitle = "Áreas bajo la curva correspondientes a 1, 2 y 3 desviaciones estándar",
+    x = "Altura Estandarizada (Z)",
+    y = "Densidad",
+    fill = "Isla"
+  ) +
+  # Sub gráfico para cada isla y nivel de desviación estándar
+  facet_wrap(isla ~ desviaciones) +
+  # Personalización del tema
+  theme_classic() +
+  theme(legend.position = "top")
+
+```
 
 ## Reflexión
 

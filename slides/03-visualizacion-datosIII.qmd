@@ -1,6 +1,6 @@
 ---
-title: "Visualización de Datos III"
-subtitle: "Ejercicio"
+title: "Ejercicio II Visualización y Distribución de Datos"
+subtitle: "Más tipos de gráficos con la gramática de ggplot"
 format: live-html
 sidebar: false
 webr:
@@ -35,10 +35,11 @@ Argentina <- gapminder %>%
 ## Diferentes gráficos, código muy similar
 - Observa cómo el código para diferentes tipos de gráficos es muy similar.
 - Para mostrar esto usaremos los datos de `gapminder` y el dataset `Argentina` que ya hemos cargado por ti.
-- Vamos a realizar un gráfico de puntos, un gráfico de líneas, un gráfico de barras y un gráfico de áreas.
+- Observa el código que usamos para generar el gráfico de dispersión, el gráfico de líneas y el gráfico de barras.
 
 ```{webr}
-#| autorun: true
+#| edit: false
+#| runbutton: false
 
 ggplot(data = gapminder, 
        mapping = aes(x = gdpPercap, y = lifeExp, 
@@ -49,7 +50,8 @@ ggplot(data = gapminder,
 ```
 
 ```{webr}	
-#| autorun: true
+#| edit: false
+#| runbutton: false
 
 ggplot(data = Argentina, 
        mapping = aes(x = year, y = pop)) +
@@ -58,7 +60,8 @@ ggplot(data = Argentina,
 ```
 
 ```{webr}
-#| autorun: true
+#| edit: false
+#| runbutton: false
 
 ggplot(data = Argentina, 
        mapping = aes(x = year, y = pop)) +
@@ -69,16 +72,15 @@ ggplot(data = Argentina,
 ## Más ejemplos
 
 - En los siguientes ejemplos vamos a utilizar disintos paquetes de R que utilizan una gramática muy similar a ggplot.
-- El objetivo es que veas cómo la gramática de los gráficos es muy similar en diferentes paquetes de R.
-- Sin embargo, el resultado visual puede ser muy diferente.
+- El objetivo es que veas cómo la gramática de los gráficos es muy similar en diferentes paquetes de R. Sin embargo, el gráfico resultante  puede ser muy diferente.
 
 ```{webr}
 library(ggseg)
 
 ggplot() +
-  geom_brain(atlas = dk) +
-  guides(fill = guide_legend(ncol = 4)) +
-  theme_void() +
+  geom_brain(atlas = dk) + # geom para atlas cerebral
+  guides(fill = guide_legend(ncol = 4)) + # guía de leyenda
+  theme_void() + # tema visual
   theme(legend.position = "bottom",
         legend.text = element_text(size = 8))
 
@@ -88,33 +90,43 @@ ggplot() +
 ```{webr}
 #| warning: false
 
-library(ggridges)
+library(ggridges) # paquete para gráficos de densidad
+library(viridis) # paquete para paletas de colores
 
+# datos para gráfico de densidad de diamantes
 df <- diamonds[1:100, c("color", "depth")]
 
 ggplot(df, aes(x = depth, y = color, fill = stat(x))) +
-  geom_density_ridges_gradient() +
-  scale_fill_viridis_c(name = "Depth", option = "C")
+  geom_density_ridges_gradient() + # geom para gráfico de densidad
+  scale_fill_viridis_c(name = "Depth", option = "C") # escala de color
 
 ```
 
 
 ```{webr}
-library(ggstream)
+library(ggstream) # paquete para gráficos de flujo
 
+# datos para gráfico de flujo
 cols <- c("#FFB400", "#FFC740", "#C20008", "#FF020D", "#13AFEF")
 
 ggplot(blockbusters, aes(x = year, y = box_office, fill = genre)) +
-  geom_stream(color = 1, lwd = 0.25) +
-  scale_fill_manual(values = cols) +
-  theme_minimal()
+  geom_stream(color = 1, lwd = 0.25) + # geom para gráfico de flujo
+  scale_fill_manual(values = cols) + # escala de color con ek vector cols
+  theme_minimal() # tema visual
 
 ```
 
 ## Ejercicio
 
 - Explora [este enlace](https://r-charts.com/ggplot2/) y [este enlace](https://r-graph-gallery.com/ggplot2-package.html) y busca algunas gráficas que te parezcan interesantes.
-- Intenta reeplicar la gráfica en tu RStudio de tu computadora.
+- Intenta reeplicar la gráfica en tu RStudio de tu computadora. Puedes usar la consola que está en la parte inferior de la página, aunque te recomiendo que lo hagas en tu RStudio para mayor compatibilidad.
 - Estas páginas vienen con el código necesario para replicar las gráficas.
 - Intenta modificar los datos y los atributos visuales para ver cómo cambia la gráfica.
-- Elige alguna gráfica que tenga un codigo facil de entender con una estructura similar a la que hemos visto en este ejercicio.
+- Elige alguna gráfica que tenga un codigo facil de entender con la gramática de ggplot que hemos visto en este módulo.
+- El objetivo es que veas que con lo poco que hemos visto en este módulo, puedes crear gráficas muy interesantes y complejas gracias a que se tiende a seguir una gramática muy similar en diferentes paquetes de R.
+- Como verás, hay paquetes muy especializados que te permiten crear gráficas muy interesantes y complejas para tu área de estudio.
+
+```{webr}
+#| min-lines: 2
+
+```

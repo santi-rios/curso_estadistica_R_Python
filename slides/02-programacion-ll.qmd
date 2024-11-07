@@ -21,17 +21,11 @@ webr:
     packages: 
         - dplyr
         - purrr
-# pyodide: 
-#     packages: 
-#         - scikit-learn
-#         - pandas
-#         - matplotlib
-#         - seaborn
-#         - statsmodels
 engine: knitr
 ---
 
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
 
 ## Introducción
 
@@ -47,7 +41,7 @@ engine: knitr
 - Como verás, en lugar de usar bucles, usaremos funciones que se encargan de realizar estas tareas de manera más efectiva y eficiente.
 
 ## Datos de ejemplo {.smaller}
-::: {.nonincremental}
+
 - En esta lección usaremos el dataset `starwars` que viene incorporado en el paquete `dplyr`.
 - Este dataset contiene 87 observaciones y 14 variables con información sobre personajes de la saga de Star Wars:
   - name: Nombre del personaje
@@ -62,7 +56,7 @@ engine: knitr
   - films: Lista de películas en las que apareció el personaje
   - vehicles: Lista de vehículos que ha pilotado el personaje
   - starships: Lista de naves estelares que el personaje ha pilotado
-:::
+
 
 ## Contar valores únicos {.smaller}
 

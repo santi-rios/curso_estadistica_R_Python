@@ -62,7 +62,7 @@ El conjunto de datos pinguinos contiene las siguientes variables:
 | `isla` | Isla donde se encontró el pingüino
 | `largo_pico_mm` | Longitud del pico en milímetros
 | `alto_pico_mm` | Profundidad del pico en milímetros
-| `largoo_aleta_mm` | Longitud de la aleta en milímetros
+| `largo_aleta_mm` | Longitud de la aleta en milímetros
 | `masa_corporal_g` | Masa corporal en gramos
 | `sexo` | Sexo del pingüino
 | `anio` | Año de la medición
@@ -93,10 +93,10 @@ if (identical(.result, glimpse(pinguinos))) {
 ```
 
 
-> Utiliza la siguiente consola para contestar esta pregunta: ¿Cuántas especies de pingüinos hay en el conjunto de datos? Recuerda que los nombres de las especies están en la variable `especie`. Puedes usar cualquier método que prefieras para encontrar la respuesta. Cuando tengas la respuesta, escribe los nombres de las especies en la línea punteada en la consola de abajo y checa tu respuesta. **NOTA**. Asegurate de usar mayúsculas y no poner acentos en los nombres de las especies. 
+> Utiliza la siguiente consola para contestar esta pregunta: ¿Cuántas especies de pingüinos hay en el conjunto de datos? Recuerda que los nombres de las especies están en la variable `especie`. Puedes usar cualquier método que prefieras para encontrar la respuesta. Cuando tengas la respuesta, escribe los nombres de las especies en la línea punteada en la consola de abajo y checa tu respuesta. **NOTA**. Asegurate de usar mayúsculas y no poner acentos en los nombres de las especies. Escribe los nombres en órden alfabético en tu respuesta.
 
 ```{webr}
-
+#| min-lines: 2
 
 ```
 
@@ -189,7 +189,7 @@ print(nombre_especies)
 > Utiliza la siguiente consola para contestar esta pregunta: ¿Cuántos pingüinos hembras hay? Recuerda que los sexos en la variable `sexo`. Puedes usar cualquier método que prefieras para encontrar la respuesta. Cuando tengas la respuesta, escribe el valor en la línea punteada en la consola de abajo y checa tu respuesta. 
 
 ```{webr}
-
+#| min-lines: 2
 
 ```
 

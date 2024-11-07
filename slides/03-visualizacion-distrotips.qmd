@@ -1,21 +1,11 @@
 ---
 title: "Distribuciones de Probabilidad III"
 subtitle: "Trucos para graficar distribuciones"
-format: 
-    live-revealjs: 
-        scrollable: true
+format: live-html
+sidebar: false
 webr:
-    packages: 
-        - ggplot2
-        # - plotly
-        # - tweenr
-# pyodide: 
-#     packages: 
-#         - scikit-learn
-#         - pandas
-#         - matplotlib
-#         - seaborn
-#         - statsmodels
+  packages:
+  - ggplot2
 engine: knitr
 ---
 
