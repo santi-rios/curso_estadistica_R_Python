@@ -82,7 +82,7 @@ Supongamos que queremos cambiar los ejes del gráfico, ¿cómo cambiarías el c�
 #| exercise: grafico_puntos
 
 ggplot(data = gapminder, 
-       aes(x = gdpPercap, y = lifeExp, 
+       aes(______, 
                      color = continent, 
                      size = pop))+
     geom_point()
@@ -242,8 +242,6 @@ Hay dos formas de hacer un gráfico de barras en `ggplot2`, una forma es utiliza
 
 Vamos a transformar el gráfico anterior a barras.  ¿Cómo realizarias este cambio?, ¿cuál de las dos opciones de geometrías utilizarías? 
 
-Modifica el siguiente código para generar un gráfico de barras que nos muestre los años en el eje x y la población en el eje y.
-
 
 ```{webr} 
 #| exercise: grafico_barras
@@ -363,7 +361,7 @@ draw_plot <- function(mean, sd) {
 ```
 :::
 
-Escribe el código de R necesario para crear los valores en y de la distribución normal de arriba usando la función `dnorm()`. Cuando estés listo, haz click en el botón _"Run Code"_ para ver el gráfico. Recuerda que `dnorm()` toma como argumentos el vector de valores (en este caso, `x`), la media y la desviación estándar.
+Escribe el código de R necesario para simular los valores de la distribución normal estandarizada (arriba) usando la función `dnorm()`. Cuando estés listo, haz click en el botón _"Run Code"_ para ver el gráfico. Recuerda que `dnorm()` toma como argumentos el vector de valores (en este caso, `x`) y los parámetros que definen a la distribución normal.
 
 ```{webr}
 #| exercise: tangle

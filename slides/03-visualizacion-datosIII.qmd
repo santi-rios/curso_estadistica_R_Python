@@ -11,6 +11,8 @@ webr:
   - ggseg
   - ggridges
   - ggstream
+  - leaflet
+  - ggiraph
 engine: knitr
 ---
 
@@ -113,6 +115,39 @@ ggplot(blockbusters, aes(x = year, y = box_office, fill = genre)) +
   geom_stream(color = 1, lwd = 0.25) + # geom para gráfico de flujo
   scale_fill_manual(values = cols) + # escala de color con ek vector cols
   theme_minimal() # tema visual
+
+```
+
+
+- El siguiente gráfico es interactivo. Puedes pasar el cursor sobre los puntos para ver información adicional.
+- Observa que la estructura del código es muy similar a la que hemos visto en ggplot, solo que en lugar de usar `geom_point()` usamos `geom_point_interactive()` y para visualizarlo, en lugar de usar plot() o print() usamos `girafe(ggobj = )`. El argumento `tooltip` es para mostrar información adicional al pasar el cursor sobre los puntos, en este caso, el modelo del auto que está en la variable `model`. `data_id` es para identificar cada punto de manera única. `hover_nearest` es para que al pasar el cursor sobre los puntos, se muestre la información del punto más cercano.
+- Vamos a usar el dataset `mpg` que ya viene cargado en R y corresponde a datos de consumo de combustible de diferentes autos.
+
+```{webr}
+#| warning: false
+library(ggiraph)
+
+g <- ggplot(mpg, aes(x = displ, y = cty)) +
+      geom_point_interactive(aes(tooltip = model, data_id = model), 
+                                size = 3, hover_nearest = TRUE)
+
+girafe(ggobj = g)
+
+```
+
+- Aunque el siguiente gráfico es un poco diferente, observa que la estructura del código es muy similar a la que hemos visto en ggplot.
+- En lugar de `ggplot()` usamos `leaflet()`, en lugar de `geom_` usamos `add_` y en lugar de `aes(x, y)` usamos `lng` y `lat` para las coordenadas.
+
+```{webr}
+#| warning: false
+
+library(leaflet)
+
+leaflet() %>%
+  addTiles() %>% 
+  addPopups(lng=-99.18735796750228, 
+            lat=19.33348477957739, 
+            popup="Biblioteca Central")
 
 ```
 

@@ -1,5 +1,5 @@
 ---
-title: "Teoría del Límite Central"
+title: "Teorema del Límite Central"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com
@@ -32,12 +32,16 @@ engine: knitr
 
 - El **Teorema del Límite Central (TLC)** es uno de los conceptos más fundamentales en estadística. 
 - **Definición formal del Teorema del Límite Central:** Cuando se extraen muestras de una población con reemplazo y el tamaño de las muestras (n) aumenta, la distribución de los **promedios muestrales** de dichas muestras se aproximará cada vez más a una **distribución normal**. Esto es cierto independientemente de la forma de la distribución original de la población, y la normalidad de los promedios muestrales suele aparecer cuando  $n \geq 30$ .
+- cuando hablamos de reemplazo, significa que cada vez que tomamos una muestra, la devolvemos a la población original antes de tomar la siguiente muestra. Esto es en contrastraste con el muestreo sin reemplazo, donde no se permite que los elementos se repitan en las muestras ya que se eliminan de la población original. 
+- Un ejemplo de muestreo con reemplazo es cuando lanzamos una moneda y anotamos los resultados, luego volvemos a lanzar la moneda y anotamos los resultados, y así sucesivamente.
+- Un ejemplo de muestreo sin reemplazo es cuando seleccionamos una carta de una baraja de cartas y no la devolvemos antes de seleccionar la siguiente carta.
 - Vamos a ver un ejemplo para entender mejor cómo funciona el TLC y por qué es tan importante en estadística aplicada.
-
 
 ## Ejemplo: Niveles de Glucosa en Sangre {.smaller}
 
 **Población Original con Distribución Sesgada a la Izquierda**
+
+![](https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQSl0d0jY2EjoOC70ewuhyiMu4ljEDwMY9TNA&s)
 
 . . .
 
@@ -47,7 +51,8 @@ Podemos simular una distribución sesgada a la izquierda en R utilizando la func
 
 ## {.smaller}
 
-En este caso, la **media** de los niveles de glucosa en la población es de **7.13** mmol/L, y la **desviación estándar** es de **1.61** mmol/L.
+En este caso, la **media** de los niveles de glucosa en la población es de **7.13** mmol/L, y la **desviación estándar** es de **1.61** mmol/L. 'rbeta' tomará dos argumentos: el número de observaciones que queremos generar (10,000) y los parámetros de la distribución beta (5 y 2) que determinan la forma de la distribución (no te preocupes demasiado por estos valores, solo queremos simular una distribución sesgada a la izquierda).  
+
 
 ```{webr}
 # Generamos una distribución sesgada a la izquierda
@@ -81,6 +86,7 @@ glucosa_plot
 ## Generar Promedios Muestrales {.smaller}
 
 - Para ilustrar el TLC, vamos a tomar muestras de tamaño n = 30 de nuestra población de niveles de glucosa y calcular los promedios muestrales. Luego, repetiremos este proceso varias veces para ver cómo se distribuyen los promedios.
+- Vamos a usar la función `sample` para tomar muestras aleatorias de tamaño 30 y la función `replicate` para repetir este proceso varias veces (100 veces). Luego, visualizaremos la distribución de los promedios muestrales.
 
 ```{webr}
 # Paso 1: Tomamos 100 muestras de tamaño 30 y calculamos los promedios

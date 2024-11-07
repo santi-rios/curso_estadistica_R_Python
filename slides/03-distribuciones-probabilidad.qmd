@@ -37,7 +37,7 @@ engine: knitr
 
 - Antes de comenzar con las lecciones de estadística, es importante entender las **distribuciones de probabilidad**.
 - Las *distribuciones de probabilidad* describen cómo se distribuyen los valores posibles de una variable aleatoria. Estas representan la probabilidad de los valores que puede tomar una variable, siendo algunos valores más probables que otros.
-- Una **variable aleatoria** es una variable ([lección previa](https://riverorca.com/mod/hvp/view.php?id=224)) cuyos valores son el resultado de un fenómeno aleatorio, como el lanzamiento de un dado o la altura de un grupo de personas.
+- Una **variable aleatoria** es una variable ([lección previa](https://riverorca.com/mod/hvp/view.php?id=236)) cuyos valores son el resultado de un fenómeno aleatorio, como el lanzamiento de un dado o la altura de un grupo de personas.
 - En las siguientes lecciones, abordaremos algunas de las distribuciones más comunes y cómo trabajarlas en R.
 - Para ello, nos enfocaremos en un ejemplo fictício de alturas de jirafas "miniatura" en 2 diferentes islas.
 

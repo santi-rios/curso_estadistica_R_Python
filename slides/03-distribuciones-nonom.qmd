@@ -68,7 +68,14 @@ engine: knitr
 
 :::
 
-##
+## {.smaller}
+
+- Observa que utilizamos la función `rnorm()` para generar datos que sigan una distribución normal. Esta función toma tres argumentos principales: 
+- `n`: número de observaciones aleatorias a ser generadas. En este caso, generaremos 1000 observaciones.
+- `mean`: la media de la distribución normal. Establecemos la media en 50.
+- `sd`: la desviación estándar de la distribución normal. Establecemos la desviación estándar en 10.
+- Como estamos generando datos aleatorios, establecemos una semilla (`set.seed()`) para que los resultados sean reproducibles. Si no estableces una semilla, los resultados serán diferentes cada vez que ejecutes el código (aunque seguirán siendo datos que siguen una distribución normal con media 50 y desviación estándar 10).
+
 
 ```{webr}
 #| warning: false
@@ -99,7 +106,7 @@ ggplot(df_normales, aes(x = valor)) +
 - Observa que para simular datos de una distribución binomial, usamos la función `rbinom()` en lugar de `rnorm()`.
 - `rbinom()` genera datos de una distribución binomial con los parámetros especificados. Toma los siguientes argumentos: 
 
-. . .
+##
 
 ```r
 rbinom(n,    # Número de observaciones aleatorias a ser generadas
@@ -162,10 +169,15 @@ ggplot(data.frame(resultados), aes(x = resultados)) +
 ## Distribución de Poisson {.smaller}
 
 ::: {.incremental}
+
 - La distribución de Poisson es una distribución de probabilidad que describe el número de eventos que ocurren en un intervalo de tiempo o espacio, cuando estos eventos suceden de manera independiente y con una tasa promedio constante.
+
 - Se utiliza para modelar eventos raros o inusuales, como accidentes, llamadas telefónicas, o errores en un proceso.
+
 - La distribución de Poisson tiene un solo parámetro, la tasa de ocurrencia ($\lambda$), que representa el número promedio de eventos en el intervalo.
+
 - La distribución de Poisson es útil para modelar eventos discretos y se utiliza en situaciones donde los eventos son raros y aleatorios.
+
 - A continuación, veremos cómo se ve la distribución de Poisson y cómo se puede aplicar en la práctica.
 
 :::
@@ -189,7 +201,7 @@ En este caso, la tasa promedio de mutaciones por célula es 3 y el suceso que es
 
 ```{webr}
 # Paso 1: Simular el número de mutaciones en 1000 células
-set.seed(123)  # Fijar semilla para reproducibilidad
+set.seed(12)  # Fijar semilla para reproducibilidad
 
 mutaciones <- rpois(n = 1000, lambda = 3)
 
@@ -222,10 +234,9 @@ ggplot(data.frame(mutaciones), aes(x = mutaciones)) +
 
 ::: {.incremental}
 - Además de la distribución normal, binomial y de Poisson, existen muchas otras distribuciones de probabilidad que se utilizan en diferentes contextos.
-- Algunas de las distribuciones más comunes incluyen la distribución exponencial, la distribución de Weibull, la distribución gamma, la distribución de Cauchy, entre otras.
 - En [este enlace](https://www.stat.umn.edu/geyer/5101/examp/rlook.html) y [este](https://rstudio.github.io/r-manuals/r-intro/Probability-distributions.html) puedes encontrar una lista de las distribuciones de probabilidad que puedes encontrar en R.
-- Aunque en el curso nos enfocaremos en la distribución normal, veremos que muchas pruebas estadísticas se basan en otras distribuciones, por lo que es útil conocerlas y comprender sus propiedades.
-- Algunos de estos ejemplos, don la distribución chi-cuadrada, t de Student, F de Fisher, entre otras, son fundamentales en la inferencia estadística y en el análisis de datos.
+- Aunque en el curso nos enfocaremos en la distribución normal, veremos que muchas pruebas estadísticas utilizan otras distribuciones, por lo que es útil conocerlas y comprender sus propiedades.
+- Algunos de estos ejemplos, son la distribución chi-cuadrada, t de Student, F de Fisher, entre otras que son fundamentales en la inferencia estadística y en el análisis de datos.
 - Solo para conocerlas, veamos rápidamente algunas de estas distribuciones utilizadas en análisis estadístico. 
 :::
 
@@ -241,6 +252,6 @@ ggplot(data.frame(mutaciones), aes(x = mutaciones)) +
 | **Binomial**                | Prueba binomial, prueba exacta de Fisher                     | Evaluación de proporciones de éxito (por ejemplo, respuesta a un tratamiento) |            |
 
 
-
+# FIN
 
 

@@ -27,7 +27,8 @@ Además de los histogramas, los cuales representan la distribución de una varia
 - Primero, carguemos las librerías necesarias y exploremos el conjunto de datos.
 
 ```{webr}
-#| autorun: true
+#| edit: false
+#| runbutton: false
 
 # Cargar paquete necesario
 library(ggplot2)
@@ -52,6 +53,27 @@ El conjunto de datos pinguinos contiene las siguientes variables:
 | `masa_corporal_g` | Masa corporal en gramos
 | `sexo` | Sexo del pingüino
 | `anio` | Año de la medición
+
+
+::: {.callout-tip}
+## Definir un tema global para ggplot
+
+- Como ya vimos, podemos usar temas de ggplot para personalizar la apariencia de nuestros gráficos.
+- Para no tener que estar especificando el tema en cada gráfico, podemos definir un tema global que se aplique a todos los gráficos que creemos.
+- Además, esto nos permite mantener la consistencia en la apariencia de nuestros gráficos.
+- Para esto, usamos la función `theme_set()` y especificamos el tema que queremos aplicar. Por ejemplo, vamos a aplicar el tema clásico a todos nuestros gráficos con este código (el código se ejecuta automáticamente al cargar esta página):
+
+```{webr}
+#| edit: false
+#| runbutton: false
+
+# Definir un tema global para ggplot
+theme_set(theme_classic())
+```
+
+- Puedes conocer más sobre los temas de ggplot en la [este enlace](https://r-charts.com/ggplot2/themes/).
+
+:::
 
 ## Histogramas y gráficos de densidad
 
@@ -81,7 +103,7 @@ ggplot(pinguinos, aes(x = masa_corporal_g)) +
   facet_grid(~ especie)
 ```
 
-- Otra forma de visualizar la distribución de una variable continua es mediante un gráfico de densidad.
+- Otra forma de visualizar la distribución de una variable continua es mediante un ***gráfico de densidad***.
 - Estos gráficos son similares a los histogramas, pero en lugar de dividir los datos en intervalos, muestran la distribución de los datos como una curva suave.
 - En estos gráficos, en lugar de representar la frecuencia de los datos, se muestra la densidad de probabilidad de los datos. El área bajo la curva es igual a 1 ya que representa la probabilidad total de los datos.
 - Ahora, en lugar de usar la función `geom_histogram()`, usaremos la función `geom_density()` para crear un gráfico de densidad de la masa corporal de los pingüinos.
@@ -207,8 +229,13 @@ ggplot(pinguinos, aes(x = especie, y = masa_corporal_g)) +
 
 - Ahora, un gráfico de violín es una forma de visualizar la distribución de los datos que combina aspectos del boxplot y el gráfico de densidad.
 -  La forma del "violín" muestra la densidad de los datos en varios puntos a lo largo del eje y, lo que permite ver dónde se encuentran la mayoría de los datos (zonas más anchas) y las zonas menos densas (zonas más estrechas).
--  También podemos ver la **simetría** de nuestros daton: si el gráfico de violín es  simétrico, significa que tenemos aproximadamente la misma densidad en ambos lados.
+-  También podemos ver la **simetría** de nuestros datos: si el gráfico de violín es  simétrico, significa que tenemos aproximadamente la misma densidad en ambos lados.
 -  A diferencia del boxplot, que solo muestra un resumen de los datos, el gráfico de violín te permite ver la forma completa de la distribución.
+
+Puedes pensar en un gráfico de violín como un histograma girado 90 grados y reflejado a lo largo del eje y, por ejemplo:
+
+![](https://wac-cdn.atlassian.com/dam/jcr:3eadd6ba-3f83-484b-ad28-8fed0f82c968/faceted-histogram-example.png?cdnVersion=2409)
+
 
 
 ```{webr}
@@ -235,9 +262,6 @@ ggplot(pinguinos, aes(x = especie, y = masa_corporal_g, fill = sexo)) +
 
 ```
 
-Puedes pensar en un gráfico de violín como un histograma girado 90 grados y reflejado a lo largo del eje y, por ejemplo:
-
-![](https://wac-cdn.atlassian.com/dam/jcr:3eadd6ba-3f83-484b-ad28-8fed0f82c968/faceted-histogram-example.png?cdnVersion=2409)
 
 
 
@@ -285,8 +309,7 @@ ggplot(pinguinos, aes(x = masa_corporal_g, y = largo_aleta_mm, color = especie))
   labs(title = "Relación entre Masa Corporal y Longitud del Pico",
        x = "Masa Corporal (g)",
        y = "Longitud de Aleta (mm)",
-       color = "Especie") +
-  theme_minimal()
+       color = "Especie") 
 
 ```
 
@@ -299,13 +322,14 @@ ggplot(pinguinos, aes(x = masa_corporal_g, y = largo_aleta_mm, color = especie))
 ::: {.callout-tip}
 - Una forma fácil de explorar todas las relaciones entre variables continuas en un conjunto de datos es mediante un **gráfico de pares**. 
 - En un gráfico de pares, se muestran todas las combinaciones posibles de gráficos de dispersión entre las variables continuas en un conjunto de datos. 
-- Esto puede ser útil para identificar patrones y asociaciones entre las variables. 
+- Esto puede ser útil para identificar patrones y asociaciones entre las variables, en especial si tienes muchas variables continuas en tus datos.
 - Para esto vamos a usar la función `ggpairs()` del paquete `GGally`. Especificamos las columnas que queremos incluir en el gráfico de pares con el argumento `columns`. 
 - Por el momento no te preocupes por el código ni los valores de correlación, simplemente observa cómo se ven las relaciones entre las variables en el gráfico de pares. En lecciones futuras, profundizaremos en cómo interpretar estos gráficos y cómo calcular correlaciones y regresiones.
-- A simple vista, ¿puedes identificar alguna relación entre las variables en el gráfico de pares? Observa cómo masa corporal y largo de aleta siguen un patrón muy claro, donde a medida que una variable aumenta, la otra también lo hace. También pon atención en la relación de alto_pico y largo_aleta, donde se observan dos grupos claramente diferenciados: uno con pinguinos de menor largo de aleta y mayor alto de pico (Adelia y Barbijo) y otro con pinguinos de mayor largo de aleta y menor alto de pico (Papúa). Otras relaciones como masa corporal y alto de pico no parecen tener una relación tan clara. Sin embargo, recuerda que estas son solo observaciones visuales y no análisis formales de correlación, las cuales veremos más adelante y si expresan una relación cuantitativa entre las variables.
+- A simple vista, ¿puedes identificar alguna relación entre las variables en el gráfico de pares? Observa cómo masa corporal y largo de aleta siguen un patrón muy claro, donde a medida que una variable aumenta, la otra también lo hace. También pon atención en la relación de alto_pico y largo_aleta, donde se observan dos grupos claramente diferenciados: uno con pinguinos de menor largo de aleta y mayor alto de pico (Adelia y Barbijo) y otro con pinguinos de mayor largo de aleta y menor alto de pico (Papúa). Otras relaciones como masa corporal y alto de pico no parecen tener una relación tan clara. Sin embargo, recuerda que estas son solo observaciones visuales y no análisis formales de correlación, las cuales veremos más adelante.
 
 ```{webr}
-#| autorun: true
+#| edit: false
+#| runbutton: false
 #| warning: false
 
 # install.packages("GGally")
@@ -316,9 +340,14 @@ library(GGally)
 ggpairs(pinguinos, 
         columns = c("masa_corporal_g", "largo_pico_mm", "alto_pico_mm", "largo_aleta_mm"), 
         aes(color = especie,  # Color
-            alpha = 0.5))
+            alpha = 0.5)) +
+  theme_bw() # Tema nuevo
 
 ```
+
+
+- **NOTA 1**: Observa que en este gráfico especificamos un nuevo tema con `+ theme_bw()`. A pesar de que al inicio especificamos un tema global, podemos cambiar el tema de un gráfico específico de esta forma. En este caso, usamos `theme_bw()` porque incorpora una cuadrícula de fondo que facilita la visualización de los gráficos de dispersión. 
+- **NOTA 2**: En este gráfico de pares, cada celda muestra un gráfico de dispersión entre dos variables. La diagonal principal muestra un histograma de cada variable. Los valores en la parte inferior de cada celda son los coeficientes de correlación de Pearson entre las dos variables. Estos valores varían entre -1 y 1, donde -1 indica una correlación negativa perfecta, 1 indica una correlación positiva perfecta y 0 indica que no hay correlación. En lecciones futuras, veremos cómo interpretar estos valores y cómo calcular correlaciones y regresiones de manera más formal.
 
 :::
 
@@ -338,8 +367,7 @@ ggplot(pinguinos, aes(x = especie)) +
   geom_bar(fill = "skyblue", color = "black") +
   labs(title = "Conteo de Pingüinos por Especie",
        x = "Especie",
-       y = "Conteo") +
-  theme_minimal()
+       y = "Conteo") 
 ```
 
 - **Conteo automático en el eje Y**: `geom_bar()` cuenta automáticamente el número de observaciones (pingüinos) en cada categoría.
@@ -350,7 +378,9 @@ ggplot(pinguinos, aes(x = especie)) +
 Solo como nota, si en lugar de contar las observaciones, quisieras mostrar un valor numérico específico (por ejemplo, el promedio de la **masa corporal** por especie), usaríamos `geom_col()`, que mapea explícitamente la altura de las barras a un valor numérico del dataset. Como se mencionó, esto se verá más adelante, pero aquí tienes un ejemplo de cómo se vería:
 
 ```{webr}
-#| autorun: true
+#| edit: false
+#| runbutton: false
+#| warning: false
 
 library(dplyr)
 # Calcular el promedio de masa corporal por especie
@@ -363,8 +393,7 @@ ggplot(pinguinos_summary, aes(x = especie, y = masa_promedio)) +
   geom_col(fill = "lightgreen", color = "black") +
   labs(title = "Masa Corporal Promedio por Especie",
        x = "Especie",
-       y = "Masa Corporal Promedio (g)") +
-  theme_minimal()
+       y = "Masa Corporal Promedio (g)") 
 ```
 
 **Comparación entre `geom_bar()` y `geom_col()`**:
@@ -372,9 +401,6 @@ ggplot(pinguinos_summary, aes(x = especie, y = masa_promedio)) +
 - **`geom_col()`**: Se usa cuando quieres que las alturas de las barras representen un valor numérico específico, como una suma, un promedio u otra medida. Úsala cuando ya tienes valores calculados (por ejemplo, promedios, sumas) y quieres representarlos con barras.
 
 :::
-
-I
-
 
 ## EXTRA: Explora las variables de los pingüinos
 
@@ -406,3 +432,32 @@ viewof measure = Inputs.select(
 );
 do_penguins_density(measure, species);
 ```
+
+
+::: {.callout-tip}
+
+El gráfico anterior es interactivo y está construido con una serie de funciones y  programación condicional. En este caso, usamos la función `do_penguins_density` para crear un gráfico de densidad de una variable seleccionada en función de una especie de pingüino seleccionada. Este tipo de gráficos es más complejo y no se verá en el curso, pero sirve como muestra del poder de R en la visualización de datos. Les dejo el código aquí por si les interesa explorar más sobre cómo se construyó este gráfico. Aunque ahora puede que no lo entiendan del todo, verán que a medida que avancen en el curso, podrán entender y crear gráficos más complejos como este. Esta es la base de cómo se construyen aplicaciones de análisis de datos con R. En un futuro, habrá un curso de desarrollo de aplicaciones con R.
+
+
+```r
+do_penguins_density <- function(measure, sp) {
+  filtered <- pinguinos |> filter(especie == sp)
+  ggplot(data = filtered, aes(x = .data[[measure]])) +
+  geom_density(aes(fill = especie), alpha = 0.8, position = "identity") +
+  labs(title = "Penguins 🐧")
+}
+```
+```ojs
+//| echo: false
+viewof species = Inputs.checkbox(
+  [ "Adelia", "Barbijo", "Papúa" ],
+  { value: ["Adelia", "Barbijo"], label: "Especies" }
+);
+viewof measure = Inputs.select(
+  [ "largo_aleta_mm", "largo_pico_mm", "alto_pico_mm", "masa_corporal_g" ],
+  { label: "Variables" }
+);
+do_penguins_density(measure, species);
+```
+
+:::

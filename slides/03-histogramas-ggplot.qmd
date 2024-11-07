@@ -230,18 +230,24 @@ str(alturas_df)
 
 ## {.smaller}
 
-- Siguiendo la estructura básica que ya conocemos, vamos a crear un histograma con los datos de las jirafas.
-- Nota que ahora usam `binwidth = 1` en `geom_histogram()` para especificar el ancho de las barras del histograma. Puedes experimentar con diferentes valores para ver cómo cambia el gráfico.
+- Siguiendo la estructura básica que ya conocemos, vamos a crear un histograma con los datos de las jirafas (`alturas_df`).
+- Queremos ver cómo se distribuyen las alturas (`altura`) de las jirafas en las dos islas.
+- Nota que ahora usam `binwidth = 1` en `geom_histogram()` para especificar el ancho de las barras del histograma. Puedes experimentar con diferentes valores para ver cómo cambia el gráfico. En la próxima diapositiva está la solución.
+
 
 ```{webr}
-
 # Crear un objeto ggplot
+ggplot(data = ______, 
+        aes(x = ______)) +
+  geom_histogram(binwidth = 1)
+```
+
+## solución 
+
+```r
 ggplot(data = alturas_df, 
         aes(x = altura)) +
   geom_histogram(binwidth = 1)
-
-
-
 ```
 
 ## {.smaller}
@@ -263,8 +269,8 @@ ggplot(data = alturas_df,
 ## Nota {.smaller}
 
 ::: {.callout}
-- `fill = type` le dice a ggplot que queremos que cada barra del histograma se llene con un color diferente según el tipo de isla.
-- No confundir `fill` con `color`. `fill` se refiere al relleno de las barras, mientras que `color` se refiere al contorno de las barras. 
+- `fill = isla` le dice a ggplot que queremos que cada barra del histograma se llene con un color diferente según el tipo de isla.
+- No confundir `fill` con `color`... `fill` se refiere al relleno de las barras, mientras que `color` se refiere al contorno de las barras. 
 - Observa la diferencia si cambias `fill` por `color` en el código.
 
 ```{webr}
@@ -336,35 +342,59 @@ ggplot(data = alturas_df,
 ```{webr}	
 
 # guardar el gráfico en un objeto llamado p
-
-p <- ggplot(data = alturas_df, 
+# recuerda que para asignar un objeto en R se usa el signo "<-"
+# si asignas correctamente, el código mostrará el gráfico
+ggplot(data = alturas_df, 
         aes(x = altura, fill = isla)) +
   geom_histogram(binwidth = 1) +
   scale_fill_manual(values = c("#00cd00", "#00c5cd")) +
     theme_minimal() 
+
+print(p)
 
 ```
 
 
 ## {.smaller}
 
-Agregar títulos y etiquetas al gráfico. Nota que estamos utilizando el objeto `p` que creamos anteriormente. Seguimos agregando capas al gráfico con el operador `+` y lo seguimos guardando en el objeto `p` para futuras modificaciones. Para mostrar el gráfico, simplemente llamamos al objeto `p` o bien, puedes usar `print(p)`.
+- Agregar títulos y etiquetas al gráfico. Reemplaza los guiónes bajos con los textos que prefieras.
+- Recuerda que en un gráfico, los ejes x e y deben tener etiquetas descriptivas que indiquen qué variable están representando.
+- Nota que estamos utilizando el objeto `p` que creamos anteriormente. Seguimos agregando capas al gráfico con el operador `+` y lo seguimos guardando en el objeto `p` para futuras modificaciones. 
+- Para mostrar el gráfico, simplemente llamamos al objeto `p` o bien, puedes usar `print(p)`.
 
 ```{webr}
 # Agregar títulos y etiquetas
 
+p <- p +
+  labs(title = "______",
+       x = "______",
+       y = "______")
+
+p
+
+```
+
+
+::: {.callout-tip collapse="true"}
+## Expande para ver el código completo
+
+Una forma de nombrar las etiquetas del gráfico podría ser la siguiente:
+
+```r
 p <- p +
   labs(title = "Distribución de Alturas de Jirafas",
        x = "Altura (cm)",
        y = "Frecuencia")
 
 p
-
 ```
+
+:::
 
 ## {.smaller}
 
 Ahora, quitemos el espacio en blanco alrededor del gráfico para hacerlo más limpio y movamos la leyenda a la parte superior.
+- NOTA: en lugar de usar `legend.position = "top"`, también puedes usar los valores `bottom`, `left`, `right`, `none`.
 
 ```{webr}
 # Quitar espacio en blanco y mover la leyenda
