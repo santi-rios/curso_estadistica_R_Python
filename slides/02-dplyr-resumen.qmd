@@ -16,6 +16,7 @@ webr:
         - dplyr
         - janitor
         - purrr
+    render-df: gt-interactive
 engine: knitr
 ---
 
@@ -29,7 +30,7 @@ Antes de continuar con el análisis estadístico de datos, es importante tener u
 
 ![dplyr es parte del tidyverse](https://datasciencebox.org/course-materials/_slides/u2-d06-grammar-wrangle/img/dplyr-part-of-tidyverse.png)
 
-Para este resumen, utilizaremos el conjunto de datos `iris`, que contiene medidas de flores. Este conjunto de datos viene incorporado en R y se puede cargar con el comando `data("iris")`. Los datos provienen de un estudio sobre la variabilidad de las flores de iris (Ronald Fisher, 1636) y contienen cuatro medidas (longitud y ancho del sépalo y pétalo) de tres especies de iris (setosa, versicolor y virginica).
+Para este resumen, utilizaremos el conjunto de datos `iris`, que contiene medidas de flores. Este conjunto de datos viene incorporado en R y se puede cargar con el comando `data("iris")`. Los datos provienen de un estudio sobre la variabilidad de las flores de iris (Ronald Fisher, 1936) y contienen cuatro medidas (longitud y ancho del sépalo y pétalo) de tres especies de iris (setosa, versicolor y virginica).
 
 Primero, cargaremos la librería `dplyr` y el conjunto de datos `iris`.
 
@@ -417,6 +418,23 @@ iris %>% mutate(nombre_cientifico = case_when(
 
 ```
 
+
+### Cambiar tipo de datos
+
+- Podemos usar `mutate()` para cambiar el tipo de datos de una columna:
+- `as.factor()`: Convierte una columna a un factor.
+- `as.character()`: Convierte una columna a un carácter.
+- `as.numeric()`: Convierte una columna a un número.
+- `as.integer()`: Convierte una columna a un entero.
+- En el siguiente ejemplo, vamos a convertir la columna `Sepal.Length` a un factor (esto no tiene sentido real, solo es para ilustrar).
+
+```{webr}
+#| autorun: true
+
+# Cambiar el tipo de datos de una columna
+iris %>% mutate(Sepal.Length = as.factor(Sepal.Length)) # Convertir Species a un factor
+
+```
 
 
 ## tidyr
