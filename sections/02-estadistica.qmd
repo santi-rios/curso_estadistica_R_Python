@@ -80,6 +80,7 @@ Este módulo proporcionaría una comprensión más profunda y técnica de cómo 
 
 {{< revealjs file="../slides/03-visualizacion-datosIII.html" height="500px">}}
 
+{{< revealjs file="../slides/04-ejercicios-evalintro.html" height="500px">}}
 
 ### iii - Visualización de Datos, introducción a ggplot
 

@@ -6,6 +6,38 @@ format:
     toc-depth: 2
 ---
 
+
+{{< revealjs file="../slides/05-lineales-intro.html" height="500px">}}
+
+{{< revealjs file="../slides/05-lineales-supuestos.html" height="500px">}}
+
+{{< revealjs file="../slides/05-lineales-ejercicio1.html" height="500px">}}
+
+{{< revealjs file="../slides/05-lineales-corrintro.html" height="500px">}}
+
+{{< revealjs file="../slides/05-lineales-correlacion.html" height="500px">}}
+
+{{< revealjs file="../slides/05-lineales-correlacionII.html" height="500px">}}
+
+{{< revealjs file="../slides/05-ttest-wilcoxon.html" height="500px">}}
+
+{{< revealjs file="../slides/05-ttest-mann.html" height="500px">}}
+
+{{< revealjs file="../slides/05-ttest-mann.html" height="500px">}}
+
+{{< revealjs file="../slides/05-anova-kruska.html" height="500px">}}
+
+{{< revealjs file="../slides/05-anova-dosvias.html" height="500px">}}
+
+{{< revealjs file="../slides/05-ancova.html" height="500px">}}
+
+
+{{< revealjs file="../slides/05-chic-cuadrada.html" height="500px">}}
+
+{{< revealjs file="../slides/05-lineales-resumen.html" height="500px">}}
+
+
+
 ## Análisis de Correlación
 
 https://datasciencebox.org/course-materials/_slides/u2-d15-studies-confounding/u2-d15-studies-confounding#1
