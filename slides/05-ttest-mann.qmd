@@ -1,0 +1,211 @@
+---
+title: "Pruebas t para Dos Muestras Independientes y el Test de Mann-Whitney U "
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: solar
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - datos
+        - dplyr
+        - tidyr
+        - ggplot2
+    render-df: gt-interactive
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+### Lección sobre Pruebas t para Dos Muestras Independientes y el Test de Mann-Whitney U en Ciencias de la Salud y Biológicas
+
+---
+
+#### **Introducción a las Pruebas para Comparar Dos Medias**
+
+Cuando comparamos las medias de dos grupos, podemos utilizar dos pruebas comunes:
+
+- **Prueba t para dos muestras independientes**: Evalúa si las medias de dos grupos son significativamente diferentes.
+- **Test de Mann-Whitney U**: Es una alternativa no paramétrica a la prueba t de dos muestras independientes, que compara las distribuciones de dos grupos basándose en los rangos de los datos.
+
+Ambas pruebas pueden entenderse como **modelos lineales simples** que predicen la diferencia entre las medias de los grupos. En el caso de la prueba t, se utiliza el valor original de la variable, mientras que en el test de Mann-Whitney, se utilizan los **rangos** de los valores.
+
+---
+
+### **Puntos clave a enseñar:**
+
+1. **Prueba t para dos muestras independientes como modelo lineal**: El modelo lineal en este caso predice la media de la variable dependiente ($(y$)) para cada grupo. La variable independiente ($(x$)) es un **indicador** que toma el valor de 0 o 1 dependiendo de a qué grupo pertenece la observación. Esto se conoce como **codificación dummy**.
+
+   $[
+   y_i = \beta_0 + \beta_1 \cdot x_i
+   $]
+   
+   - Si $(x_i = 0$), entonces $(y_i = \beta_0$), es decir, la media del primer grupo.
+   - Si $(x_i = 1$), entonces $(y_i = \beta_0 + \beta_1$), que es la media del segundo grupo.
+
+   La hipótesis nula ($(H_0$)) es que no hay diferencia entre las medias de los grupos ($(\beta_1 = 0$)).
+
+2. **Test de Mann-Whitney U como modelo lineal**: Similar a la prueba t, pero en lugar de los valores originales de $(y$), se utilizan los **rangos** de $(y$):
+
+   $[
+   \text{rank}(y_i) = \beta_0 + \beta_1 \cdot x_i
+   $]
+
+   Esto lo convierte en un test no paramétrico, adecuado para datos que no siguen una distribución normal o que tienen valores atípicos.
+
+3. **Codificación dummy**: Es una técnica que se utiliza para convertir variables categóricas en variables numéricas para que puedan ser utilizadas en modelos lineales. En este caso, codificamos los dos grupos con 0 y 1, lo que permite al modelo lineal calcular la diferencia entre las medias de los grupos.
+
+---
+
+### **Ejemplo en R: Comparación de Dos Medias**
+
+A continuación, realizamos una prueba t para dos muestras independientes y el test de Mann-Whitney U utilizando R, y visualizamos los resultados.
+
+#### **Paso 1: Generar los datos**
+
+Generamos un conjunto de datos simulados para dos grupos independientes, con medias y desviaciones estándar diferentes.
+
+```{"webr}
+# Cargar librerías necesarias
+library(tidyverse)
+
+# Función para generar datos normales con media y desviación estándar conocidas
+rnorm_fixed <- function(N, mu = 0, sd = 1) {
+  scale(rnorm(N)) * sd + mu
+}
+
+# Generar datos para dos grupos
+N <- 20  # Número de puntos por grupo
+D_t2 <- data.frame(
+  x = rep(c(0, 1), each = N),
+  y = c(rnorm_fixed(N, 0.3, 0.3), rnorm_fixed(N, 1.3, 0.3))
+)
+
+# Visualizar las primeras filas de los datos
+head(D_t2)
+```
+
+#### **Paso 2: Visualización de la Prueba t para Dos Muestras Independientes**
+
+Creamos una gráfica que muestra las medias de los dos grupos, con sus respectivas diferencias.
+
+```{"webr}
+# Gráfico de la prueba t para dos muestras independientes
+P_t2 <- ggplot(D_t2, aes(x = x, y = y)) + 
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = ..y.., ymin = ..y.., color = 'something'), lwd = 2) +
+  geom_segment(x = -10, xend = 10, y = 0.3, yend = 0.3, lwd = 2, aes(color = 'beta_0')) + 
+  geom_segment(x = 0, xend = 1, y = 0.3, yend = 1.3, lwd = 2, aes(color = 'beta_1')) + 
+  scale_color_manual(name = NULL, values = c("blue", "red", "darkblue"), labels = c(bquote(beta[0] * " (media grupo 1)"), bquote(beta[1] * " (pendiente = diferencia)"), bquote(beta[0] + beta[1] %.% 1 * " (media grupo 2)"))) +
+  labs(title = 'Prueba t para dos muestras independientes')
+
+# Mostrar la gráfica
+P_t2
+```
+
+#### **Paso 3: Códigos en R: Prueba t para Dos Muestras Independientes**
+
+Podemos realizar la prueba t de dos muestras independientes utilizando la función `t.test()`. También podemos obtener el mismo resultado utilizando un modelo lineal con codificación dummy.
+
+```{"webr}
+# Prueba t para dos muestras independientes con t.test
+t_test_result <- t.test(D_t2$y[D_t2$x == 0], D_t2$y[D_t2$x == 1], var.equal = TRUE)
+
+# Modelo lineal equivalente con codificación dummy
+D_t2$group <- ifelse(D_t2$x == 1, 1, 0)
+lm_result <- lm(y ~ group, data = D_t2)
+
+# Mostrar resultados
+t_test_result
+summary(lm_result)
+```
+
+#### **Paso 4: Códigos en R: Test de Mann-Whitney U**
+
+El test de Mann-Whitney U se puede realizar con la función `wilcox.test()`, y nuevamente podemos obtener el mismo resultado con un modelo lineal aplicado a los **rangos** de los valores.
+
+```{"webr}
+# Test de Mann-Whitney U con wilcox.test
+mann_whitney_result <- wilcox.test(D_t2$y[D_t2$x == 0], D_t2$y[D_t2$x == 1])
+
+# Modelo lineal equivalente con rangos
+D_t2$ranked_y <- rank(D_t2$y)
+lm_mann_whitney <- lm(ranked_y ~ group, data = D_t2)
+
+# Mostrar resultados
+mann_whitney_result
+summary(lm_mann_whitney)
+```
+
+---
+
+### **Prueba t de Welch**
+
+La **prueba t de Welch** es una modificación de la prueba t para dos muestras independientes que no asume varianzas iguales entre los grupos. El modelo lineal sigue siendo el mismo, pero ahora modelamos una varianza por grupo.
+
+#### **Códigos en R: Prueba t de Welch**
+
+```{"webr}
+# Prueba t de Welch con t.test
+welch_test_result <- t.test(D_t2$y[D_t2$x == 0], D_t2$y[D_t2$x == 1], var.equal = FALSE)
+
+# Modelo lineal con varianzas por grupo usando el paquete nlme
+library(nlme)
+lm_welch <- gls(y ~ group, weights = varIdent(form = ~ 1 | group), data = D_t2, method = "ML")
+
+# Mostrar resultados
+welch_test_result
+summary(lm_welch)
+```
+
+---
+
+### **Ejercicio Práctico**
+
+1. **Ejercicio 1**: Usa el conjunto de datos `mtcars` para realizar una prueba t para dos muestras independientes, comparando el consumo de combustible (`mpg`) entre los automóviles con 4 y 6 cilindros.
+
+   ```{"webr}
+   # Filtrar los datos para los automóviles con 4 y 6 cilindros
+   mtcars_filtered <- mtcars %>% filter(cyl %in% c(4, 6))
+
+   # Prueba t para dos muestras independientes
+   t_test_mpg_cyl <- t.test(mpg ~ cyl, data = mtcars_filtered, var.equal = TRUE)
+
+   # Modelo lineal equivalente
+   lm_mpg_cyl <- lm(mpg ~ as.factor(cyl), data = mtcars_filtered)
+
+   # Mostrar resultados
+   t_test_mpg_cyl
+   summary(lm_mpg_cyl)
+   ```
+
+2. **Ejercicio 2**: Realiza el test de Mann-Whitney U para comparar el peso (`wt`) de los automóviles con 4 y 6 cilindros en el conjunto de datos `mtcars`.
+
+   ```{"webr}
+   # Test de Mann-Whitney U
+   mann_whitney_wt_cyl <- wilcox.test(wt ~ cyl, data = mtcars_filtered)
+
+   # Modelo lineal equivalente con rangos
+   mtcars_filtered$ranked_wt <- rank(mtcars_filtered$wt)
+   lm_mann_whitney_wt_cyl <- lm(ranked_wt ~ as.factor(cyl), data = mtcars_filtered)
+
+   # Mostrar resultados
+   mann_whitney_wt_cyl
+   summary(lm_mann_whitney_wt_cyl)
+   ```
+
+---
+
+### **Conclusión**
+
+Las pruebas t para dos muestras independientes y el test de Mann-Whitney U son herramientas esenciales para comparar dos grupos en ciencias de la salud y biológicas. Al entender que ambas pruebas pueden expresarse como **modelos lineales simples**, los estudiantes pueden aplicar este conocimiento de manera más efectiva. La codificación dummy es una técnica clave que permite modelar diferencias categóricas en un marco lineal, lo que hace que las comparaciones entre grupos sean más comprensibles y manejables.
+

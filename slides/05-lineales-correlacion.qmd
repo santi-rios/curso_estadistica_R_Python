@@ -1,0 +1,178 @@
+---
+title: "Introducción a Modelos Lineales en Estadística"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: solar
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - datos
+        - dplyr
+        - tidyr
+        - ggplot2
+    render-df: gt-interactive
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+### Lección sobre Correlación de Pearson y Spearman usando Modelos Lineales en Ciencias de la Salud y Biológicas
+
+---
+
+#### **Introducción a la Correlación como un Modelo Lineal**
+
+La correlación de Pearson y Spearman son herramientas estadísticamente fundamentales en el análisis de datos en ciencias de la salud y biológicas. Ambas correlaciones pueden interpretarse como **casos especiales de modelos lineales** simple, donde el objetivo es analizar la relación entre dos variables. El concepto central de estas correlaciones se basa en un modelo de regresión lineal simple:
+
+$$[
+y = \beta_0 + \beta_1 \cdot x
+$$]
+
+- **Correlación de Pearson**: Mide la relación lineal entre dos variables continuas.
+- **Correlación de Spearman**: Mide la relación entre los rangos de dos variables, lo que la hace adecuada para datos no paramétricos o no lineales.
+
+En ambas correlaciones, la hipótesis nula ($(H_0$)) es que no hay relación entre las variables ($(\beta_1 = 0$)).
+
+---
+
+### **Puntos clave a enseñar:**
+
+1. **Correlación de Pearson**: Evalúa la **relación lineal** directa entre dos variables continuas. Es sensible a valores atípicos y requiere que las variables sigan una distribución normal.
+   
+2. **Correlación de Spearman**: Evalúa la **relación entre los rangos** de las dos variables, lo que la hace robusta frente a datos no normales y valores atípicos. Se basa en la correlación de Pearson, pero aplicada a los rangos de las variables.
+
+3. **Modelos Lineales**: Ambos tipos de correlación pueden interpretarse como modelos lineales simples, donde la correlación es el coeficiente de pendiente ($(\beta_1$)) de la relación entre las variables.
+
+---
+
+### **Ejemplo en R: Correlación de Pearson y Spearman**
+
+Utilizaremos un ejemplo práctico para ilustrar cómo calcular e interpretar las correlaciones de Pearson y Spearman utilizando **R** y el paquete **tidyverse**.
+
+#### **Paso 1: Preparar el entorno y los datos**
+
+Primero, cargamos las librerías necesarias y generamos datos simulados para dos variables correlacionadas.
+
+```{webr}
+# Cargar librerías necesarias
+library(tidyverse)
+library(MASS)
+library(broom)
+
+# Fijar semilla para reproducibilidad
+set.seed(40)
+
+# Generar datos correlacionados
+D_correlation <- MASS::mvrnorm(30, mu = c(0.9, 0.9), Sigma = matrix(c(1, 0.8, 0.8, 1), ncol = 2), empirical = TRUE) %>%
+  as_tibble() %>%
+  rename(X1 = V1, X2 = V2)
+
+# Ver las primeras filas de los datos
+head(D_correlation)
+```
+
+#### **Paso 2: Visualización de la Relación Lineal (Correlación de Pearson)**
+
+Antes de calcular la correlación de Pearson, visualizamos la relación entre las dos variables con un gráfico de dispersión y ajustamos una línea de regresión.
+
+```{webr}
+# Ajustar modelo lineal para la correlación de Pearson
+modelo_pearson <- lm(X2 ~ X1, data = D_correlation)
+
+# Intercepto del modelo
+intercepto_pearson <- coef(modelo_pearson)[1]
+
+# Graficar la relación entre X1 y X2
+P_pearson <- ggplot(D_correlation, aes(x = X1, y = X2)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue", lwd = 1) + 
+  geom_segment(x = -3, xend = 3, y = intercepto_pearson, yend = intercepto_pearson, 
+               linetype = "dotted", color = "red", lwd = 1) +
+  labs(title = "Correlación de Pearson", x = "X1", y = "X2")
+
+P_pearson
+```
+
+#### **Paso 3: Cálculo de la Correlación de Pearson**
+
+Ahora, calculamos el coeficiente de correlación de Pearson y lo interpretamos.
+
+```{webr}
+# Calcular la correlación de Pearson
+cor_pearson <- cor(D_correlation$X1, D_correlation$X2, method = "pearson")
+
+# Mostrar el valor de la correlación de Pearson
+cor_pearson
+```
+
+#### **Paso 4: Cálculo de la Correlación de Spearman**
+
+Para calcular la correlación de Spearman, simplemente usamos los rangos de los datos en lugar de los valores originales.
+
+```{webr}
+# Calcular la correlación de Spearman
+cor_spearman <- cor(D_correlation$X1, D_correlation$X2, method = "spearman")
+
+# Mostrar el valor de la correlación de Spearman
+cor_spearman
+```
+
+#### **Paso 5: Interpretación de los Resultados**
+
+- **Correlación de Pearson**: El coeficiente nos dice qué tan fuerte es la relación lineal entre dos variables. Un valor cercano a 1 indica una fuerte relación positiva.
+- **Correlación de Spearman**: Nos indica qué tan fuerte es la relación entre los **rangos** de las dos variables. Es útil cuando los datos no siguen una distribución normal o tienen relaciones no lineales.
+
+---
+
+### **Ejercicio Práctico**
+
+1. **Ejercicio 1: Correlación entre Peso y Altura**
+
+Usa el conjunto de datos `mtcars` y calcula la correlación de Pearson entre el peso del vehículo (`wt`) y el consumo de combustible (`mpg`).
+
+```{webr}
+# Cargar los datos mtcars
+data(mtcars)
+
+# Calcular la correlación de Pearson entre peso (wt) y mpg
+cor_mpg_wt_pearson <- cor(mtcars$wt, mtcars$mpg, method = "pearson")
+
+# Calcular la correlación de Spearman entre peso (wt) y mpg
+cor_mpg_wt_spearman <- cor(mtcars$wt, mtcars$mpg, method = "spearman")
+
+# Mostrar los resultados de las correlaciones
+cor_mpg_wt_pearson
+cor_mpg_wt_spearman
+```
+
+2. **Ejercicio 2: Visualización de la Relación entre Peso y Consumo de Combustible**
+
+Crea un gráfico de dispersión para visualizar la relación entre el peso y el consumo de combustible, e incluye una línea de regresión.
+
+```{webr}
+# Graficar la relación entre peso y mpg
+ggplot(mtcars, aes(x = wt, y = mpg)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "blue") +
+  labs(title = "Relación entre Peso y Consumo de Combustible", x = "Peso (wt)", y = "Consumo de Combustible (mpg)")
+```
+
+---
+
+### **Conclusión**
+
+La correlación de Pearson y Spearman son métodos poderosos para evaluar relaciones entre variables en ciencia de la salud y biológicas. La **correlación de Pearson** es ideal para relaciones lineales en datos continuos y normalmente distribuidos, mientras que la **correlación de Spearman** es más robusta frente a datos no normales o relaciones no lineales. Ambos métodos pueden interpretarse como casos especiales de un **modelo lineal** simple, lo que unifica el concepto de correlación dentro del contexto más amplio de la regresión lineal.
+
+### Recursos adicionales:
+- [Documentación de `ggplot2`](https://ggplot2.tidyverse.org/)
+- [Documentación de `broom`](https://broom.tidyverse.org/)

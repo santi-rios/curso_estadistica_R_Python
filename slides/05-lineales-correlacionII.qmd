@@ -1,0 +1,202 @@
+---
+title: " Introducción a la Transformación de Rango y Correlaciones Pearson y Spearman"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: solar
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - datos
+        - dplyr
+        - tidyr
+        - ggplot2
+    render-df: gt-interactive
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+### Continuación de la Lección: Introducción a la Transformación de Rango y Correlaciones Pearson y Spearman
+
+---
+
+#### **Transformación de Rango y Correlación de Spearman**
+
+En este punto, introducimos la **transformación de rango**, que es la base de la correlación de Spearman. La transformación de rango simplemente toma una lista de números y los reemplaza con enteros que indican su orden (el número más pequeño es el 1, el siguiente más pequeño es el 2, etc.). Esta transformación convierte un conjunto de datos en una representación ordenada, lo que permite calcular la correlación sin hacer suposiciones sobre la distribución de los datos.
+
+---
+
+### **Puntos clave a enseñar:**
+
+1. **Rango de una lista de números**: El rango de una lista de números los organiza de menor a mayor, asignando un valor entero a cada uno. Por ejemplo, si tenemos los números `c(3.6, 3.4, -5.0, 8.2)`, los rangos serían `3, 2, 1, 4`.
+
+2. **Rangos firmados**: En algunos casos, ordenamos los valores por su magnitud absoluta y luego les añadimos el signo original. Esto es útil en algunos tests no paramétricos.
+
+3. **Equivalencia entre la Correlación de Pearson y un Modelo Lineal**: La correlación de Pearson se puede interpretar como una regresión lineal simple con un coeficiente de pendiente ($(\beta_1$)) que equivale al coeficiente de correlación cuando las variables tienen desviaciones estándar iguales.
+
+4. **Correlación de Spearman**: Es simplemente la correlación de Pearson aplicada a los rangos de los datos. Aunque es menos sensible a la forma de la distribución de los datos, sigue siendo un modelo lineal en los rangos.
+
+---
+
+### **Ejemplo en R: Visualización de Pearson vs Spearman**
+
+A continuación, vamos a visualizar cómo se comportan las correlaciones de Pearson y Spearman al comparar los valores originales con los rangos.
+
+#### **Paso 1: Visualización de la Correlación de Spearman**
+
+Primero calculamos la intersección ($(\beta_0$)) para la correlación de Spearman y luego visualizamos los datos en una gráfica donde se muestran las etiquetas correspondientes a los rangos.
+
+```{webr}
+# Calcular el intercepto de Spearman
+intercepto_spearman <- coefficients(lm(rank(D_correlation$X2) ~ rank(D_correlation$X1)))[1]
+
+# Graficar la correlación de Spearman
+P_spearman <- ggplot(D_correlation, aes(x = rank(X1), y = rank(X2))) +
+  geom_smooth(method = "lm", se = FALSE, lwd = 2, aes(color = 'beta_1')) +
+  geom_text(aes(label = sprintf('(%i,%i)', rank(X1), rank(X2))), nudge_y = 1, size = 3, color = 'dark gray') +
+  geom_segment(x = -100, xend = 100, 
+               y = intercepto_spearman, yend = intercepto_spearman, 
+               lwd = 2, aes(color = 'beta_0')) +
+  scale_color_manual(name = NULL, values = c("blue", "red"), 
+                     labels = c(bquote(beta[0] * " (intercept)"), bquote(beta[1] * " (slope)"))) +
+  labs(title = "Correlación de Spearman")
+
+# Mostrar la gráfica de Spearman
+P_spearman
+```
+
+#### **Paso 2: Mostrar Pearson y Spearman juntos**
+
+Usamos el paquete `patchwork` para juntar las gráficas de Pearson y Spearman para una comparación lado a lado.
+
+```{webr}
+# Juntar las gráficas de Pearson y Spearman
+(P_pearson + geom_text(aes(label = sprintf('(%.1f,%.1f)', X1, X2)), nudge_y = 0.1, size = 3, color = 'dark gray') + 
+  labs(title = '         Pearson')) + 
+(P_spearman + scale_x_continuous(limits = c(-7.5, 30)) + scale_y_continuous(limits = c(-7.5, 30)) + 
+  labs(title = '         Spearman'))
+```
+
+---
+
+### **Teoría: Transformación de Rango**
+
+La transformación de rango, como se mencionó anteriormente, toma una lista de números y reemplaza cada valor con su posición relativa (orden) dentro de la lista. Esta técnica es la base de muchos **tests no paramétricos**, ya que permite trabajar con datos que no necesariamente siguen una distribución normal.
+
+- **Ejemplo de transformación de rango**:
+
+```{webr}
+# Ejemplo de transformación de rango
+valores <- c(3.6, 3.4, -5.0, 8.2)
+rango_valores <- rank(valores)
+rango_valores
+```
+
+- **Rango con signo**: A veces, es útil ordenar los valores según su magnitud absoluta y luego añadirles el signo original.
+
+```{webr}
+# Función de rango con signo
+signed_rank <- function(x) sign(x) * rank(abs(x))
+
+# Aplicar el rango con signo
+signed_rango_valores <- signed_rank(valores)
+signed_rango_valores
+```
+
+#### **Interpretación de los Resultados**
+
+La transformación de rango es una herramienta extremadamente útil para convertir pruebas paramétricas en sus contrapartes "no paramétricas". Un punto interesante es que muchas pruebas "no paramétricas" en realidad son tan paramétricas como las pruebas originales, pero aplicadas a datos transformados por rangos.
+
+---
+
+### **R code: Correlación de Pearson y su Modelado Lineal**
+
+Correr la correlación de Pearson en R es muy sencillo usando funciones integradas como `cor.test()`, pero también podemos obtener el mismo resultado usando un modelo lineal con la función `lm()`. A continuación, mostramos cómo se puede hacer esto y cómo podemos calcular el coeficiente de correlación $(r$) a partir de este modelo si las variables están escaladas para tener una desviación estándar de 1.
+
+#### **Correlación de Pearson**
+
+```{webr}
+# Correlación de Pearson con cor.test
+resultado_pearson <- cor.test(D_correlation$X1, D_correlation$X2, method = "pearson")
+
+# Modelo lineal equivalente
+modelo_pearson <- lm(X2 ~ 1 + X1, data = D_correlation)
+
+# Modelo lineal con variables escaladas
+modelo_pearson_escalado <- lm(scale(X2) ~ 1 + scale(X1), data = D_correlation)
+
+# Mostrar los resultados
+resultado_pearson
+summary(modelo_pearson)
+summary(modelo_pearson_escalado)
+```
+
+#### **Correlación de Spearman**
+
+De manera similar, podemos calcular la correlación de Spearman usando `cor.test()` o ajustando un modelo lineal a los rangos de las variables.
+
+```{webr}
+# Correlación de Spearman con cor.test
+resultado_spearman <- cor.test(D_correlation$X1, D_correlation$X2, method = "spearman")
+
+# Modelo lineal equivalente a los rangos
+modelo_spearman <- lm(rank(X2) ~ 1 + rank(X1), data = D_correlation)
+
+# Mostrar los resultados
+resultado_spearman
+summary(modelo_spearman)
+```
+
+---
+
+### **Ejercicio Práctico**
+
+1. **Ejercicio 1**: Usa el conjunto de datos `mtcars` para calcular tanto la correlación de Pearson como la de Spearman entre el **peso del vehículo (wt)** y el **consumo de combustible (mpg)**.
+
+   ```{webr}
+   # Correlación de Pearson con mtcars
+   cor_pearson_mtcars <- cor.test(mtcars$wt, mtcars$mpg, method = "pearson")
+   
+   # Correlación de Spearman con mtcars
+   cor_spearman_mtcars <- cor.test(mtcars$wt, mtcars$mpg, method = "spearman")
+   
+   # Mostrar resultados
+   cor_pearson_mtcars
+   cor_spearman_mtcars
+   ```
+
+2. **Ejercicio 2**: Visualiza la relación entre el peso y el consumo de combustible utilizando gráficas de dispersión para ambas correlaciones (Pearson y Spearman).
+
+   ```{webr}
+   # Graficar Pearson
+   P_pearson_mtcars <- ggplot(mtcars, aes(x = wt, y = mpg)) +
+     geom_point() +
+     geom_smooth(method = "lm", se = FALSE, color = "blue") +
+     labs(title = "Correlación de Pearson: Peso vs Consumo de Combustible")
+   
+   # Graficar Spearman (rango)
+   P_spearman_mtcars <- ggplot(mtcars, aes(x = rank(wt), y = rank(mpg))) +
+     geom_point() +
+     geom_smooth(method = "lm", se = FALSE, color = "blue") +
+     labs(title = "Correlación de Spearman: Peso vs Consumo de Combustible")
+   
+   # Mostrar las gráficas
+   P_pearson_mtcars
+   P_spearman_mtcars
+   ```
+
+---
+
+### **Conclusión**
+
+La correlación de Pearson y Spearman son herramientas esenciales para evaluar relaciones entre variables en ciencias de la salud y biológicas. Al comprender que ambas correlaciones son casos especiales de un modelo lineal simple, los estudiantes pueden aplicar estos conocimientos de manera más efectiva. La transformación de rango es una técnica poderosa que permite convertir pruebas paramétricas en sus contrapartes no paramétricas, proporcionando una mayor flexibilidad al analizar datos no normales o con valores atípicos.

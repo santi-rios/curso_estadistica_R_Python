@@ -1,0 +1,146 @@
+---
+title: "Resumen y reflexiones de los modelos lineales"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: solar
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - datos
+        - dplyr
+        - tidyr
+        - ggplot2
+    render-df: gt-interactive
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+### Materiales de Enseñanza y Plan del Curso
+
+---
+
+#### **Enfoque General**
+
+El enfoque de este curso gira en torno a los **modelos lineales** como una herramienta central para el análisis de datos. A diferencia de muchos libros avanzados o cursos introductorios que tratan los modelos lineales de manera conceptual, aquí se busca hacer explícito el uso de modelos lineales en cada etapa del curso. El objetivo es que los estudiantes comprendan cómo estos modelos pueden aplicarse a una amplia variedad de datos, desde regresiones simples hasta ANOVA y pruebas de hipótesis.
+
+---
+
+### **Plan del Curso y Puntos Principales**
+
+El curso se divide en varias secciones, con un enfoque particular en los **modelos lineales** como la base para todos los análisis. Aquí se ofrece un esquema general del curso:
+
+---
+
+#### **1. Fundamentos de la Regresión**
+
+Este es el punto de partida del curso, que establece la base para todo lo que sigue. Se revisarán conceptos de álgebra de la escuela secundaria, como la ecuación de la línea recta $(y = a \cdot x + b$), y se dará una **intuición profunda sobre las pendientes y los interceptos**.
+
+**Objetivos:**
+- Comprender cómo los modelos lineales expresan relaciones entre variables.
+- Introducir la **notación de modelos lineales**: $(y = \beta_1 x + \beta_2 \cdot 1$) o $(y \sim x + 1$).
+- Mostrar ejemplos de la vida real para ilustrar cómo los modelos lineales representan grandes conjuntos de datos.
+- Abordar la idea de transformar datos no métricos mediante **rankings** y aplicar transformaciones.
+
+**Conceptos clave:**
+- Los tres supuestos: **independencia de los puntos de datos**, **normalidad de los residuos**, y **homocedasticidad**.
+- Introducción a los **intervalos de confianza** en los parámetros.
+- Introducción al **$(R^2$)** para modelos de regresión simples, mencionando que también se llama **coeficiente de correlación de Pearson o Spearman** en algunas circunstancias.
+
+---
+
+#### **2. Casos Especiales de Regresión: Una o Dos Medias (Pruebas t y Pruebas No Paramétricas)**
+
+Aquí el curso se enfoca en cómo los modelos lineales se simplifican cuando contamos con una o dos medias.
+
+**Objetivos:**
+- **Una media**: Cuando solo hay un valor de $(x$), el modelo de regresión se simplifica a $(y = b$), lo que es equivalente a una **prueba t de una muestra**. Si los datos no son métricos, pueden transformarse en rangos, lo que lleva a la **prueba de rango con signo de Wilcoxon**.
+- **Dos medias**: Si tenemos dos grupos, podemos modelar la diferencia entre las medias como una pendiente. Esto se relaciona directamente con la **prueba t de dos muestras independientes** y su versión no paramétrica, el **test de Mann-Whitney U**.
+- **Muestras emparejadas**: Introducción a la **prueba t para muestras emparejadas** y la **prueba de Wilcoxon para pares emparejados**.
+
+**Conceptos clave:**
+- Introducción a las **pruebas no paramétricas** y la **transformación a rangos**.
+- Comparaciones entre modelos lineales para muestras independientes y emparejadas.
+
+---
+
+#### **3. Casos Especiales: Tres o Más Medias (ANOVA)**
+
+El siguiente paso en el curso es extender los modelos lineales a más de dos grupos, introduciendo el análisis de varianza (**ANOVA**).
+
+**Objetivos:**
+- **Codificación dummy**: Mostrar cómo los coeficientes de regresión pueden representar categorías mediante la codificación dummy.
+- **ANOVA de una vía**: Introducir el **ANOVA de una vía** como una extensión de la regresión para tres o más medias.
+- **ANOVA de dos vías**: Extender el ANOVA para incluir más de un factor categórico, presentando el **ANOVA de dos vías**.
+
+**Conceptos clave:**
+- **Codificación dummy** y su relación con los modelos lineales.
+- Introducción a los **efectos de interacción** en el **ANOVA de dos vías**.
+
+---
+
+#### **4. Casos Especiales: Proporciones y el Test de Chi-cuadrado**
+
+Este capítulo se enfoca en el análisis de proporciones y cómo se puede modelar usando transformaciones logarítmicas.
+
+**Objetivos:**
+- Explicar cómo los **modelos log-lineales** permiten analizar proporciones y tablas de contingencia.
+- Introducir la **transformación logarítmica** para hacer los modelos multiplicativos lineales.
+- Mostrar la equivalencia entre los **modelos log-lineales** y el **test de Chi-cuadrado**.
+
+**Conceptos clave:**
+- **Proporciones de una variable**: Introducir la **prueba de bondad de ajuste**.
+- **Proporciones de dos variables**: Introducir **tablas de contingencia** y el **test de Chi-cuadrado**.
+
+---
+
+#### **5. Pruebas de Hipótesis y Comparación de Modelos**
+
+El curso concluye con una discusión sobre pruebas de hipótesis y cómo estas son esencialmente comparaciones de modelos lineales.
+
+**Objetivos:**
+- Mostrar que las pruebas de hipótesis son equivalentes a comparar un modelo completo con uno donde un parámetro está fijo (generalmente en cero).
+- Explicar cómo las pruebas de hipótesis para parámetros únicos son menos informativas que las comparaciones de múltiples parámetros.
+- Introducir los **ratios de verosimilitud** y cómo se utilizan para comparar modelos.
+
+**Conceptos clave:**
+- Introducción a los **ratios de verosimilitud** y el rol de la **penalización por complejidad del modelo** (BIC).
+- Mención de los **factores de Bayes** como una extensión para aquellos interesados en enfoques bayesianos.
+
+---
+
+### **Materiales de Apoyo**
+
+El curso incluye una variedad de materiales para ayudar a los estudiantes a comprender mejor los conceptos. Algunos recursos recomendados incluyen:
+
+1. **Libro de Russ Poldrack**: "*Statistical Thinking for the 21st century*" (capítulo 5 en adelante sobre modelado).
+2. **Notas de curso de Jeff Rouder**: Introduce la **comparación de modelos** utilizando $(R^2$) y el **Criterio de Información Bayesiano (BIC)**.
+3. **Materiales propios**: Ejemplos de modelos lineales, ejercicios prácticos y visualizaciones interactivas.
+
+---
+
+### **Limitaciones y Futuras Mejoras**
+
+Aunque este esquema cubre la mayor parte de lo necesario para un curso de estadística basado en modelos lineales, hay algunas simplificaciones que se han hecho:
+
+1. **Supuestos**: No se ha profundizado en los supuestos de los modelos (independencia, normalidad de los residuos, homocedasticidad), lo cual se cubrirá en otra parte.
+2. **Hipótesis nulas no estándar**: Se asume que todas las hipótesis nulas son la ausencia de un efecto, pero el enfoque sería el mismo para hipótesis no nulas.
+3. **Inferencia estadística**: El curso no entra en detalles sobre cómo hacer inferencias; se utilizan los **p-valores** solo como una forma de mostrar equivalencias entre modelos.
+4. **Pruebas adicionales**: Algunas pruebas aún no se han cubierto, como el **test de signos**, el **test de McNemar**, y otros. Estos pueden ser añadidos más adelante.
+
+---
+
+### **Conclusión**
+
+Este plan de curso está diseñado para proporcionar una comprensión profunda de los **modelos lineales** y cómo se aplican a diferentes tipos de análisis estadísticos. Desde la regresión simple hasta el **ANOVA** y las **pruebas de chi-cuadrado**, el curso se enfoca en hacer explícitas las conexiones entre los modelos lineales y las pruebas estadísticas tradicionales.

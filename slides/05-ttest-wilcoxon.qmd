@@ -1,0 +1,255 @@
+---
+title: "Prueba t de Muestra Única y el Test de Rango con Signo de Wilcoxon en Ciencias de la Salud y Biológicas"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: solar
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - datos
+        - dplyr
+        - tidyr
+        - ggplot2
+    render-df: gt-interactive
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+### Lección sobre la Prueba t de Muestra Única y el Test de Rango con Signo de Wilcoxon en Ciencias de la Salud y Biológicas
+
+---
+
+#### **Introducción a la Prueba t de Muestra Única y el Test de Wilcoxon**
+
+La **prueba t de muestra única** y el **test de rango con signo de Wilcoxon** son herramientas fundamentales para evaluar si la media de una muestra es significativamente diferente de un valor hipotético. Ambos tests pueden interpretarse como **modelos lineales simples**, donde el objetivo es predecir la media de la variable dependiente.
+
+- **Prueba t de muestra única**: Evalúa si la media de una muestra es significativamente diferente de un valor de referencia.
+- **Test de rango con signo de Wilcoxon**: Es una alternativa no paramétrica a la prueba t para muestras únicas, que evalúa si la mediana de una muestra es significativamente diferente de un valor de referencia, utilizando los rangos de los datos en lugar de los valores originales.
+
+---
+
+### **Puntos clave a enseñar:**
+
+1. **Prueba t de muestra única como modelo lineal**: El modelo lineal en este caso predice la media de la variable dependiente ($(y$)):
+
+   $[
+   y = \beta_0
+   $]
+
+   donde $(\beta_0$) es la media de la muestra y se compara con el valor de referencia (hipótesis nula: $(\beta_0 = 0$)).
+
+2. **Test de Wilcoxon como modelo lineal**: Similar a la prueba t, pero en lugar de usar los valores originales de $(y$), se utilizan los **rangos con signo** de $(y$):
+
+   $[
+   \text{signed\_rank}(y) = \beta_0
+   $]
+
+   Este test es útil cuando los datos no cumplen con los supuestos de normalidad.
+
+3. **Equivalencia de los tests con modelos lineales**: Tanto la prueba t como el test de Wilcoxon pueden expresarse como un **modelo lineal simple**, lo que permite interpretar los resultados de manera similar. El p-valor y los estadísticos resultantes son equivalentes a los obtenidos con las funciones tradicionales de R.
+
+---
+
+### **Ejemplo en R: Prueba t de Muestra Única y Test de Wilcoxon**
+
+A continuación, vamos a realizar ambos tests (t-test y Wilcoxon) utilizando R y visualizaremos los resultados.
+
+#### **Paso 1: Generar los datos**
+
+Primero generamos un conjunto de datos simulados con una media fija y desviación estándar.
+
+```{"webr}
+# Cargar librerías necesarias
+library(tidyverse)
+library(patchwork)
+
+# Función para generar datos normales con media y desviación estándar conocidas
+rnorm_fixed <- function(N, mu = 0, sd = 1) {
+  scale(rnorm(N)) * sd + mu
+}
+
+# Generar datos para una muestra de 20 observaciones
+D_t1 <- data.frame(y = rnorm_fixed(20, 0.5, 0.6),
+                   x = runif(20, 0.93, 1.07))  # Fijamos la media y la desviación estándar
+
+# Visualizamos las primeras filas de los datos
+head(D_t1)
+```
+
+#### **Paso 2: Visualización de la Prueba t de Muestra Única**
+
+Creamos una gráfica para visualizar el resultado de la prueba t de muestra única, mostrando la media de la muestra.
+
+```{"webr}
+# Gráfico de la prueba t de muestra única
+P_t1 <- ggplot(D_t1, aes(y = y, x = 0)) + 
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = ..y.., ymin = ..y.., color = 'beta_0'), lwd = 2) +
+  scale_color_manual(name = NULL, values = c("blue"), labels = c(bquote(beta[0] * " (intercept)"))) +
+  geom_text(aes(label = round(y, 1)), nudge_x = 0.2, size = 3, color = 'dark gray') + 
+  labs(title = '         T-test')
+
+# Mostrar la gráfica
+P_t1
+```
+
+#### **Paso 3: Visualización del Test de Rango con Signo de Wilcoxon**
+
+Aplicamos la transformación de rangos con signo a los datos y creamos una gráfica similar para visualizar el test de Wilcoxon.
+
+```{"webr}
+# Función de rango con signo
+signed_rank <- function(x) sign(x) * rank(abs(x))
+
+# Transformar los datos usando rangos con signo
+D_t1_rank <- data.frame(y = signed_rank(D_t1$y))
+
+# Gráfico del test de Wilcoxon
+P_t1_rank <- ggplot(D_t1_rank, aes(y = y, x = 0)) + 
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = ..y.., ymin = ..y.., color = 'beta_0'), lwd = 2) +
+  scale_color_manual(name = NULL, values = c("blue"), labels = c(bquote(beta[0] * " (intercept)"))) +
+  geom_text(aes(label = y), nudge_x = 0.2, size = 3, color = 'dark gray') + 
+  labs(title = '         Wilcoxon')
+
+# Mostrar la gráfica
+P_t1_rank
+```
+
+#### **Paso 4: Comparar las Gráficas de T-test y Wilcoxon**
+
+Usamos el paquete `patchwork` para juntar las dos gráficas y compararlas lado a lado.
+
+```{"webr}
+# Comparar las gráficas de T-test y Wilcoxon
+theme_axis(P_t1, ylim = c(-1, 2), legend.position = c(0.6, 0.1)) + 
+  theme_axis(P_t1_rank, ylim = NULL, legend.position = c(0.6, 0.1))
+```
+
+---
+
+### **Códigos en R: Prueba t de Muestra Única y Test de Wilcoxon**
+
+#### **Prueba t de Muestra Única**
+
+La prueba t de muestra única puede realizarse fácilmente con la función `t.test()` en R, pero también se puede obtener el mismo resultado usando un modelo lineal con la función `lm()`.
+
+```{"webr}
+# Prueba t de muestra única con t.test
+t_test_result <- t.test(D_t1$y)
+
+# Modelo lineal equivalente (solo intercepto)
+lm_result <- lm(y ~ 1, data = D_t1)
+
+# Mostrar resultados
+t_test_result
+summary(lm_result)
+```
+
+#### **Test de Rango con Signo de Wilcoxon**
+
+Similarmente, el test de Wilcoxon se puede realizar con la función `wilcox.test()`, y también se puede obtener el mismo resultado usando un modelo lineal aplicado a los rangos con signo.
+
+```{"webr}
+# Test de Wilcoxon con wilcox.test
+wilcox_test_result <- wilcox.test(D_t1$y)
+
+# Modelo lineal equivalente (rango con signo)
+lm_wilcox <- lm(signed_rank(D_t1$y) ~ 1)
+
+# Mostrar resultados
+wilcox_test_result
+summary(lm_wilcox)
+```
+
+---
+
+### **Pruebas t para Muestras Pareadas y Test de Wilcoxon para Pares**
+
+#### **Teoría: Pruebas t para Muestras Pareadas**
+
+En una **prueba t para muestras pareadas**, el objetivo es evaluar si las diferencias entre dos mediciones (por ejemplo, antes y después de un tratamiento) son significativamente diferentes de cero. Esto se puede interpretar como un **modelo lineal** donde la diferencia entre las dos mediciones es el valor de $(y$):
+
+$[
+y_2 - y_1 = \beta_0
+$]
+
+La **hipótesis nula ($(H_0$))** en este caso es $(\beta_0 = 0$).
+
+#### **Códigos en R: Prueba t para Muestras Pareadas**
+
+```{"webr}
+# Prueba t para muestras pareadas con t.test
+paired_t_test_result <- t.test(D_t1$y, D_t1_rank$y, paired = TRUE)
+
+# Modelo lineal equivalente (diferencia entre las muestras)
+lm_paired <- lm(D_t1$y - D_t1_rank$y ~ 1)
+
+# Mostrar resultados
+paired_t_test_result
+summary(lm_paired)
+```
+
+#### **Códigos en R: Test de Wilcoxon para Pares**
+
+El **test de Wilcoxon para pares** es la versión no paramétrica de la prueba t para muestras pareadas y se basa en los rangos con signo de las diferencias entre las dos muestras.
+
+```{"webr}
+# Test de Wilcoxon para pares con wilcox.test
+wilcox_paired_test_result <- wilcox.test(D_t1$y, D_t1_rank$y, paired = TRUE)
+
+# Modelo lineal equivalente (rango con signo de las diferencias)
+lm_wilcox_paired <- lm(signed_rank(D_t1$y - D_t1_rank$y) ~ 1)
+
+# Mostrar resultados
+wilcox_paired_test_result
+summary(lm_wilcox_paired)
+```
+
+---
+
+### **Ejercicio Práctico**
+
+1. **Ejercicio 1**: Usa el conjunto de datos `mtcars` para realizar una prueba t de muestra única sobre el consumo de combustible (`mpg`), comparando la media con un valor de referencia de 20.
+
+   ```{"webr}
+   # Prueba t de muestra única con mtcars
+   t_test_mtcars <- t.test(mtcars$mpg, mu = 20)
+
+   # Modelo lineal equivalente
+   lm_mtcars <- lm(mpg ~ 1, data = mtcars)
+
+   # Mostrar resultados
+   t_test_mtcars
+   summary(lm_mtcars)
+   ```
+
+2. **Ejercicio 2**: Realiza una prueba t para muestras pareadas comparando las variables `mpg` y `hp` (caballos de fuerza) en el conjunto de datos `mtcars`.
+
+   ```{"webr}
+   # Prueba t para muestras pareadas
+   paired_t_test_mtcars <- t.test(mtcars$mpg, mtcars$hp, paired = TRUE)
+
+   # Modelo lineal equivalente
+   lm_paired_mtcars <- lm(mpg - hp ~ 1, data = mtcars)
+
+   # Mostrar resultados
+   paired_t_test_mtcars
+   summary(lm_paired_mtcars)
+   ```
+
+---
+
+### **Conclusión**
+
+Las pruebas t de muestra única y para muestras pareadas, junto con sus contrapartes no paramétricas (Wilcoxon), son herramientas poderosas para evaluar diferencias en medias o medianas en ciencias de la salud y biológicas. Al entender que estos tests pueden expresarse como **modelos lineales simples**, podemos unificar el análisis de estas pruebas y aplicar este conocimiento a una amplia variedad de datos y situaciones.

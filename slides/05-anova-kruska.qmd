@@ -1,0 +1,207 @@
+---
+title: "Comparación de Tres o Más Medias: ANOVA y Test de Kruskal-Wallis"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: solar
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - datos
+        - dplyr
+        - tidyr
+        - ggplot2
+    render-df: gt-interactive
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+### Lección sobre Comparación de Tres o Más Medias: ANOVA y Test de Kruskal-Wallis en Ciencias de la Salud y Biológicas
+
+---
+
+#### **Introducción a los ANOVAs y el Test de Kruskal-Wallis**
+
+El análisis de varianza (ANOVA) es una herramienta estadística poderosa para comparar las medias de tres o más grupos. Como hemos visto en las pruebas t para dos grupos, ANOVA se basa en el concepto de **modelos lineales**, extendiendo la idea de la codificación dummy para incluir más de dos grupos.
+
+- **ANOVA unidireccional (One-way ANOVA)**: Evalúa si hay diferencias significativas entre las medias de tres o más grupos. Se basa en un modelo lineal que incluye términos de intersección ($(\beta_0$)) y pendientes ($(\beta_1, \beta_2, \dots$)) que representan las diferencias entre los grupos.
+- **Test de Kruskal-Wallis**: Es una alternativa no paramétrica al ANOVA unidireccional, que compara las distribuciones de tres o más grupos utilizando los **rangos** de los valores en lugar de los valores originales.
+
+Ambas pruebas se basan en modelos lineales con **codificación dummy**, lo que nos permite analizar cómo las diferencias entre los grupos afectan la variable dependiente $(y$).
+
+---
+
+### **Puntos clave a enseñar:**
+
+1. **ANOVA unidireccional como modelo lineal**: El modelo lineal en este caso predice la media de la variable dependiente ($(y$)) para cada grupo, utilizando variables indicadoras ($(x_0, x_1, x_2, $dots$)) que toman el valor de 0 o 1, dependiendo del grupo al que pertenece cada observación.
+
+   $[
+   y = \beta_0 + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + \dots
+   $]
+
+   - Si $(x_1 = 1$), el modelo predice la media del primer grupo ($(\beta_0$)).
+   - Si $(x_2 = 1$), el modelo predice la media del segundo grupo ($(\beta_0 + \beta_1$)), y así sucesivamente.
+
+2. **Test de Kruskal-Wallis como modelo lineal**: Similar al ANOVA, pero en lugar de los valores originales de $(y$), se utilizan los **rangos** de $(y$):
+
+   $[
+   \text{rank}(y) = \beta_0 + \beta_1 \cdot x_1 + \beta_2 \cdot x_2 + \dots
+   $]
+
+   Este test es útil cuando los datos no cumplen con los supuestos de normalidad o contienen valores atípicos.
+
+3. **Codificación dummy**: Al igual que en las pruebas t para dos grupos, la codificación dummy se utiliza para representar grupos categóricos como variables numéricas (0 o 1), lo que permite incluir múltiples grupos en un modelo lineal.
+
+---
+
+### **Ejemplo en R: Comparación de Tres o Más Medias**
+
+A continuación, realizamos un ANOVA unidireccional y el test de Kruskal-Wallis utilizando R, y visualizamos los resultados.
+
+#### **Paso 1: Generar los datos**
+
+Generamos un conjunto de datos simulados para cuatro grupos independientes, cada uno con una media y desviación estándar diferentes.
+
+```{webr}
+# Cargar librerías necesarias
+library(tidyverse)
+
+# Generar datos simulados para cuatro grupos
+N <- 15  # Número de puntos por grupo
+D_anova1 <- data.frame(
+  y = c(
+    rnorm_fixed(N, 0.5, 0.3),
+    rnorm_fixed(N, 0, 0.3),
+    rnorm_fixed(N, 1, 0.3),
+    rnorm_fixed(N, 0.8, 0.3)
+  ),
+  x = rep(0:3, each = N)
+)
+
+# Visualizar las primeras filas de los datos
+head(D_anova1)
+```
+
+#### **Paso 2: Visualización del ANOVA unidireccional**
+
+Creamos una gráfica que muestra las medias de los cuatro grupos con sus respectivas diferencias.
+
+```{webr}
+# Calcular las medias de cada grupo
+ymeans <- aggregate(y ~ x, D_anova1, mean)$y
+
+# Gráfico del ANOVA unidireccional
+P_anova1 <- ggplot(D_anova1, aes(x = x, y = y)) + 
+  stat_summary(fun.y = mean, geom = "errorbar", aes(ymax = ..y.., ymin = ..y.., color = 'intercepts'), lwd = 2) + 
+  geom_segment(x = -10, xend = 100, y = 0.5, yend = 0.5, lwd = 2, aes(color = 'beta_0')) +
+  geom_segment(x = 0, xend = 1, y = ymeans[1], yend = ymeans[2], lwd = 2, aes(color = 'betas')) +
+  geom_segment(x = 1, xend = 2, y = ymeans[1], yend = ymeans[3], lwd = 2, aes(color = 'betas')) +
+  geom_segment(x = 2, xend = 3, y = ymeans[1], yend = ymeans[4], lwd = 2, aes(color = 'betas')) +
+  scale_color_manual(
+    name = NULL, values = c("blue", "red", "darkblue"), 
+    labels = c(
+      bquote(beta[0] * " (media grupo 1)"), 
+      bquote(beta[1] * ", " * beta[2] * ", etc. (pendientes / diferencias respecto a " * beta[0] * ")"),
+      bquote(beta[0] * " + " * beta[1] * ", " * beta[0] * " + " * beta[2] * ", etc. (medias de los grupos 2, 3, ...)")
+    )
+  ) +
+  labs(title = 'ANOVA unidireccional')
+
+# Mostrar la gráfica
+P_anova1
+```
+
+#### **Paso 3: Códigos en R: ANOVA unidireccional**
+
+Podemos realizar el ANOVA unidireccional utilizando la función `aov()` o el paquete `car::Anova()`. También podemos obtener el mismo resultado utilizando un modelo lineal con **codificación dummy**.
+
+```{webr}
+# Cargar la librería car para ANOVA de tipo II
+library(car)
+
+# ANOVA unidireccional con aov
+aov_result <- aov(y ~ as.factor(x), data = D_anova1)
+
+# Modelo lineal equivalente con codificación dummy
+D_anova1$group_b <- ifelse(D_anova1$x == 1, 1, 0)
+D_anova1$group_c <- ifelse(D_anova1$x == 2, 1, 0)
+D_anova1$group_d <- ifelse(D_anova1$x == 3, 1, 0)
+
+lm_result <- lm(y ~ 1 + group_b + group_c + group_d, data = D_anova1)
+
+# Mostrar resultados
+summary(aov_result)
+summary(lm_result)
+```
+
+#### **Paso 4: Códigos en R: Test de Kruskal-Wallis**
+
+El test de Kruskal-Wallis se puede realizar con la función `kruskal.test()`. También podemos obtener el mismo resultado utilizando un modelo lineal aplicado a los **rangos** de los valores.
+
+```{webr}
+# Test de Kruskal-Wallis con kruskal.test
+kruskal_result <- kruskal.test(y ~ as.factor(x), data = D_anova1)
+
+# Modelo lineal equivalente con rangos
+D_anova1$ranked_y <- rank(D_anova1$y)
+lm_kruskal <- lm(ranked_y ~ 1 + group_b + group_c + group_d, data = D_anova1)
+
+# Mostrar resultados
+kruskal_result
+summary(lm_kruskal)
+```
+
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+
+### **Ejercicio Práctico**
+
+1. **Ejercicio 1**: Usa el conjunto de datos `mtcars` para realizar un ANOVA unidireccional, comparando el consumo de combustible (`mpg`) entre los automóviles con 4, 6 y 8 cilindros.
+
+   ```{webr}
+   # ANOVA unidireccional con mtcars
+   aov_mpg_cyl <- aov(mpg ~ as.factor(cyl), data = mtcars)
+
+   # Modelo lineal equivalente
+   mtcars$group_6 <- ifelse(mtcars$cyl == 6, 1, 0)
+   mtcars$group_8 <- ifelse(mtcars$cyl == 8, 1, 0)
+   lm_mpg_cyl <- lm(mpg ~ 1 + group_6 + group_8, data = mtcars)
+
+   # Mostrar resultados
+   summary(aov_mpg_cyl)
+   summary(lm_mpg_cyl)
+   ```
+
+2. **Ejercicio 2**: Realiza el test de Kruskal-Wallis para comparar el peso (`wt`) de los automóviles con 4, 6 y 8 cilindros en el conjunto de datos `mtcars`.
+
+   ```{webr}
+   # Test de Kruskal-Wallis
+   kruskal_wt_cyl <- kruskal.test(wt ~ as.factor(cyl), data = mtcars)
+
+   # Modelo lineal equivalente con rangos
+   mtcars$ranked_wt <- rank(mtcars$wt)
+   lm_kruskal_wt_cyl <- lm(ranked_wt ~ 1 + group_6 + group_8, data = mtcars)
+
+   # Mostrar resultados
+   kruskal_wt_cyl
+   summary(lm_kruskal_wt_cyl)
+   ```
+
+---
+
+### **Conclusión**
+
+El ANOVA unidireccional y el test de Kruskal-Wallis son herramientas esenciales para comparar las medias de tres o más grupos en ciencias de la salud y biológicas. Ambos tests pueden interpretarse como **modelos lineales** que utilizan la **codificación dummy** para representar los grupos categóricos. El test de Kruskal-Wallis es una alternativa no paramétrica que utiliza los rangos de los valores, lo que lo hace adecuado para datos no normales o con valores atípicos.
