@@ -149,9 +149,13 @@ Puedes ejecutar el siguiente ejemplo en la presentación para buscar ayuda sobre
 - Ejemplo de `prompts` para ChatGPT: 
 
 > "¿Qué significa el error 'object not found' en R?"
+
 > Crea un script en R que genere datos aleatorios con distribución normal estándar
+
 > Crea código en R que genere datos simulados de clientes, que tenga como variables “nombre” , “id”, “edad”, “sexo”, “estado civil”, “ingreso mensual” y “tenencia de tarjeta de crédito”. 
+
 > Crea código en R utilizando ggplot2 para generar un gráfico de dispersión utilizando como dataframe “df”, donde el eje x represente la variable “x” y el eje y represente la variable “y” y el color se defina con la variable grupo
+
 > Después de ejecutar este código en R ´´´r # ejemplo de código ´´´, obtengo el siguiente error: “Error in ggplot(data = df, aes(x = x, y = y, color = grupo)) : could not find function "ggplot". ¿Cómo puedo solucionarlo?
 
 

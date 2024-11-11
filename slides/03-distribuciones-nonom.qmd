@@ -39,7 +39,7 @@ engine: knitr
 
 ## Introducción y Objetivos {.smaller}
 
-::: {.incremental}
+
 - A pesar de que la distribución normal es la más conocida y utilizada para los datos en biología y medicina, existen muchas otras distribuciones de probabilidad que se pueden aplicar a diferentes tipos de datos.
 - En esta lección, exploraremos algunas de las distribuciones de probabilidad más comunes y cómo se pueden utilizar en la práctica.
 - Nuestro objetivo es comprender las características clave de estas distribuciones y cómo se pueden aplicar en el análisis de datos, además de graficarlas en R para visualizar su forma y propiedades.
@@ -47,26 +47,25 @@ engine: knitr
 - Al final de esta lección, tendrás una comprensión más amplia de las distribuciones de probabilidad y cómo se pueden utilizar en tu trabajo de análisis de datos.
 - Sin embargo, toma en cuenta que en este curso nos centraremos en la distribuciones más comun y útil para la biología y la medicina, la distribución normal.
 
-:::
 
 ## Distribuciones de Probabilidad {.smaller}
 
-::: {.incremental}
+
 - Recordemos que una distribución de probabilidad describe la probabilidad de ocurrencia de cada valor en un conjunto de datos.
 - Cada distribución tiene sus propias características y propiedades, lo que las hace únicas y útiles para diferentes situaciones.
 - Algunas de las distribuciones de probabilidad más comunes, sin contar la ya vista dist. normal, incluyen: distribución binomial, distribución de Poisson,  distribución exponencial, entre otras.
-:::
+
 
 ## Distribución Normal {.smaller}
 
-::: {.incremental}
+
 - Se caracteriza por su forma de campana y es simétrica alrededor de su media.
 - La distribución normal tiene dos parámetros clave: la media ($\mu$) y la desviación estándar ($\sigma$).
 - En gran parte, los datos en la naturaleza siguen una distribución normal y es fundamental en la teoría detrás de la mayoría de métodos y pruebas estadísticas.
 - En la siguiente diapositiva generaremos datos simulados que sigan una distribución normal.
 - Si no te acuerdas de estas funciones, revisa de nuevo la lección anterior de distribuciones de probabilidad y ggplot.
 
-:::
+
 
 ## {.smaller}
 
@@ -98,7 +97,7 @@ ggplot(df_normales, aes(x = valor)) +
 
 ## Distribución Binomial {.smaller}
 
-::: {.incremental}
+
 - La distribución binomial describe el número de éxitos en una secuencia de ensayos independientes (independientes significa que el resultado de un ensayo no afecta el resultado de otro, como lanzar una moneda).
 - Cada ensayo tiene dos resultados posibles: éxito o fracaso.
 - Los parámetros clave de la distribución binomial son el número de ensayos (n) y la probabilidad de éxito (p).
@@ -114,7 +113,7 @@ rbinom(n,    # Número de observaciones aleatorias a ser generadas
        prob) # La probabilidad de éxito en cada ensayo
 ```
 
-:::
+
 
 ## {.smaller}
 
@@ -144,12 +143,12 @@ ggplot(data.frame(resultados), aes(x = resultados)) +
 
 ## {.smaller}
 
-::: {.incremental}
+
 - El histograma mostrará la distribución del número de caras obtenidas en 10 lanzamientos de moneda, repetidos 100 veces. 
 - Dado que las probabilidades son simétricas (0.5 para cara y 0.5 para cruz), la distribución tendrá una media en torno a 5 (la mitad de los lanzamientos deberían ser caras, en promedio), pero con variabilidad en los resultados. 
 - Los valores extremos (muy pocos o muchas caras) serán menos frecuentes.
 - Ahora imagina que repetimos el experimento, pero con una moneda cargada que tiene una probabilidad de 0.85 de obtener cara. ¿Cómo crees que cambiaría la distribución de los resultados? Antes de correr el código, piensa en cómo se vería el histograma.
-:::
+
 
 ```{webr}	
 set.seed(123)  # Fijar la semilla para reproducibilidad
@@ -168,7 +167,7 @@ ggplot(data.frame(resultados), aes(x = resultados)) +
 
 ## Distribución de Poisson {.smaller}
 
-::: {.incremental}
+
 
 - La distribución de Poisson es una distribución de probabilidad que describe el número de eventos que ocurren en un intervalo de tiempo o espacio, cuando estos eventos suceden de manera independiente y con una tasa promedio constante.
 
@@ -180,24 +179,24 @@ ggplot(data.frame(resultados), aes(x = resultados)) +
 
 - A continuación, veremos cómo se ve la distribución de Poisson y cómo se puede aplicar en la práctica.
 
-:::
+
 
 ## 
 
-::: {.incremental}
+
 - Un ejemplo de una variable con esta distribución es el número de mutaciones en una cadena de DNA en una determinada región durante un período de tiempo fijo.
 - Imagina que estamos investigando el número de mutaciones en una sección de ADN en células cancerígenas. 
 - Sabemos, a partir de estudios previos, que en promedio ocurren 3 mutaciones por célula. Queremos simular y visualizar la distribución de mutaciones en 1000 células.
-::: 
+
 
 ## {.smaller}
 
-::: {.incremental}
+
 En este caso, la tasa promedio de mutaciones por célula es 3 y el suceso que estamos modelando es el número de mutaciones en una célula. Usaremos la función `rpois()` para simular datos que sigan una distribución de Poisson. Esta función toma dos argumentos principales:
 - `n`: número de observaciones aleatorias a ser generadas.
 - `lambda`: la tasa de ocurrencia de eventos en un intervalo de tiempo o espacio.
 - En este caso, generaremos 1000 observaciones de la distribución de Poisson con una tasa de ocurrencia de 3 mutaciones por célula.
-::: 
+
 
 ```{webr}
 # Paso 1: Simular el número de mutaciones en 1000 células
@@ -221,24 +220,24 @@ ggplot(data.frame(mutaciones), aes(x = mutaciones)) +
 
 ## {.smaller}
 
-::: {.incremental}
+
 - El histograma muestra la distribución del número de mutaciones por célula en 1000 células. Dado que usamos una distribución de Poisson con un parámetro $\lambda$ = 3, esperamos que:
 
 - El pico del histograma esté alrededor de 3 (el número promedio de mutaciones por célula).
 - La distribución será asimétrica, con más células concentradas en el rango de mutaciones bajas, y una "cola" que se extiende hacia la derecha a medida que aumentan el número de mutaciones.
 - Puedes ajustar el número de células para cambiar el tamaño de la muestra o cambiar el valor de lambda para simular una tasa diferente de mutaciones por célula.
 
-::: 
+
 
 ## Otras Distribuciones {.smaller}
 
-::: {.incremental}
+
 - Además de la distribución normal, binomial y de Poisson, existen muchas otras distribuciones de probabilidad que se utilizan en diferentes contextos.
 - En [este enlace](https://www.stat.umn.edu/geyer/5101/examp/rlook.html) y [este](https://rstudio.github.io/r-manuals/r-intro/Probability-distributions.html) puedes encontrar una lista de las distribuciones de probabilidad que puedes encontrar en R.
 - Aunque en el curso nos enfocaremos en la distribución normal, veremos que muchas pruebas estadísticas utilizan otras distribuciones, por lo que es útil conocerlas y comprender sus propiedades.
 - Algunos de estos ejemplos, son la distribución chi-cuadrada, t de Student, F de Fisher, entre otras que son fundamentales en la inferencia estadística y en el análisis de datos.
 - Solo para conocerlas, veamos rápidamente algunas de estas distribuciones utilizadas en análisis estadístico. 
-:::
+
 
 ## Distribuciones y pruebas asociadas {.smaller}
 
