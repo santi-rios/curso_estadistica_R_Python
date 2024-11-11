@@ -107,6 +107,21 @@ if (identical(typeof(caracter), "character")) {
 ```
 
 
+::: { .solution exercise="datos_ex_1" }
+::: { .callout-tip collapse="false"}
+## Solución
+
+```r
+caracter <- "Hola Mundo"
+
+print(caracter)
+
+typeof(caracter)
+```
+
+:::
+:::
+
 ##
 
 
@@ -137,6 +152,24 @@ if (identical(typeof(vector_caracter), "character")) {
 }
 ```
 
+
+::: { .solution exercise="datos_ex_2" }
+::: { .callout-tip collapse="false"}
+## Solución
+
+```r
+vector_caracter <- c("Hola", "mundo", "!")
+
+# Muestra los valores del vector
+print(vector_caracter)
+
+# Muestra el tipo de dato del vector
+print(typeof(vector_caracter))
+```
+
+:::
+:::
+
 ##
 
 ::: {.callout-note}
@@ -162,7 +195,7 @@ Quitar las comillas para que el número sea tratado como un número y no como un
 
 :::
 
-## NA
+## NA {.smaller}
 
 - NA es un valor especial en R que representa la ausencia de un valor.
 - Puedes usar NA para indicar que un valor no está disponible o no se conoce. 

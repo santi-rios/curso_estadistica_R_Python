@@ -31,12 +31,13 @@ engine: knitr
 - Las funciones son bloques de código que realizan una tarea específica. En R, las funciones son fundamentales para realizar tareas de análisis de datos, cálculos estadísticos y visualizaciones.
 - La estructura básica de una función en R es la siguiente: la función es una palabra clave (verbo) seguida de una o varias instrucciones entre paréntesis `()`.
 
-`hacer_esto(a_esto)`
-`hacer_aquello(a_esto, a_aquello, con_aquellos)`
+- `hacer_esto(a_esto)`
+
+- `hacer_aquello(a_esto, a_aquello, con_aquellos)`
 
 ##
 
-- En R, las funciones pueden tener argumentos opcionales, que se pueden especificar al llamar a la función. Por ejemplo, la función `mean()` tiene un argumento opcional llamado `na.rm`, que se utiliza para eliminar los valores faltantes al calcular la media.
+- En R, las funciones pueden tener argumentos opcionales, que se pueden especificar al llamar a la función. Por ejemplo, la función `mean()` tiene un argumento opcional llamado `na.rm`, que se utiliza para eliminar los valores faltantes (`NA`) al calcular la media.
 
 ```{webr}
 # Ejemplo de función con argumento opcional

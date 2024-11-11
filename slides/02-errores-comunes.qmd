@@ -8,19 +8,12 @@ author:
         city: CDMX
         url: orcaasesina.com
 format: 
-    live-revealjs: 
-        theme: serif
-        toc: true
-        scrollable: true
-        progress: true
-        slide-number: true
-        incremental: true
-        lang: es
-        logo: "https://readr.tidyverse.org/logo.png"
-        # code-link: true
-# webr:
-#     packages: 
-#         - dplyr
+    live-html:
+        # highlightStyle: github
+        # highlightLines: true
+        theme: lux
+toc: true
+sidebar: false
 engine: knitr
 ---
 
@@ -30,13 +23,12 @@ engine: knitr
 
 ## Introducción a los errores en R
 
-::: {.incremental}
 - En R, si cometes un error en tu código, R te mostrará un mensaje de error. 
 - Previamente en otro ejecicio, olvidamos poner el símbolo `#` al hacer un comentario. 
 - Esto causó el error `Error: unexpected symbol in "Suma..."`, lo que significa que R no reconoció la palabra `Suma` como un comando válido. Es decir, R esperaba un comando o una operación aritmética, pero encontró una palabra que no reconoció. 
 - Para solucionar este error, simplemente agrega el símbolo `#` al principio de la línea para convertirlo en un comentario.
 - Soluciona el error y corre el código nuevamente:
-:::
+
 
 ```{webr}
 #| exercise: ex_00_r
@@ -60,50 +52,73 @@ Suma de 3 más cinco:
 :::
 :::
 
-## Errores en R II
 
-::: {.incremental}
+
 - En R, los errores son comunes y pueden ocurrir por diversas razones, como errores de *sintaxis*, errores de *lógica*, errores de *tipografía*, problemas específicos de ciertos *paquetes*, entre otros.
 - Trabajar con R implica, inevitablemente, encontrarse con errores. Entender cómo interpretar estos errores y encontrar soluciones es una habilidad crucial para cualquier usuario de R. 
-:::
+
 
 ## Entender los mensajes de error 
 
-::: {.incremental}
 
 - Un error en R es un mensaje que indica que algo no ha funcionado correctamente durante la ejecución del código.
 - Estos mensajes se diseñan para ayudarte a identificar qué salió mal y dónde encontrar el problema.
 - En las siguientes diapositivas, veremos cómo leer y entender un mensaje de error en R, y cómo tratar de solucionar errores comunes.
 
 
-:::
 
-## 1. Identificar el tipo de error
 
-::: {.incremental}
+### 1. Identificar el tipo de error
+
+
 - Los mensajes de error en R comienzan con la palabra “`Error`” seguida de una descripción del problema. 
 - Ejemplo: `Error in plot(x, y): object 'x' not found`.
 - Existen otro tipo de mensajes de advertencia, como `Warning`, que no detienen la ejecución del código, pero indican que algo puede no estar funcionando como se esperaba.
-::: 
 
-## 2. Localizar el problema
 
-::: {.incremental}
+### 2. Localizar el problema
+
+
 - El mensaje de error suele indicar qué parte del código falló. 
 - Por ejemplo, en el mensaje de error `Error in plot(x, y): object 'x' not found`.
-- El problema es que el objeto 'x' no fue encontrado. 
+- El problema es que el objeto 'x' no fue encontrado. Por ejemplo:
 
-:::
+```{webr}
 
-## 3. Revisar el Código
+# Crear un vector y graficar
+y <- c(1, 2, 3)
+plot(x, y) # Error: object 'x' not found
 
-::: {.incremental}
+```
 
-- Verifica la sintaxis, nombres de variables, y asegúrate de que los datos existan en el contexto adecuado.
+Solución
 
-:::
+```{webr}
+# Crear un vector y graficar
+y <- c(1, 2, 3)
+x <- c(4, 5, 6) # Crear un vector x
 
-## 4. Buscar Documentación
+plot(x, y) # Ahora no hay error
+```
+
+### 3. Revisar el Código
+
+
+- Verifica la sintaxis, nombres de variables, y asegúrate de que los datos existan en el contexto adecuado. Por ejemplo:
+
+```{webr}
+
+# Crear un vector e imprimir
+x <- c(1, 2, 3)
+
+# Imprimir el vector
+prints(x) # corregir nombre de la función a print
+
+```
+
+
+
+### 4. Buscar Documentación
 
 
 Usa las siguientes funciones: 
@@ -121,28 +136,48 @@ Puedes ejecutar el siguiente ejemplo en la presentación para buscar ayuda sobre
 ```
 
 
-## 5. Buscar Ayuda en Línea
+### 5. Buscar Ayuda en Línea
 
 - Cuando te encuentras con un error en R, utilizar recursos en línea eficientemente es clave para encontrar soluciones rápidas y precisas. Estos son algunos recursos útiles:
 
 ***ChatGPT*** y otros asistentes virtuales de IA
 
-Estos modelos de inteligencia artificial pueden ayudarte a resolver dudas sobre programación y estadística en R. Interactúa con ChatGPT proporcionando una descripción clara de tu problema. Puedes pedirle ejemplos de código, explicaciones de errores, o conceptos concretos. *Qué Preguntar*: Explica el error o la pregunta de forma específica, Pide sugerencias de código o pasos para resolver el problema. También puedes solicitar clarificación sobre conceptos en R que no entiendas bien. En un módulo extra del curso, veremos cómo interactuar con ChatGPT para resolver dudas en R. Se incluye un ejercicio donde desarrollarás una aplicación web de análisis de datos con R, con ChatGPT como asistente virtual para guiarte con el código, incluso si eres principiante en R.
+- Estos modelos de inteligencia artificial pueden ayudarte a resolver dudas sobre programación y estadística en R. 
+- Interactúa con ChatGPT proporcionando una descripción clara de tu problema. 
+- Puedes pedirle ejemplos de código, explicaciones de errores, o conceptos concretos. 
+- *Qué Preguntar*: Explica el error o la pregunta de forma específica, Pide sugerencias de código o pasos para resolver el problema. También puedes solicitar clarificación sobre conceptos en R que no entiendas bien. 
+- Ejemplo de `prompts` para ChatGPT: 
+
+> "¿Qué significa el error 'object not found' en R?"
+> Crea un script en R que genere datos aleatorios con distribución normal estándar
+> Crea código en R que genere datos simulados de clientes, que tenga como variables “nombre” , “id”, “edad”, “sexo”, “estado civil”, “ingreso mensual” y “tenencia de tarjeta de crédito”. 
+> Crea código en R utilizando ggplot2 para generar un gráfico de dispersión utilizando como dataframe “df”, donde el eje x represente la variable “x” y el eje y represente la variable “y” y el color se defina con la variable grupo
+> Después de ejecutar este código en R ´´´r # ejemplo de código ´´´, obtengo el siguiente error: “Error in ggplot(data = df, aes(x = x, y = y, color = grupo)) : could not find function "ggplot". ¿Cómo puedo solucionarlo?
+
 
 ***Stack Overflow***
 
-Es una comunidad en línea donde los programadores pueden preguntar y responder preguntas de programación, estadística y diversos temas académicos. *Cómo Usarlo*: Visita Stack Overflow ([https://stackoverflow.com/](https://stackoverflow.com/)) y usa la barra de búsqueda para encontrar soluciones a problemas similares. Asegúrate de incluir "R" en tus términos de búsqueda. Si no encuentras una solución, crea una nueva pregunta (necesitarás abrir una cuenta para esto). Proporciona un título claro, una descripción detallada del problema, ejemplos del código y mensajes de error específicos para que otros puedan ayudarte de manera efectiva. Incluye detalles específicos del error (mensaje exacto, condiciones en las que aparece), Código relevante, lo que esperabas que sucediera, y lo que realmente pasó.
+- Es una comunidad en línea donde los programadores pueden preguntar y responder preguntas de programación, estadística y diversos temas académicos. 
+- *Cómo Usarlo*: Visita Stack Overflow ([https://stackoverflow.com/](https://stackoverflow.com/)) y usa la barra de búsqueda para encontrar soluciones a problemas similares. 
+- Asegúrate de incluir "R" en tus términos de búsqueda. 
+- Si no encuentras una solución, crea una nueva pregunta (necesitarás abrir una cuenta para esto). 
+- Proporciona un título claro, una descripción detallada del problema, ejemplos del código y mensajes de error específicos para que otros puedan ayudarte de manera efectiva. 
+- Incluye detalles específicos del error (mensaje exacto, condiciones en las que aparece), Código relevante, lo que esperabas que sucediera, y lo que realmente pasó.
 
 ***CRAN Task Views***
-CRAN Task Views son colecciones organizadas de paquetes de R centradas en áreas específicas de interés o tareas comunes, como manipulación de datos, gráficos, tiempo-serie, entre otros. *Cómo Usarlo*: Visita el sitio web de CRAN Task Views ([https://cran.r-project.org/web/views/](https://cran.r-project.org/web/views/)). Navega por las categorías disponibles para encontrar una que se ajuste a tus necesidades. Cada Task View proporciona una lista de paquetes recomendados y descripciones breves de su funcionalidad.
+
+- CRAN Task Views son colecciones organizadas de paquetes de R centradas en áreas específicas de interés o tareas comunes, como manipulación de datos, gráficos, tiempo-serie, entre otros. 
+- *Cómo Usarlo*: Visita el sitio web de CRAN Task Views ([https://cran.r-project.org/web/views/](https://cran.r-project.org/web/views/)). 
+- Navega por las categorías disponibles para encontrar una que se ajuste a tus necesidades. 
+- Cada Task View proporciona una lista de paquetes recomendados y descripciones breves de su funcionalidad.
 
 
-# Errores y soluciones comunes en R
+## Errores y soluciones comunes en R
 
-## Error de Sintaxis
+### Error de Sintaxis
 
 - Estos errores ocurren cuando el código no sigue las reglas de sintaxis de R ([aprende más de sintaxis en este enlace](https://juanchiem.github.io/R_Intro/02-R_sintaxis.html)).
-- *Sintaxis* se refiere a la estructura y el orden de las palabras, así como símbolos en el código.
+- **Sintaxis** se refiere a la estructura y el orden de las palabras, así como símbolos en el código.
 - Olvidar un paréntesis, una coma o un corchete puede causar un error de sintaxis.
 - Observa el siguiente código con un error de sintaxis y correlo para ver el mensaje de error.
 
@@ -162,13 +197,13 @@ x <- c(1, 2, 3)
 mean(x)
 ```
 
-## Problema Específico con Paquetes
+### Problema Específico con Paquetes
 
 - A veces, los errores pueden ser específicos de ciertos paquetes.
 - Un ejemplo común es cuando olvidas cargar un paquete antes de usar una función de ese paquete.
 - Instalar y cargar paquetes es una parte importante del trabajo en R, ya que los paquetes proporcionan funciones adicionales y herramientas para análisis de datos. Se verá más a detalle en otra lección del curso.
 
-```{{r}}
+```r
 # Intentando usar una función de ggplot2 sin cargar el paquete
 data(mtcars)
 ggplot(mtcars, aes(x = mpg, y = hp)) +
@@ -177,7 +212,7 @@ ggplot(mtcars, aes(x = mpg, y = hp)) +
 
 Error:
 
-```{{r}}
+```r
 Error in ggplot(mtcars, aes(x = mpg, y = hp)) : 
   could not find function "ggplot"
 ```
@@ -186,7 +221,7 @@ Error in ggplot(mtcars, aes(x = mpg, y = hp)) :
 
 Asegurarse de que el paquete necesario está instalado y cargado antes de usar sus funciones. Esto se verá más a detalle en otra lección del curso.
 
-```{{r}}
+```r
 # Código corregido
 install.packages("ggplot2")  # Instalar si es necesario
 library(ggplot2)  # Cargar el paquete
@@ -195,7 +230,7 @@ ggplot(mtcars, aes(x = mpg, y = hp)) +
   geom_point()
 ```
 
-## Problema con la Lógica del Código
+### Problema con la Lógica del Código
 
 - Los errores de lógica ocurren cuando el código no produce el resultado esperado.
 - Estos errores son un poco más complejos ya que incluso pueden ejecutarse sin errores, pero el resultado no es el esperado. Esto se verá más a detalle en otro módulo.
