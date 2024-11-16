@@ -80,32 +80,13 @@ Este módulo proporcionaría una comprensión más profunda y técnica de cómo 
 
 {{< revealjs file="../slides/03-visualizacion-datosIII.html" height="500px">}}
 
+### Evaluación introducción R y Estadística
+
 {{< revealjs file="../slides/04-ejercicios-evalintro.html" height="500px">}}
 
-### iii - Visualización de Datos, introducción a ggplot
+{{< revealjs file="../slides/04-ejercicios-evalintroII.html" height="500px">}}
 
 
-
-
-Algunos tips...
-
-{{< revealjs file="../slides/03-visualizacion-distrotips.html" height="500px">}}
-
-## Medidas de Tendencia Central
-
-{{< revealjs file="../slides/03-medidas-tendencia-central.html" height="500px">}}
-
-## Medidas de Dispersión
-
-{{< revealjs file="../slides/03-medidas-dispersion.html" height="500px">}}
-
-## Pruebas de Hipótesis
-
-{{< revealjs file="../slides/03-pruebas-hipotesis.html" height="500px">}}
-
-## Intervalos de Confianza
-
-{{< revealjs file="../slides/03-intervalos-confianza.html" height="500px">}}
 
 ## Ejercicios
 

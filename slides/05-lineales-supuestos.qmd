@@ -35,7 +35,6 @@ Un **supuesto** en estadística es una condición que debe cumplirse para que un
 La relación entre el predictor $x$ y la variable respuesta $y$ es lineal. Es decir, el cambio en $y$ debido a un cambio en $x$ es constante.
 
 ::: {.callout-important}
-
 ## Linealidad NO es lo mismo que recta
 
 Linealidad en el contexto de los modelos lineales no significa necesariamente que la relación entre las variables deba formar una línea recta en el gráfico. En lugar de referirse a la forma de la gráfica, la linealidad en los modelos lineales se refiere a cómo los parámetros (o coeficientes) del modelo se combinan con las variables predictoras. Por ejemplo, consider la siguiente ecuación de un modelo lineal:
@@ -71,8 +70,6 @@ plot(x, y, type = "l", col = "blue", lwd = 2, xlab = "x", ylab = "y", main = "Mo
 $$
 y = e^{\beta_0 + \beta_1 \cdot x}
 $$
-
-
 :::
 
 ## Residuos
@@ -156,7 +153,6 @@ residuos_simulados <- ggplot(data, aes(x = x, y = y)) +
   theme_classic()
 
 ```
-
 :::
 
 ```{webr}
@@ -230,7 +226,6 @@ residuos_pinguinos <- ggplot(datos_valores, aes(x = x, y = y)) +
   theme_classic()
 
 ```
-
 :::
 
 ```{webr}
@@ -245,7 +240,17 @@ print(residuos_pinguinos)
 
 
 
+
+
+::: {.callout-important}
+- ¿Cómo se ajusta la recta de regresión a los datos?
+  - La recta de regresión se ajusta minimizando la suma de los cuadrados de los residuos. Es decir, la recta se ajusta de tal manera que la suma de las distancias verticales entre los puntos observados y la recta es la menor posible. 
+  - Esto se conoce como el **método de los mínimos cuadrados**.
+  - Observa la siguiente figura para entender cómo se ajusta la recta de regresión a los datos:
+
+![La ssuma de cuadrados trata de minimizzar el área total de los cuadrados grises que se observan en la derecha](https://kenndanielso.github.io/mlrefined/mlrefined_images/superlearn_images/Least_Squares.png)
 :::
+
 
 ### Supuesto de residuos
 
@@ -268,7 +273,6 @@ La homocedadasticidad es la propiedad de los residuos de un modelo lineal de ten
 ![Homocedasticidad](https://www.lifeder.com/wp-content/uploads/2019/12/homocedasticidad-01.jpg)
 
 ![Heterocedasticidad. En valores bajos de X, hay poca varianza de los residuos, mientras que en valores altos, hay mucha más varianza. Esto se obsreva como un cono.](https://www.investopedia.com/thmb/mS-TpQisYn2qIDHExb3KbnceISw=/750x0/filters:no_upscale():max_bytes(150000):strip_icc()/Heteroskedasticity22-ce5acc2acef6494d91935588b0599579.png)
-
 :::
 
 ### Verificación de los supuestos de los residuos

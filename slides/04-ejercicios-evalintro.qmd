@@ -357,21 +357,6 @@ oms_limpio <- oms %>%
 oms_limpio # Verificamos que se haya hecho correctamente
 ```
 
-
-```r
-oms %>%
-  pivot_longer(
-    cols = nuevos_fpp_h014:nuevosrecaida_m65,
-    names_to = "clave", 
-    values_to = "valor", 
-    values_drop_na = TRUE) %>%
-  mutate(clave = stringr::str_replace(clave, "nuevosrecaida", "nuevos_recaida")) %>%
-  separate(clave, c("nuevos", "tipo", "sexo_edad")) %>%
-  select(-nuevos, -iso2, -iso3) %>%
-  separate(sexo_edad, c("sexo", "edad"), sep = 1)
-
-```
-
 ::: {.callout}
 
 - Una vez que ejecutas el código completo en una sola línea, ¿cuánto tiempo tardó en limpiar estos 70,000 datos?
@@ -383,73 +368,12 @@ oms %>%
 
 :::
 
-## Exploración de datos
-- Ahora que ya tenemos los datos limpios, podemos explorarlos.
-- Nos interesa ver la cantidad de casos de tuberculosis por país, año y sexo.
-- Para ir tratando de hacer más agil el análisis, hay que acostumbrarnos a trabajar con las pipas `%>%` y a encadenar funciones. Si todavía te cuesta, puedes seguir haciendo pequeños pasos y verificando que todo esté bien. 
-- ¿Cómo podríamos empezar a explorar la cantidad de casos de tuberculosis por país, año y sexo?
-- Primero, vamos a ver un resumen de los datos agrupados por país, año y sexo. Después, vamos a ver un gráfico que nos muestre la cantidad de casos de tuberculosis.
-- Primero, ¿Qué función de `dplyr` te permitiría hacer esto?
+
+Si todo va bien hasta ahora, deberías de tener un dataset similar a este. En el siguiente ejercicio exploraremos estos datos limpios.
 
 ```{webr}
-#| exercise: examen1_10
-
-casos_agrupados <- oms_limpio %>%
-  ______(______) %>% # Agrupa los datos por país, año y sexo
-  ______(______) %>% # Suma los casos de tuberculosis
-  ______(______) # Ordena los datos por numero de casos
-
-casos_agrupados # Verificamos que se haya hecho correctamente
-
-```
-
-```r	
-oms_grupo <- oms_limpio %>%
-  group_by(pais, anio, sexo) %>%
-  summarise(ncasos = sum(valor), .groups = 'drop') %>%
-  arrange(desc(ncasos))
-```
-
-- Ahora, vamos a visualizar los datos.
-- Para esto, vamos a usar la función `ggplot()` del paquete `ggplot2`.
-- Qué tipo de gráfico te permitiría visualizar la cantidad de casos de tuberculosis por país, año y sexo?
-- Piensa en cómo podrías hacer esto. ¿Qué variables usarías en los ejes `x` y `y`? ¿Qué variable usarías para el color? ¿qué tipo de variables son estas?
-  - En el eje `x`, podrías poner el año.
-  - En el eje `y`, podrías poner la cantidad de casos.
-  - Para el color, podrías poner el sexo.
-
-```{webr}
-#| exercise: examen1_11
-
-library(ggplot2) # Carga la librería necesaria
-
-ggplot(data = casos_agrupados, aes(x = anio, y = ncasos, color = sexo)) +
-  geom_line() +
-  geom_point() +
-  labs(title = "Casos de tuberculosis por país, año y sexo",
-       x = "Año",
-       y = "Número de casos")
-```
-
-
-```r
-library(ggplot2) # Carga la librería necesaria
-
-ggplot(data = oms_grupo, aes(x = anio, y = ncasos, color = sexo)) +
-  geom_line() +
-  geom_point() +
-  labs(title = "Casos de tuberculosis por país, año y sexo",
-       x = "Año",
-       y = "Número de casos")
-```
-
-
-```r
-library(tidyverse)
-library(datos)
-
-
-oms_limpio <- oms %>%
+#| include: false
+ejemplo_datos_oms_limpio <- oms %>%
   pivot_longer(
     cols = nuevos_fpp_h014:nuevosrecaida_m65,
     names_to = "clave", 
@@ -459,73 +383,12 @@ oms_limpio <- oms %>%
   separate(clave, c("nuevos", "tipo", "sexo_edad")) %>%
   select(-nuevos, -iso2, -iso3) %>%
   separate(sexo_edad, c("sexo", "edad"), sep = 1)
-
-# oms_limpio # Verificamos que se haya hecho correctamente
-
-
-oms_grupo2 <- oms_limpio %>%
-  filter(pais %in% c("México", "Canadá", "Bolivia", "Guatemala", "Estados Unidos")) %>%
-  group_by(pais, anio) %>%
-  summarise(ncasos = sum(valor), .groups = 'drop') %>%
-  arrange(desc(ncasos))
-
-# Ver el resultado
-oms_grupo2
-
-# Filtrar y agrupar por país
-oms_grupo <- oms_limpio %>%
-  filter(pais %in% c("México", "Canadá", "Bolivia", "Guatemala", "Estados Unidos")) %>%
-  filter(anio > 1999 ) %>%
-  group_by(pais, anio) %>%
-  summarise(ncasos = sum(valor), .groups = 'drop') %>%
-  arrange(desc(ncasos))
-
-# Ver el resultado
-oms_grupo
-
-
-# library(ggplot2) # Carga la librería necesaria
-
-# Crear el gráfico de barras
-ggplot(oms_grupo, aes(x = reorder(pais, -ncasos), y = ncasos, fill = pais)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Casos por País",
-       x = "País",
-       y = "Número de Casos") +
-  theme_minimal()
-
-
-# Crear el gráfico de barras
-ggplot(oms_grupo, aes(x = reorder(pais, -ncasos), y = ncasos, fill = pais)) +
-  geom_bar(stat = "identity") +
-  labs(title = "Casos por País",
-       x = "País",
-       y = "Número de Casos") +
-  theme_minimal() +
-  facet_wrap(~anio)
-
-
-ggplot(oms_grupo, aes(x = anio, y = ncasos, color = pais)) +
-  geom_line() +
-  geom_point() +
-  labs(title = "Casos por País",
-       x = "País",
-       y = "Número de Casos") +
-  theme_minimal() 
-#   facet_wrap(~anio)
-
-
-
-oms_grupo %>%
-    group_by(pais, anio) %>%
-    summarise(casos_propmedio = mean(ncasos), .groups = 'drop') %>%
-    ggplot(aes(x = reorder(pais, -casos_propmedio), y = casos_propmedio, fill = pais)) +
-    geom_col(stat = "identity") +
-    labs(title = "Casos por País",
-       x = "País",
-       y = "Número de Casos") +
-    theme_minimal() 
-
-
-
 ```
+
+
+```{webr}
+#| edit: false
+#| runbutton: false
+ejemplo_datos_oms_limpio
+```
+

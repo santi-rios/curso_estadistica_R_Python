@@ -6,6 +6,9 @@ format:
     toc-depth: 2
 ---
 
+## Modelos Lineales
+
+### Introducción
 
 {{< revealjs file="../slides/05-lineales-intro.html" height="500px">}}
 
@@ -13,17 +16,26 @@ format:
 
 {{< revealjs file="../slides/05-lineales-ejercicio1.html" height="500px">}}
 
+### Correlación
+
 {{< revealjs file="../slides/05-lineales-corrintro.html" height="500px">}}
 
 {{< revealjs file="../slides/05-lineales-correlacion.html" height="500px">}}
 
 {{< revealjs file="../slides/05-lineales-correlacionII.html" height="500px">}}
 
+{{< revealjs file="../slides/05-corr-plottip.html" height="500px">}}
+
+
+
+### t-test
+
 {{< revealjs file="../slides/05-ttest-wilcoxon.html" height="500px">}}
 
 {{< revealjs file="../slides/05-ttest-mann.html" height="500px">}}
 
-{{< revealjs file="../slides/05-ttest-mann.html" height="500px">}}
+
+### ANOVA
 
 {{< revealjs file="../slides/05-anova-kruska.html" height="500px">}}
 
@@ -31,11 +43,17 @@ format:
 
 {{< revealjs file="../slides/05-ancova.html" height="500px">}}
 
+### Otros
 
 {{< revealjs file="../slides/05-chic-cuadrada.html" height="500px">}}
 
+### Resumen
+
 {{< revealjs file="../slides/05-lineales-resumen.html" height="500px">}}
 
+## Pruebas de hipótesis
+
+{{< revealjs file="../slides/06-pruebahipotesis-intro.html" height="500px">}}
 
 
 ## Análisis de Correlación
