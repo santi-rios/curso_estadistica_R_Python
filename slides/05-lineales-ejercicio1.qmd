@@ -162,9 +162,6 @@ Es importante verificar los supuestos del modelo lineal, como la normalidad de l
 ```{webr}
 #| layout-ncol: 2
 #| fig-cap: Validación del modelo lineal
-#| fig-subcap: 
-  - **Gráfico de residuos vs. valores ajustados**: Para verificar la homocedasticidad y cualquier patrón no lineal.
-  - Histograma o **gráfico Q-Q** de los residuos: Para evaluar la normalidad de los residuos.
 
 library(ggplot2)
 library(ggfortify) # Para gráficos de diagnóstico
