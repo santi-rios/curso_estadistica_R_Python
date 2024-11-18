@@ -8,7 +8,11 @@ author:
       - name: Cursos Or ca
         city: CDMX
         url: orcaasesina.com
-format: live-html
+format: 
+    live-html:
+        # highlightStyle: github
+        # highlightLines: true
+        theme: lux
 sidebar: false
 webr:
     packages: 
@@ -67,8 +71,13 @@ Gráficos por [tinystats](https://tinystats.github.io/teacups-giraffes-and-stati
 - Ejecuta el código de la siguiente diapositiva y observa cómo se va construyendo el histograma. Cada "bolita" que aparece en el gráfico representa un dato de altura. Si hay más de un dato para esa altura, se apila para llevar el conteo o frecuencia. No te preocupes por el código, solo observa el gráfico.
 - NOTA: Puedes hacer click en el botón de reproducción (`play`) para ver la animación después de ejecutar el código; tarda unos segundos en cargar la animación.
 
+
+
+
 ```{webr}
-#| include: false
+#| autorun: true
+#| warning: false
+
 
 library(plotly)
 library(tidyverse)
@@ -108,13 +117,6 @@ histograma_plot <-
   animation_slider(hide = T) %>%
   animation_button(x = 1, xanchor = "right", y = 0, yanchor = "bottom")
 
-
-```
-
-
-
-```{webr}
-#| autorun: true
 
 histograma_plot
 

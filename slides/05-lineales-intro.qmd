@@ -83,8 +83,8 @@ Vamos a visualizar un modelo lineal simple con un ejemplo práctico en R.
 
 ```{webr}
 #| edit: false
-**#| runbutton: false
-**
+#| runbutton: false
+
 # definir los componentes del modelo lineal
 beta_0 <- 5 # intercepto, cuando x = 0
 beta_1 <- 2 # pendiente, cambio en y por cada unidad de cambio en x
@@ -221,7 +221,7 @@ coeficientes
 
 ```
 
-El reusltado es:
+El resultado es:
 
 ```r
 > coeficientes
