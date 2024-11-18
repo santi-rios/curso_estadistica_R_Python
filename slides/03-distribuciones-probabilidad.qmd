@@ -15,7 +15,7 @@ webr:
         - ggplot2
         - dplyr
         - tidyr
-        # - plotly
+        - plotly
         - tweenr
 # pyodide: 
 #     packages: 
@@ -67,21 +67,8 @@ Gráficos por [tinystats](https://tinystats.github.io/teacups-giraffes-and-stati
 - Ejecuta el código de la siguiente diapositiva y observa cómo se va construyendo el histograma. Cada "bolita" que aparece en el gráfico representa un dato de altura. Si hay más de un dato para esa altura, se apila para llevar el conteo o frecuencia. No te preocupes por el código, solo observa el gráfico.
 - NOTA: Puedes hacer click en el botón de reproducción (`play`) para ver la animación después de ejecutar el código; tarda unos segundos en cargar la animación.
 
-
-::: {.panel-tabset}
-
-## Gráfico
-
 ```{webr}
-histograma_plot
-
-```
-
-## Código usado para el gráfico
-
-
-```{webr}
-#| autorun: true
+#| include: false
 
 library(plotly)
 library(tweenr)
@@ -123,6 +110,61 @@ histograma_plot <-
 
 ```
 
+
+
+```{webr}
+#| autorun: true
+
+histograma_plot
+
+```
+
+
+::: {.callout collapse="true"}
+## Código usado para el gráfico de la distribución de alturas de jirafas
+
+```r
+#| autorun: true
+
+library(plotly)
+library(tweenr)
+
+set.seed(12)
+x <- round(rnorm(50, 10, 2))
+x2 <- round(rnorm(50, 18, 1.2))
+x <- c(x, x2)
+df <- data.frame(x = x, y = 23, type = rep(c("Isla #1", "Isla #2"), 
+    each = 50))
+dfs <- list(df)
+for (i in seq_len(nrow(df)))
+{
+    dftemp <- tail(dfs, 1)
+    dftemp[[1]]$y[i] <- sum(dftemp[[1]]$x[seq_len(i)] == dftemp[[1]]$x[i])
+    dfs <- append(dfs, dftemp)
+}
+dfs <- append(dfs, dfs[rep(length(dfs), 3)])
+dft <- tween_states(dfs, 10, 1, "cubic-in", 500)
+dft$y <- dft$y - 0.5
+dft <- dft[dft$y != 23, ]
+
+m <- list(l = 50, r = 50, b = 10, t = 10, pad = 4)
+
+histograma_plot <- 
+  dft %>% 
+  plot_ly(x = ~x, y = ~y, frame = ~.frame, color = ~type, 
+          colors = c("green3", "turquoise3"), 
+          marker = list(size = 16), width = 630, height = 390) %>%
+  config(displayModeBar = F) %>%
+  layout(xaxis = list(range = c(4, 23), title = "Altura de jirafas en cm", zeroline = F), 
+         yaxis = list(range = c(-0.5, 21), title = "Frecuencia", zeroline = F), 
+         legend = list(x = 0.075, y = 0.91), 
+         autosize = F, margin = m) %>%
+  animation_opts(frame = 25, transition = 0, redraw = FALSE) %>%
+  animation_slider(hide = T) %>%
+  animation_button(x = 1, xanchor = "right", y = 0, yanchor = "bottom")
+
+
+```
 :::
 
 
