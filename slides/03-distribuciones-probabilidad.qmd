@@ -71,6 +71,7 @@ Gráficos por [tinystats](https://tinystats.github.io/teacups-giraffes-and-stati
 #| include: false
 
 library(plotly)
+library(tidyverse)
 library(tweenr)
 
 set.seed(12)
