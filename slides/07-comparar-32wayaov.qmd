@@ -197,6 +197,7 @@ Show me some love with the like buttons below... Thank you and please don't forg
 
 
 ```{r}
+library(ggpubr)
 # Data preparation
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # Transform `dose` into factor variable
@@ -216,7 +217,7 @@ head(df, 3)
 
 # Create a box plot
 # Add 10% spaces between the p-value labels and the plot border
-bxp <- ggboxplot(
+bxp <- ggpubr::ggboxplot(
   df, x = "dose", y = "len",
   color = "supp", palette = c("#00AFBB", "#E7B800")
 ) +

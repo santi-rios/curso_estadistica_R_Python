@@ -112,7 +112,7 @@ R function to compute unpaired two-samples t-test
 
 To perform two-samples t-test comparing the means of two independent samples (x & y), the R function t.test() can be used as follow:
 
-```{r}
+```r
 t.test(x, y, alternative = "two.sided", var.equal = FALSE)
 ```
 

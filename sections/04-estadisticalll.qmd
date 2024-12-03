@@ -1,62 +1,57 @@
 ---
-title: "Estadística Aplicada y Tópicos Avanzados"
+title: "Estadística III"
 format:
   html:
     toc: true
     toc-depth: 2
 ---
 
-Módulo 4: Estadística Aplicada y Tópicos Avanzados
+## Pruebas de hipótesis
 
-https://datasciencebox.org/02-looking-further
+{{< revealjs file="../slides/06-pruebahipotesis-intro.html" height="500px">}}
 
-## Bioestadística y Estadística Genómica:
-
-Análisis estadístico en datos genómicos y de proteómica.
-Uso de herramientas como Bioconductor para el análisis de datos biológicos.
-
-## Modelos Mixtos:
-
-Introducción a modelos de efectos aleatorios y fijos.
-Aplicación de modelos lineales generalizados mixtos (GLMMs) en R.
+{{< revealjs file="../slides/06-errores-tipo1.html" height="500px">}}
 
 
-## Estadística Multivariada Avanzada:
+{{< revealjs file="../slides/06-estimacion-inferencia.html" height="500px">}}
 
-Análisis de correspondencias múltiples.
-Regresión parcial menos cuadrados (PLS).
-Análisis discriminante lineal y cuadrático.
+{{< revealjs file="../slides/06-pruebas-hipotesis.html" height="500px">}}
 
-## Minería de Datos y Machine Learning:
+{{< revealjs file="../slides/06-pruebahipotesis-intro.html" height="500px">}}
 
-Introducción a técnicas de machine learning con R.
-Algoritmos supervisados como árboles de decisión, random forests y support vector machines (SVM).
-Algoritmos no supervisados como clustering y reducción de dimensionalidad.
+{{< revealjs file="../slides/06-evaluar-modelo.html" height="500px">}}
 
-## Análisis de Redes Sociales:
+## Plots
 
-Conceptos básicos de redes y grafos.
-Análisis de redes sociales con R utilizando bibliotecas como igraph.
+{{< revealjs file="../slides/07-t-pub.html" height="500px">}}
 
-## Estadística Espacial:
+{{< revealjs file="../slides/07-comparar-medias.html" height="500px">}}
 
-Análisis estadístico de datos espaciales.
-Modelos de puntos y geoestadística aplicada.
+{{< revealjs file="../slides/07-ggpubr-addp.html" height="500px">}}
 
-## Evaluación de Políticas Públicas:
+{{< revealjs file="../slides/07-comparar-2medias.html" height="500px">}}
 
-Métodos estadísticos para la evaluación de impacto.
-Análisis de intención de tratar y métodos de regresión discontinua.
+{{< revealjs file="../slides/07-compare-2meansB.html" height="500px">}}
 
-## Análisis de Datos de Encuestas:
+X{{< revealjs file="../slides/07-comparar-3medias.html" height="500px">}}
 
-Diseño y análisis de encuestas.
-Uso de R para analizar datos de sondeos y encuestas complejas.
+{{< revealjs file="../slides/07-comparar-32wayaov.html" height="500px">}}
 
-## Simulación Estadística:
+{{< revealjs file="../slides/07-comparar-3kruka.html" height="500px">}}
 
-Técnicas de simulación para pruebas de hipótesis y generación de datos.
-Uso de simulación de Monte Carlo para análisis estadístico.
+{{< revealjs file="../slides/07-anova-plot.qmd" height="500px">}}
+
+{{< revealjs file="../slides/07-anova-1.html" height="500px">}}
+
+{{< revealjs file="../slides/07-comparar-plots.qmd" height="500px">}}
+
+{{< revealjs file="../slides/07-tablas-pubs.html" height="500px">}}
+
+## Otros temas
+
+{{< revealjs file="../slides/08-no-parametrico.html" height="500px">}}
+
+{{< revealjs file="../slides/08-markdown.html" height="500px">}}
 
 ## apps
 

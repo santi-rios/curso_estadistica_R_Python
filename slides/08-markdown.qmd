@@ -1,0 +1,134 @@
+---
+title: "Plots comparar medias"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: superhero
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - tidyverse
+        - ggpubr
+        - car
+    render-df: gt-interactive
+engine: knitr
+---
+
+¡Claro! Quarto es una herramienta poderosa que permite crear documentos dinámicos combinando texto, código y resultados de análisis en un solo archivo. Utiliza Markdown, un lenguaje de marcado sencillo, junto con el poder de R para facilitar la creación de informes reproducibles y presentaciones visualmente atractivas.
+
+### Paso 1: Configurar el entorno
+
+Primero, asegúrate de tener `Quarto` instalado en tu sistema. Puedes hacerlo desde [la página oficial de Quarto](https://quarto.org/docs/get-started/).
+
+También necesitarás R y RStudio, que son ampliamente utilizados para trabajar con Quarto.
+
+### Paso 2: Crear un nuevo documento Quarto
+
+1. Abre RStudio.
+2. Selecciona `File` > `New File` > `Quarto Document`.
+3. Esto abrirá un archivo con extensión `.qmd`, que es el formato de archivo de Quarto.
+
+### Paso 3: Entender la estructura básica de un documento Quarto
+
+Un documento Quarto tiene una estructura simple:
+
+- **YAML header**: Al inicio del documento, rodeado por `---`, donde defines el título, autor y otros parámetros.
+- **Markdown**: Para el texto explicativo.
+- **Chunks de código**: Para integrar el código R directamente en el documento.
+
+```yaml
+---
+title: "Análisis de Datos con Quarto"
+author: "Tu Nombre"
+date: "2024-12-03"
+format: html
+---
+```
+
+### Paso 4: Escribir contenido en Markdown
+
+Markdown te permite añadir texto y formatearlo fácilmente. Aquí algunos ejemplos:
+
+- **Encabezados**: Usa `#` para crear encabezados.
+- **Listas**: Usa `*` o `-` para listas.
+- **Negrita y Cursiva**: Usa `**texto**` para negrita y `*texto*` para cursiva.
+
+```markdown
+# Introducción
+
+Este documento demuestra cómo usar **Quarto** con R para análisis de datos.
+
+## Objetivos
+
+- Analizar datos
+- Presentar gráficos
+- Crear tablas
+```
+
+### Paso 5: Integrar código R
+
+Usa bloques de código (chunks) para incluir y ejecutar código R. Estos bloques se inician con ```` ```{r} ```` y terminan con ```` ``` ````.
+
+```markdown
+## Análisis de Datos
+
+```{r}
+# Cargar librerías
+library(tidyverse)
+
+# Crear un conjunto de datos de ejemplo
+data <- tibble(
+  Categoria = c("A", "A", "B", "B"),
+  Valores = c(10, 15, 20, 25)
+)
+
+# Resumir datos
+resumen <- data %>%
+  group_by(Categoria) %>%
+  summarise(Media = mean(Valores), Suma = sum(Valores))
+
+# Mostrar resumen
+print(resumen)
+```
+```
+
+### Paso 6: Crear gráficos
+
+Quarto permite incluir gráficos generados por R dentro de los chunks de código.
+
+```markdown
+## Visualización
+
+```{r}
+# Crear un gráfico
+ggplot(data, aes(x = Categoria, y = Valores)) +
+  geom_bar(stat = "identity") +
+  theme_minimal()
+```
+```
+
+### Paso 7: Renderizar el documento
+
+Una vez que hayas terminado de escribir tu documento, puedes renderizarlo (compilarlo) en diferentes formatos, como HTML, PDF o Word.
+
+- Para renderizar a HTML, simplemente haz clic en el botón "Render" en RStudio.
+- Para cambiar el formato, ajusta el campo `format` en el YAML header a `pdf` o `docx`.
+
+### Paso 8: Ventajas de usar Quarto
+
+- **Reproducibilidad**: Combina código y resultados en el mismo documento.
+- **Flexibilidad**: Soporta múltiples lenguajes de programación y formatos de salida.
+- **Interactividad**: Permite crear documentos interactivos con HTML.
+  
+### Conclusión
+
+Quarto es una herramienta poderosa para generar informes reproducibles y presentaciones. Al combinar R con Markdown, puedes realizar análisis de datos, crear visualizaciones, y generar documentos profesionales de manera eficiente. Esta capacidad de integrar código, texto y resultados en un solo archivo simplifica enormemente el proceso de comunicación de resultados de análisis.

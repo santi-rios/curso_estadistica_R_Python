@@ -90,7 +90,7 @@ Compare two independent groups
 
 Perform the test:
 
-```{r}
+```r
 compare_means(len ~ supp, data = ToothGrowth)
 ```
 
@@ -108,7 +108,9 @@ Returned value is a data frame with the following columns:
 Create a box plot with p-values:
 
 ```{r}
-p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
+library(ggpubr)
+
+p <- ggpubr::ggboxplot(ToothGrowth, x = "supp", y = "len",
           color = "supp", palette = "jco",
           add = "jitter")
 #  Add p-value
