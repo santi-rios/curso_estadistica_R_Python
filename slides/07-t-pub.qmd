@@ -1,0 +1,161 @@
+---
+title: "Prueba de t pubs"
+author:
+  - name: "Mtro. Santiago Ríos"
+    email: santiagoboo99@gmail.com
+    affiliation: 
+      - name: Cursos Orca
+        city: CDMX
+        url: orcaasesina.com
+format: 
+    live-html:
+        highlightStyle: github
+        highlightLines: true
+        theme: superhero
+toc: true
+sidebar: false
+webr:
+    packages: 
+        - tidyverse
+        - ggpubr
+        - car
+    render-df: gt-interactive
+engine: knitr
+---
+
+Methods 	R function 	Description
+T-test 	t.test() 	Compare two groups (parametric)
+Wilcoxon test 	wilcox.test() 	Compare two groups (non-parametric)
+ANOVA 	aov() or anova() 	Compare multiple groups (parametric)
+Kruskal-Wallis 	kruskal.test() 	Compare multiple groups (non-parametric)
+
+Datos con peso de 10 ratones
+
+```{r}
+set.seed(1234)
+my_data <- data.frame(
+  name = paste0(rep("M_", 10), 1:10),
+  weight = round(rnorm(10, 20, 2), 1)
+)
+
+head(my_data, 10)
+```
+
+```{r}
+# Statistical summaries of weight
+summary(my_data$weight)
+```
+
+
+    Min.: the minimum value
+    1st Qu.: The first quartile. 25% of values are lower than this.
+    Median: the median value. Half the values are lower; half are higher.
+    3rd Qu.: the third quartile. 75% of values are higher than this.
+    Max.: the maximum value
+
+Visualize your data using box plots
+
+```{r}
+library(ggpubr)
+ggboxplot(my_data$weight, 
+          ylab = "Weight (g)", xlab = FALSE,
+          ggtheme = theme_minimal())
+```
+
+Preleminary test to check one-sample t-test assumptions
+
+    Is this a large sample? - No, because n < 30.
+    Since the sample size is not large enough (less than 30, central limit theorem), we need to check whether the data follow a normal distribution.
+
+
+    Shapiro-Wilk test:
+        Null hypothesis: the data are normally distributed
+        Alternative hypothesis: the data are not normally distributed
+
+```{r}
+shapiro.test(my_data$weight) # => p-value = 0.6993
+```
+
+From the output, the p-value is greater than the significance level 0.05 implying that the distribution of the data are not significantly different from normal distribtion. In other words, we can assume the normality.
+
+Visual inspection of the data normality using Q-Q plots (quantile-quantile plots). Q-Q plot draws the correlation between a given sample and the normal distribution.
+
+```{r}
+library("ggpubr")
+ggqqplot(my_data$weight, ylab = "Men's weight",
+         ggtheme = theme_minimal())
+```
+
+From the normality plots, we conclude that the data may come from normal distributions.
+
+Note that, if the data are not normally distributed, it’s recommended to use the non parametric one-sample Wilcoxon rank test.
+
+Compute one-sample t-test
+
+We want to know, if the average weight of the mice differs from 25g (two-tailed test)?
+
+```{r}
+# One-sample t-test
+res <- t.test(my_data$weight, mu = 25)
+# Printing the results
+res
+```
+
+
+
+
+In the result above :
+
+    t is the t-test statistic value (t = -9.078),
+    df is the degrees of freedom (df= 9),
+    p-value is the significance level of the t-test (p-value = 7.95310^{-6}).
+    conf.int is the confidence interval of the mean at 95% (conf.int = [17.8172, 20.6828]);
+    sample estimates is he mean value of the sample (mean = 19.25).
+
+
+if you want to test whether the mean weight of mice is less than 25g (one-tailed test), type this:
+
+```{r}
+t.test(my_data$weight, mu = 25,
+              alternative = "less")
+```
+
+Or, if you want to test whether the mean weight of mice is greater than 25g (one-tailed test), type this:
+
+```{r}
+t.test(my_data$weight, mu = 25,
+              alternative = "greater")
+```
+
+Interpretation of the result
+
+The p-value of the test is 7.95310^{-6}, which is less than the significance level alpha = 0.05. We can conclude that the mean weight of the mice is significantly different from 25g with a p-value = 7.95310^{-6}.
+
+
+Access to the values returned by t.test() function
+
+The result of t.test() function is a list containing the following components:
+
+    statistic: the value of the t test statistics
+    parameter: the degrees of freedom for the t test statistics
+    p.value: the p-value for the test
+    conf.int: a confidence interval for the mean appropriate to the specified alternative hypothesis.
+    estimate: the means of the two groups being compared (in the case of independent t test) or difference in means (in the case of paired t test).
+
+
+The format of the R code to use for getting these values is as follow:
+
+```{r}
+# printing the p-value
+res$p.value
+```
+
+```{r}
+# printing the mean
+res$estimate
+```
+
+```{r}
+# printing the confidence interval
+res$conf.int
+```
