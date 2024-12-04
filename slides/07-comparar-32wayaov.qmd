@@ -23,6 +23,8 @@ webr:
 engine: knitr
 ---
 
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
 1.  [Home](https://www.sthda.com/english/)
 2.  [Easy Guides](https://www.sthda.com/english/wiki/wiki.php)
 3.  [R software](https://www.sthda.com/english/wiki/r-software)
@@ -196,7 +198,7 @@ Show me some love with the like buttons below... Thank you and please don't forg
 
 
 
-```{r}
+```r
 library(ggpubr)
 # Data preparation
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -233,7 +235,7 @@ bxp + geom_pwc(
 ```
 
 
-```{r}
+```r
 # Complex cases
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 # 1. Add p-values of OJ vs VC at each dose group
@@ -255,7 +257,7 @@ bxp.complex <- bxp.complex +
 bxp.complex
 ```
 
-```{r}
+```r
 # Three groups by x position
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -276,7 +278,7 @@ bxp +
   scale_y_continuous(expand = expansion(mult = c(0, 0.1)))
 ```
 
-```{r}
+```r
 # Bar plots with p-values
 bp <- ggbarplot(
   df, x = "supp", y = "len", fill = "dose",
