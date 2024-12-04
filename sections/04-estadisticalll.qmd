@@ -40,11 +40,11 @@ X{{< revealjs file="../slides/07-comparar-3medias.html" height="500px">}}
 
 {{< revealjs file="../slides/07-comparar-3kruka.html" height="500px">}}
 
-{{< revealjs file="../slides/07-anova-plot.qmd" height="500px">}}
+{{< revealjs file="../slides/07-anova-plot.html" height="500px">}}
 
 {{< revealjs file="../slides/07-anova-1.html" height="500px">}}
 
-{{< revealjs file="../slides/07-comparar-plots.qmd" height="500px">}}
+{{< revealjs file="../slides/07-comparar-plots.html" height="500px">}}
 
 {{< revealjs file="../slides/07-tablas-pubs.html" height="500px">}}
 https://santi-rios.github.io/R_ejecutar_lec1/slides/07-tablas-pubs.html
