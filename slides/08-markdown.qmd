@@ -81,7 +81,7 @@ Usa bloques de código (chunks) para incluir y ejecutar código R. Estos bloques
 ```markdown
 ## Análisis de Datos
 
-```{r}
+```r
 # Cargar librerías
 library(tidyverse)
 
@@ -108,7 +108,7 @@ Quarto permite incluir gráficos generados por R dentro de los chunks de código
 ```markdown
 ## Visualización
 
-```{r}
+```r
 # Crear un gráfico
 ggplot(data, aes(x = Categoria, y = Valores)) +
   geom_bar(stat = "identity") +
