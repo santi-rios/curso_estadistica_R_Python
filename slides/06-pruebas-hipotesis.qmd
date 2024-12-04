@@ -1,5 +1,5 @@
 ---
-title: "Pruebas de Hipótesis"
+title: "Pruebas de Hipótesis Estadísticas"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com

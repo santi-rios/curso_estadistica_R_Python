@@ -18,7 +18,8 @@ webr:
     packages: 
         - tidyverse
         - ggpubr
-        - car
+        - gt
+        - flextable
     render-df: gt-interactive
 engine: knitr
 ---
@@ -59,6 +60,7 @@ resumen <- data %>%
 ### Paso 3: Crear una tabla con `gt`
 
 El paquete `gt` es excelente para crear tablas atractivas y listas para publicación.
+
 
 ```r
 # Crear una tabla usando gt

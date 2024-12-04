@@ -25,7 +25,9 @@ engine: knitr
 
 Box plots and violin plots
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(ggpubr)
 # Load data
 data("ToothGrowth")
@@ -33,7 +35,9 @@ df <- ToothGrowth
 head(df, 4)
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Box plots with jittered points
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
 # Change outline colors by groups: dose
@@ -45,7 +49,9 @@ head(df, 4)
  p
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
  # Add p-values comparing groups
  # Specify the comparisons you want
 my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
@@ -53,7 +59,9 @@ p + stat_compare_means(comparisons = my_comparisons)+ # Add pairwise comparisons
   stat_compare_means(label.y = 50)                   # Add global p-value
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Violin plots with box plots inside
 # :::::::::::::::::::::::::::::::::::::::::::::::::::
 # Change fill color by groups: dose
@@ -72,7 +80,9 @@ Demo data set
 
 Load and prepare data:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 # Load data
 data("mtcars")
@@ -90,7 +100,9 @@ Ordered bar plots
 
 Change the fill color by the grouping variable “cyl”. Sorting will be done globally, but not by groups.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 ggbarplot(dfm, x = "name", y = "mpg",
           fill = "cyl",               # change fill color by cyl
@@ -103,7 +115,9 @@ ggbarplot(dfm, x = "name", y = "mpg",
 ```
 
 Sort bars inside each group. Use the argument sort.by.groups = TRUE.
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 ggbarplot(dfm, x = "name", y = "mpg",
           fill = "cyl",               # change fill color by cyl
@@ -160,7 +174,9 @@ ggbarplot(dfm, x = "name", y = "mpg_z",
 The bars (or symbols) and error-bar lines may represent
 any user-entered center and variability values. Both symmetric and asymmetric error bars may be entered
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Load necessary libraries
 library(ggplot2)
 library(dplyr)
@@ -197,7 +213,9 @@ grid.arrange(plot1, plot2, ncol = 2)
 ```
 
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Load necessary libraries
 library(ggplot2)
 library(dplyr)

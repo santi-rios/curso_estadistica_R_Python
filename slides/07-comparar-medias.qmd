@@ -90,7 +90,11 @@ Compare two independent groups
 
 Perform the test:
 
-```r
+```{webr}
+#| autorun: true
+#| warning: false
+library(ggpubr)
+
 compare_means(len ~ supp, data = ToothGrowth)
 ```
 
@@ -107,7 +111,9 @@ Returned value is a data frame with the following columns:
 
 Create a box plot with p-values:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(ggpubr)
 
 p <- ggpubr::ggboxplot(ToothGrowth, x = "supp", y = "len",
@@ -132,7 +138,9 @@ For example,
 
 As an illustration, type this:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 p + stat_compare_means( aes(label = ..p.signif..), 
                         label.x = 1.5, label.y = 40)
 
@@ -141,7 +149,9 @@ p
 
 If you prefer, it’s also possible to specify the argument label as a character vector:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 p + stat_compare_means( label = "p.signif", label.x = 1.5, label.y = 40)
 
 p
@@ -151,13 +161,17 @@ Compare two paired samples
 
 Perform the test:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 compare_means(len ~ supp, data = ToothGrowth, paired = TRUE)
 ```
 
 Visualize paired data using the ggpaired() function:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 ggpaired(ToothGrowth, x = "supp", y = "len",
          color = "supp", line.color = "gray", line.size = 0.4,
          palette = "jco")+
@@ -168,15 +182,18 @@ Compare more than two groups
 
     Global test:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Global test
 compare_means(len ~ dose,  data = ToothGrowth, method = "anova")
 ```
 
 Plot with global p-value:
 
-```{r}
-# Default method = "kruskal.test" for multiple groups
+```{r}```{webr}
+#| autorun: true
+#| warning: false# Default method = "kruskal.test" for multiple groups
 ggboxplot(ToothGrowth, x = "dose", y = "len",
           color = "dose", palette = "jco")+
   stat_compare_means()
@@ -191,12 +208,16 @@ ggboxplot(ToothGrowth, x = "dose", y = "len",
 Pairwise comparisons. If the grouping variable contains more than two levels, then pairwise tests will be performed automatically. The default method is “wilcox.test”. You can change this to “t.test”.
 
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Perorm pairwise comparisons
 compare_means(len ~ dose,  data = ToothGrowth)
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Visualize: Specify the comparisons you want
 my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
 ggboxplot(ToothGrowth, x = "dose", y = "len",
@@ -209,7 +230,9 @@ ggboxplot(ToothGrowth, x = "dose", y = "len",
 If you want to specify the precise y location of bars, use the argument label.y:
 
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 ggboxplot(ToothGrowth, x = "dose", y = "len",
           color = "dose", palette = "jco")+ 
   stat_compare_means(comparisons = my_comparisons, label.y = c(29, 35, 40))+
@@ -220,7 +243,9 @@ ggboxplot(ToothGrowth, x = "dose", y = "len",
 
     Multiple pairwise tests against a reference group:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 # Pairwise comparison against reference
 compare_means(len ~ dose,  data = ToothGrowth, ref.group = "0.5",
@@ -228,7 +253,9 @@ compare_means(len ~ dose,  data = ToothGrowth, ref.group = "0.5",
 ```
 
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Visualize
 ggboxplot(ToothGrowth, x = "dose", y = "len",
           color = "dose", palette = "jco")+
@@ -239,14 +266,18 @@ ggboxplot(ToothGrowth, x = "dose", y = "len",
 
 Multiple pairwise tests against all (base-mean):
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Comparison of each group against base-mean
 compare_means(len ~ dose,  data = ToothGrowth, ref.group = ".all.",
               method = "t.test")
 ```
 
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Visualize
 ggboxplot(ToothGrowth, x = "dose", y = "len",
           color = "dose", palette = "jco")+
@@ -257,7 +288,9 @@ ggboxplot(ToothGrowth, x = "dose", y = "len",
 
 Visualize (1/2). Create a multi-panel box plots facetted by group (here, “dose”):
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Box plot facetted by "dose"
 p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
           color = "supp", palette = "jco",
@@ -267,7 +300,9 @@ p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
 p + stat_compare_means(label = "p.format")
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Or use significance symbol as label
 p + stat_compare_means(label =  "p.signif", label.x = 1.5)
 ```
@@ -276,19 +311,25 @@ To hide the ‘ns’ symbol, use the argument hide.ns = TRUE.
 
 Visualize (2/2). Create one single panel with all box plots. Plot y = “len” by x = “dose” and color by “supp”:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
           color = "supp", palette = "jco",
           add = "jitter")
 p + stat_compare_means(aes(group = supp))
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Show only p-value
 p + stat_compare_means(aes(group = supp), label = "p.format")
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Use significance symbol as label
 p + stat_compare_means(aes(group = supp), label = "p.signif")
 ```
@@ -299,14 +340,18 @@ p + stat_compare_means(aes(group = supp), label = "p.signif")
 
 Perform the test:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 compare_means(len ~ supp, data = ToothGrowth, 
               group.by = "dose", paired = TRUE)
 ```
 
 Visualize. Create a multi-panel box plots facetted by group (here, “dose”):
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Box plot facetted by "dose"
 p <- ggpaired(ToothGrowth, x = "supp", y = "len",
           color = "supp", palette = "jco", 
@@ -320,7 +365,9 @@ Other plot types
 
     Bar and line plots (one grouping variable):
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Bar plot of mean +/-se
 ggbarplot(ToothGrowth, x = "dose", y = "len", add = "mean_se")+
   stat_compare_means() +                                         # Global p-value
@@ -335,7 +382,9 @@ ggline(ToothGrowth, x = "dose", y = "len", add = "mean_se")+
 
 Bar and line plots (two grouping variables):
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 ggbarplot(ToothGrowth, x = "dose", y = "len", add = "mean_se",
           color = "supp", palette = "jco", 
           position = position_dodge(0.8))+

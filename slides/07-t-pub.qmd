@@ -31,7 +31,10 @@ Kruskal-Wallis 	kruskal.test() 	Compare multiple groups (non-parametric)
 
 Datos con peso de 10 ratones
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
+
 set.seed(1234)
 my_data <- data.frame(
   name = paste0(rep("M_", 10), 1:10),
@@ -41,7 +44,10 @@ my_data <- data.frame(
 head(my_data, 10)
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
+
 # Statistical summaries of weight
 summary(my_data$weight)
 ```
@@ -55,7 +61,10 @@ summary(my_data$weight)
 
 Visualize your data using box plots
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
+
 library(ggpubr)
 ggboxplot(my_data$weight, 
           ylab = "Weight (g)", xlab = FALSE,
@@ -72,7 +81,9 @@ Preleminary test to check one-sample t-test assumptions
         Null hypothesis: the data are normally distributed
         Alternative hypothesis: the data are not normally distributed
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 shapiro.test(my_data$weight) # => p-value = 0.6993
 ```
 
@@ -80,8 +91,10 @@ From the output, the p-value is greater than the significance level 0.05 implyin
 
 Visual inspection of the data normality using Q-Q plots (quantile-quantile plots). Q-Q plot draws the correlation between a given sample and the normal distribution.
 
-```{r}
-library("ggpubr")
+```{webr}
+#| autorun: true
+#| warning: false
+
 ggqqplot(my_data$weight, ylab = "Men's weight",
          ggtheme = theme_minimal())
 ```
@@ -94,7 +107,9 @@ Compute one-sample t-test
 
 We want to know, if the average weight of the mice differs from 25g (two-tailed test)?
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # One-sample t-test
 res <- t.test(my_data$weight, mu = 25)
 # Printing the results
@@ -115,14 +130,18 @@ In the result above :
 
 if you want to test whether the mean weight of mice is less than 25g (one-tailed test), type this:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 t.test(my_data$weight, mu = 25,
               alternative = "less")
 ```
 
 Or, if you want to test whether the mean weight of mice is greater than 25g (one-tailed test), type this:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 t.test(my_data$weight, mu = 25,
               alternative = "greater")
 ```
@@ -145,17 +164,23 @@ The result of t.test() function is a list containing the following components:
 
 The format of the R code to use for getting these values is as follow:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # printing the p-value
 res$p.value
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # printing the mean
 res$estimate
 ```
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # printing the confidence interval
 res$conf.int
 ```

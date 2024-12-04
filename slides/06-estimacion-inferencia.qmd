@@ -67,6 +67,7 @@ A continuación, se muestran ejemplos en R para calcular una estimación puntual
 
 ```{webr}
 #| autorun: true
+#| warning: false
 
 # Cargar librerías necesarias
 library(tidyverse)

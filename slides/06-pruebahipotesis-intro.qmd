@@ -108,7 +108,7 @@ La falsabilidad de Popper se relaciona directamente con la prueba de hipótesis 
 :::
 
 
-### La Hipótesis Nula
+### La Hipótesis Nula $H_0$
 
 - En el contexto de las pruebas científicas, se introduce la **hipótesis nula** como un punto de partida para la falsificación. 
 - La hipótesis nula incluye todas las posibilidades excepto la predicción de la hipótesis original. 
@@ -150,14 +150,4 @@ En este código:
   - Si el valor p es menor que el nivel de significancia (generalmente `0.05`), rechazaríamos la hipótesis nula y concluiríamos que el promedio de `valor` es mayor que 50.
   - En este caso, el valor p es `0.0001`, lo que sugiere que hay suficiente evidencia para rechazar la hipótesis nula.
 
-
-### Corroboración en el Falsificacionismo
-
-### El Rol del Análisis Estadístico
-
-
-
-### Ejemplo en R: Comparación de Enfoques Popperiano y Bayesiano
-
-A continuación, te muestro cómo realizar un análisis simple en R que compara un enfoque estadístico frecuentista (popperiano) con un bayesiano, usando un conjunto de datos simulado de dos grupos a los que queremos comparar.
 
