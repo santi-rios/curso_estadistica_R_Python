@@ -8,16 +8,17 @@ format:
 
 ## Pruebas de hipótesis
 
+
+
 {{< revealjs file="../slides/06-pruebahipotesis-intro.html" height="500px">}}
 
 {{< revealjs file="../slides/06-errores-tipo1.html" height="500px">}}
 
 
 {{< revealjs file="../slides/06-estimacion-inferencia.html" height="500px">}}
-
 {{< revealjs file="../slides/06-pruebas-hipotesis.html" height="500px">}}
 
-{{< revealjs file="../slides/06-pruebahipotesis-intro.html" height="500px">}}
+
 
 {{< revealjs file="../slides/06-evaluar-modelo.html" height="500px">}}
 
@@ -46,12 +47,13 @@ X{{< revealjs file="../slides/07-comparar-3medias.html" height="500px">}}
 {{< revealjs file="../slides/07-comparar-plots.qmd" height="500px">}}
 
 {{< revealjs file="../slides/07-tablas-pubs.html" height="500px">}}
+https://santi-rios.github.io/R_ejecutar_lec1/slides/07-tablas-pubs.html
 
 ## Otros temas
 
-{{< revealjs file="../slides/08-no-parametrico.html" height="500px">}}
+<!-- {{< revealjs file="../slides/08-no-parametrico.html" height="500px">}}
 
-{{< revealjs file="../slides/08-markdown.html" height="500px">}}
+{{< revealjs file="../slides/08-markdown.html" height="500px">}} -->
 
 ## apps
 
