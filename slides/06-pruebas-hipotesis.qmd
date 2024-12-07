@@ -81,11 +81,7 @@ El estadístico de prueba nos permite calcular un **valor p**, que es la probabi
 - Usar $\alpha = 0.05$ significa que aceptamos un 5% de probabilidad de cometer un error de Tipo I. Esto es considerado un nivel aceptable de riesgo en muchos campos, aunque siempre se debe considerar el contexto específico del estudio.
 - Este $\alpha = 0.05$ puede distribuirse en dos colas (0.025 en cada cola) o en una cola (0.05 en una cola). Esto depende de la naturaleza de la hipótesis de investigación y el diseño del estudio. Normalmente, las pruebas de dos colas se utilizan cuando se espera una diferencia en cualquier dirección, mientras que las pruebas de una cola se utilizan cuando se espera una diferencia en una dirección específica (por ejemplo, un tratamiento va a producir un efecto positivo y no esperas que sea negativo).
 
-![Aquí H_1 es que la media del grupo experimental será mayor que el control, por ejemplo](https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_hypothesistest-means-proportions/Standard%20Normal%20Distribution%20upper%20tail.png)
-
-![Aquí H_1 es que la media del grupo experimental será menor que el control](https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_hypothesistest-means-proportions/Standard%20Normal%20Distribution%20lower%20tail.png)
-
-![Aquí H_1 es que la media del grupo experimental será distinta que el control. NO especificamos una dirección.](https://sphweb.bumc.bu.edu/otlt/mph-modules/bs/bs704_hypothesistest-means-proportions/Standard%20Normal%20Distribution%20both%20tails.png)
+![](./dos_colas.jpg)
 
 
 
@@ -112,8 +108,8 @@ datos <- tibble(
   valor = c(rnorm(50, mean = 5, sd = 1), rnorm(50, mean = 6, sd = 1))
 )
 
-# Ver los primeros datos
-head(datos)
+# Ver los datos
+datos
 ```
 
 Aquí, hemos generado dos grupos con medias diferentes (grupo A con media 5 y grupo B con media 6) y una desviación estándar de 1.
@@ -130,6 +126,10 @@ ggplot(datos, aes(x = grupo, y = valor)) +
   geom_boxplot() +
   labs(title = "Comparación de los Grupos A y B", x = "Grupo", y = "Valor")
 ```
+
+::: {.callout-note}
+el boxplot nos indica que el grupo B tiene 2 outliers (los puntos que se observan fuera de los límites de la caja), lo que puede afectar la prueba de hipótesis. En la práctica, es importante considerar cómo manejar los valores atípicos y si deben ser excluidos o tratados de manera diferente. Por el momento, los dejaremos tal como están para ilustrar el proceso de prueba de hipótesis.
+:::
 
 ### 3. Realizar la prueba t de dos muestras
 

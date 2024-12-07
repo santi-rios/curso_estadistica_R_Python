@@ -74,7 +74,7 @@ La falsabilidad de Popper se relaciona directamente con la prueba de hipótesis 
 
 - **Criterios de Decisión**: Se utilizan criterios estadísticos, como niveles de significancia y valores p, para decidir si se rechaza o no la hipótesis nula. Un resultado estadísticamente significativo sugiere que hay suficiente evidencia para rechazar la hipótesis nula, aunque esto no "prueba" la hipótesis alternativa.
 
-- **Provisionalidad de los Resultados**: Similar al enfoque de Popper, los resultados de las pruebas de hipótesis son provisionales, sujetos a revisión y refutación con nuevas evidencias o mejores análisis.
+- **Provisionalidad de los Resultados**: Similar al enfoque de Popper, los resultados de las pruebas de hipótesis son provisionales, sujetos a revisión y refutación con nuevas evidencias o mejores análisis. 
 
 ## La Imposibilidad de Probar una Teoría
 
@@ -84,44 +84,34 @@ La falsabilidad de Popper se relaciona directamente con la prueba de hipótesis 
 :::
 
 
-::: {.callout-tip}
-## Diferentes Tipos de Hipótesis
-[Ford](https://assets.cambridge.org/97805216/60051/frontmatter/9780521660051_frontmatter.pdf) (2000) distinguió tres significados del término “hipótesis”:
-
-1. **Hipótesis**: una afirmación que puede ser probada experimentalmente, en contraste con un modelo o teoría.
-2. **Modelo o teoría**: una explicación más amplia que puede originar varias hipótesis.
-3. **Postulado**: una idea nueva o no explorada que aún no ha sido suficientemente investigada.
-
-## Priorización de Modelos
-
-- Uno de los desafíos en la investigación científica es decidir qué modelos o hipótesis se deben investigar primero. 
-- Dado que normalmente hay múltiples modelos y los recursos (tiempo, dinero, etc.) son limitados, es importante establecer prioridades.
-- Popper sugirió que los científicos deberían enfocarse en probar las hipótesis que son más fáciles de falsificar mediante pruebas adecuadas. 
-- Las hipótesis que hacen predicciones improbables y que tienen un alto contenido empírico son las que Popper llamó **pruebas severas**. 
-- Este concepto fue redefinido por [Mayo](https://press.uchicago.edu/ucp/books/book/chicago/E/bo3637756.html) (1996) como una prueba que es capaz de revelar un error específico si tal error existe (como los errores en pruebas estadísticas de hipótesis).
-
-## La Sociología de la Ciencia
-
-- Otro enfoque para decidir qué hipótesis probar tiene que ver con factores sociales y prácticos. 
-- Algunas hipótesis pueden ser relativamente triviales o uno puede tener una buena idea de cuáles serán los resultados. En estos casos, probar dicha hipótesis puede ser útil porque tiene más probabilidad de producir un resultado estadísticamente significativo y, por ende, publicable. 
-- Sin embargo, también puede haber hipótesis novedosas o más complejas, que sean más difíciles de probar pero que podrían tener un mayor impacto en la comunidad científica si se demostraran.
-:::
-
 
 ### La Hipótesis Nula $H_0$
 
 - En el contexto de las pruebas científicas, se introduce la **hipótesis nula** como un punto de partida para la falsificación. 
-- La hipótesis nula incluye todas las posibilidades excepto la predicción de la hipótesis original. 
-- Es más sencillo, desde el punto de vista lógico, refutar una hipótesis nula que probar una hipótesis alternativa. 
-- Por ejemplo, en un estudio sobre la bioluminiscencia de los dinoflagelados, la hipótesis nula podría ser que la bioluminiscencia no tiene ningún efecto o incluso reduce la tasa de mortalidad de los copépodos que se alimentan de dinoflagelados. 
+- La hipótesis nula incluye todas las posibilidades excepto la predicción de la hipótesis original.  
+  - Por ejemplo, en un estudio sobre la bioluminiscencia de los dinoflagelados, la hipótesis nula podría ser que la bioluminiscencia no tiene ningún efecto o incluso reduce la tasa de mortalidad de los copépodos que se alimentan de dinoflagelados. 
   - Esta hipótesis nula abarca todas las posibilidades excepto la predicción de que la bioluminiscencia aumenta la mortalidad de los copépodos.
 
-### Resumen hasta ahora
+### Ejemplo Práctico
 
-- El **método científico** es un proceso basado en la formulación de hipótesis que pueden ser falsificadas mediante pruebas experimentales. - La elección de qué hipótesis probar debe basarse tanto en el contenido empírico de las mismas como en su capacidad para hacer predicciones claras y distintivas. 
+Supongamos que un grupo de investigadores está estudiando un nuevo medicamento que se cree que reduce la presión arterial en pacientes con hipertensión. 
+
+- hipótesis alternativa ($H_a$): La hipótesis original de los investigadores es que "el nuevo medicamento reduce la presión arterial en pacientes con hipertensión". Esta es la hipótesis que los investigadores esperan demostrar.
+- La hipótesis nula ($H_0$), en cambio, es una declaración que niega la hipótesis original. En este caso, sería: "El nuevo medicamento no tiene ningún efecto en la reducción de la presión arterial en pacientes con hipertensión". 
+  - La hipótesis nula incluye todas las posibilidades excepto la predicción de la hipótesis original. Esto significa que bajo la hipótesis nula, cualquier observación que no resulte en una reducción de la presión arterial significativa se considera consistente con esta hipótesis. Por ejemplo, si el medicamento:
+    - No tiene efecto en la presión arterial (los niveles de presión arterial permanecen iguales).
+    - Aumenta la presión arterial.
+    - Reduce la presión arterial, pero no de manera significativa.
+  - Cada una de estas situaciones es consistente con la hipótesis nula, ya que en ninguna de ellas se observa el efecto específico que los investigadores desean comprobar (una reducción significativa de la presión arterial).
+  - **Proceso de Prueba**: Durante el análisis estadístico, se recopilan datos del estudio y se evalúa si hay suficiente evidencia para rechazar la hipótesis nula en favor de la hipótesis original. Si los datos muestran una reducción significativa en la presión arterial, los investigadores pueden rechazar la hipótesis nula y aceptar que el medicamento tiene un efecto positivo. Sin embargo, si no hay evidencia suficiente, no pueden rechazar la hipótesis nula, lo que significa que no hay pruebas concluyentes de que el medicamento funcione como se esperaba.
+
+## Resumen hasta ahora
+
+- El **método científico** es un proceso basado en la formulación de hipótesis que pueden ser falsificadas mediante pruebas experimentales. 
+- La elección de qué hipótesis probar debe basarse tanto en el contenido empírico de las mismas como en su capacidad para hacer predicciones claras y distintivas. 
 - Además, es importante recordar que, aunque una hipótesis no puede ser probada de manera definitiva, sí puede ser refutada por una sola observación en contra.
 
-### Ejemplo en R
+## Ejemplo en R
 
 A continuación, un ejemplo simple de cómo realizar una prueba de hipótesis en R. Supongamos que queremos probar si el promedio de una variable numérica es mayor que un valor específico (por ejemplo, si el promedio de una muestra es mayor que 50).
 
