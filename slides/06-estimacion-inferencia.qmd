@@ -65,6 +65,9 @@ A continuación, se muestran ejemplos en R para calcular una estimación puntual
 
 ***Estimación Puntual de la Media***
 
+- Primero, generamos una muestra aleatoria de 100 observaciones con una media de 50 y una desviación estándar de 10.
+- Luego, calculamos la **media muestral**, que es una estimación puntual de la media poblacional. Esto se hace con la función `mean()` en R.
+
 ```{webr}
 #| autorun: true
 #| warning: false
@@ -87,6 +90,8 @@ En este código:
 
 ***Intervalo de Confianza para la Media***
 
+- Utilizamos una prueba t para calcular el **intervalo de confianza** para la media de los datos con un nivel de confianza del 95%. El intervalo se obtiene con la función `t.test()` en R y luego se extrae el intervalo de confianza con la función `$conf.int`.
+
 ```{webr}
 #| autorun: true
 
@@ -104,13 +109,18 @@ En este código:
 - Utilizamos una prueba t para calcular el **intervalo de confianza** para la media de los datos con un nivel de confianza del 95%.
 - El resultado `intervalo_confianza` nos proporciona el rango dentro del cual se espera que esté la media poblacional con un 95% de confianza.
 
+::: {.callout-tip}
+En las próximas lecciones, vamos a calcular y visualizar los estimadores puntuales y de intervalos de manera directa con las librerías ggpubr y ggplot2 en R. 
+:::
+
 ### Resumen hasta ahora
 
 - La **estimación** es una parte fundamental de la inferencia estadística y nos permite hacer afirmaciones sobre parámetros poblacionales a partir de muestras. 
 - Existen dos tipos principales de estimación: la **estimación puntual**, que nos da un único valor como mejor estimación del parámetro, y la **estimación por intervalo**, que proporciona un rango de valores dentro del cual es probable que se encuentre el parámetro verdadero, acompañado de una medida de incertidumbre.
+- Vamos a ver ahora el Error Estándar de la Media, la cuál es una medida de la variabilidad en la media muestral que se utiliza mucho en los análisis estadísticos.
 
 
-## Error estándar e intervalos de confianza para la media
+## Error estándar de la media
 
 ### Error estándar de la media muestral
 
@@ -128,6 +138,8 @@ Donde:
 ::: {.callout-important}
 
 El **error estándar** nos da una idea de cómo cambiarían las medias muestrales si repitiéramos el proceso de muestreo varias veces. Si el error estándar es **grande**, las medias de las diferentes muestras variarán mucho entre sí, lo que sugiere que es menos probable que una media muestral individual esté cerca de la verdadera media poblacional. Por otro lado, si el error estándar es **pequeño**, las medias muestrales serán más consistentes entre sí, lo que nos da más confianza en que la media muestral es una buena estimación de la media poblacional.
+
+Si observas la fórmula para calcular el Error Estándar, verás que es inversamente proporcional a la raíz cuadrada del tamaño de la muestra. Esto significa que, a medida que aumenta el tamaño de la muestra, el error estándar disminuye, lo que indica que las medias muestrales son más consistentes y se acercan más a la media poblacional.
 :::
 
 #### Graficar el Error Estándar en R
