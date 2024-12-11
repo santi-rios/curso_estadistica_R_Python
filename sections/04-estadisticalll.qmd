@@ -32,6 +32,10 @@ format:
 
 {{< revealjs file="../slides/07-comparar-2medias.html" height="500px">}}
 
+{{< revealjs file="../slides/07-anova-1via.html" height="500px">}}
+
+{{< revealjs file="../slides/07-anova-2vias.html" height="500px">}}
+
 {{< revealjs file="../slides/07-compare-2meansB.html" height="500px">}}
 
 X{{< revealjs file="../slides/07-comparar-3medias.html" height="500px">}}

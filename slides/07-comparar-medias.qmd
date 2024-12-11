@@ -1,5 +1,5 @@
 ---
-title: "Comparar medias"
+title: "Comparar medias - Continuación"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com
@@ -23,72 +23,53 @@ webr:
 engine: knitr
 ---
 
-ggpubr package:
+Como viste en la lección pasada, con `ggpubr` es fácil graficar y realizar las pruebas estadísticas para comparar medias. En esta lección, veremos más a fondo la función `compare_means()` y `stat_compare_means()` para que puedas realizar comparaciones más complejas.
 
-    compare_means(): easy to use solution to performs one and multiple mean comparisons.
-    stat_compare_means(): easy to use solution to automatically add p-values and significance levels to a ggplot.
+- La función `compare_means()` realiza una o múltiples comparaciones de medias.
+- La función `stat_compare_means()` agrega automáticamente los valores p y los niveles de significancia a un gráfico.
 
-compare_means()
+## Función `compare_means()`
 
-As we’ll show in the next sections, it has multiple useful options compared to the standard R functions.
-
-The simplified format is as follow:
+- Esta función sigue la siguiente estructura:
 
 ```r
-compare_means(formula, data, method = "wilcox.test", paired = FALSE,
-  group.by = NULL, ref.group = NULL, ...)
+compare_means(formula, 
+              data, 
+              method = "wilcox.test", 
+              paired = FALSE,
+              group.by = NULL, 
+              ref.group = NULL, 
+              ...
+              )
 ```
-::: {.callout-tip}
+Donde: 
 
+- `formula`: una fórmula de la forma `y ~ x`, donde `y` es una variable de respuesta y `x` es un factor con uno o varios niveles. Por ejemplo, `formula = respuesta ~ grupo_de_tratamiento`. 
+- `data`: un data.frame que contiene las variables en la fórmula.
+- `method`: el tipo de prueba. El valor predeterminado es `wilcox.test`. Los valores permitidos incluyen: `t.test` (paramétrico), `anova` (paramétrico), `wilcox.test` (no paramétrico) y `kruskal.test` (no paramétrico).
+- `paired`: un valor lógico que indica si tienes muestras pareadas (por ejemplo, la misma muestra antes y después de un tratamiento). Se utiliza solo en `t.test` y en `wilcox.test`.
+- `group.by`: variables utilizadas para agrupar el conjunto de datos antes de aplicar la prueba. Cuando se especifica, las comparaciones de medias se realizarán en cada subconjunto de los datos formados por los diferentes niveles de las variables `group.by`. Por ejemplo, `group.by = "sexo"`.
+- `ref.group`: una cadena de caracteres que especifica el grupo de referencia. Si se especifica, para una variable de agrupamiento dada, cada uno de los niveles del grupo se comparará con el grupo de referencia (es decir, grupo de control). 
 
-    formula: a formula of the form x ~ group, where x is a numeric variable and group is a factor with one or multiple levels. For example, formula = TP53 ~ cancer_group. It’s also possible to perform the test for multiple response variables at the same time. For example, formula = c(TP53, PTEN) ~ cancer_group.
+### stat_compare_means()
 
-    data: a data.frame containing the variables in the formula.
-    method: the type of test. Default is “wilcox.test”. Allowed values include:
-        “t.test” (parametric) and “wilcox.test”" (non-parametric). Perform comparison between two groups of samples. If the grouping variable contains more than two levels, then a pairwise comparison is performed.
-        “anova” (parametric) and “kruskal.test” (non-parametric). Perform one-way ANOVA test comparing multiple groups.
+- Esta función es similar a `compare_means()`, pero se utiliza para agregar automáticamente los valores p y los niveles de significancia a un gráfico.
 
-    paired: a logical indicating whether you want a paired test. Used only in t.test and in wilcox.test.
-
-    group.by: variables used to group the data set before applying the test. When specified the mean comparisons will be performed in each subset of the data formed by the different levels of the group.by variables.
-
-    ref.group: a character string specifying the reference group. If specified, for a given grouping variable, each of the group levels will be compared to the reference group (i.e. control group). ref.group can be also “.all.”. In this case, each of the grouping variable levels is compared to all (i.e. base-mean).
-
-
-:::
-
-stat_compare_means()
-
-This function extends ggplot2 for adding mean comparison p-values to a ggplot, such as box blots, dot plots, bar plots and line plots.
-
-The simplified format is as follow:
 
 ```r
-stat_compare_means(mapping = NULL, comparisons = NULL hide.ns = FALSE,
-                   label = NULL,  label.x = NULL, label.y = NULL,  ...)
+plot(...) + stat_compare_means(
+                               ...)
+
 ```
 
 ::: {.callout}
 
+## Ejemplo con dos grupos independientes
 
-    mapping: Set of aesthetic mappings created by aes().
-
-    comparisons: A list of length-2 vectors. The entries in the vector are either the names of 2 values on the x-axis or the 2 integers that correspond to the index of the groups of interest, to be compared.
-
-    hide.ns: logical value. If TRUE, hide ns symbol when displaying significance levels.
-
-    label: character string specifying label type. Allowed values include “p.signif” (shows the significance levels), “p.format” (shows the formatted p value).
-
-    label.x,label.y: numeric values. coordinates (in data units) to be used for absolute positioning of the label. If too short they will be recycled.
-
-    …: other arguments passed to the function compare_means() such as method, paired, ref.group.
-
-
-:::
-
-Compare two independent groups
-
-Perform the test:
+- En este caso, se comparan dos grupos independientes.
+- La variable de respuesta es `len` y el factor es `supp`.
+- Como no especificamos el método, se utiliza el valor predeterminado `wilcox.test`.
+- Observa el output de la función `compare_means()`. Nos da los dos grupos que se comparan, el p-valor asociado a la prueba y el método utilizado.
 
 ```{webr}
 #| autorun: true
@@ -98,45 +79,60 @@ library(ggpubr)
 compare_means(len ~ supp, data = ToothGrowth)
 ```
 
-By default method = “wilcox.test” (non-parametric test). You can also specify method = “t.test” for a parametric t-test.
-
-Returned value is a data frame with the following columns:
-
-    .y.: the y variable used in the test.
-    p: the p-value
-    p.adj: the adjusted p-value. Default value for p.adjust.method = “holm”
-    p.format: the formatted p-value
-    p.signif: the significance level.
-    method: the statistical test used to compare groups.
-
-Create a box plot with p-values:
+- En este caso, el p-valor es mayor a 0.05, por lo que no hay evidencia suficiente para rechazar la hipótesis nula de que las medias de los dos grupos son iguales.
+- Si quisieras realizar una prueba t de Student, puedes especificar el método con `method = "t.test"`.
 
 ```{webr}
 #| autorun: true
 #| warning: false
-library(ggpubr)
 
-p <- ggpubr::ggboxplot(ToothGrowth, x = "supp", y = "len",
+compare_means(len ~ supp, data = ToothGrowth, method = "t.test")
+
+```
+
+- Como ya vimos, para graficarlo solo hay que agregar `stat_compare_means()` al gráfico de ggpubr
+
+```{webr}
+#| autorun: true
+#| warning: false
+
+p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
           color = "supp", palette = "jco",
           add = "jitter")
-#  Add p-value
-p + stat_compare_means()
-# Change method
+
 p + stat_compare_means(method = "t.test")
 ```
 
+## Ejemplo con dos grupos pareados
 
-Note that, the p-value label position can be adjusted using the arguments: label.x, label.y, hjust and vjust.
+- En este caso, se comparan dos grupos pareados con la función `ggpaired()` de ggpubr. Esto permite visualizar los datos pareados y ver cómo cambian antes y después de un tratamiento.
 
-The default p-value label displayed is obtained by concatenating the method and the p columns of the returned data frame by the function compare_means(). You can specify other combinations using the aes() function.
 
-For example,
+```{webr}
+#| autorun: true
+#| warning: false
 
-    aes(label = ..p.format..) or aes(label = paste0(“p =”, ..p.format..)): display only the formatted p-value (without the method name)
-    aes(label = ..p.signif..): display only the significance level.
-    aes(label = paste0(..method.., “\n”, “p =”, ..p.format..)): Use line break (“\n”) between the method name and the p-value.
+ ggpaired(
+   ToothGrowth, 
+   x = "supp", 
+   y = "len",
+   color = "supp", 
+   line.color = "gray", 
+   line.size = 0.4,
+   palette = "npg") +
+ stat_compare_means(method = "t.test", 
+                            paired = TRUE # Indicamos que son pareados
+                            ) 
+```
 
-As an illustration, type this:
+
+:::
+
+### Ajustar la posición de la etiqueta del valor p
+
+- La posición predeterminada de la etiqueta del valor p se puede ajustar utilizando los argumentos `label.x`, `label.y`.
+- label.x: posición x de la etiqueta. 1 se refiere al primer grupo y 2 al segundo. Por lo tanto, 1.5 se encuentra en el medio de los grupos. 
+- label.y: posición y de la etiqueta.
 
 ```{webr}
 #| autorun: true
@@ -147,169 +143,66 @@ p + stat_compare_means( aes(label = ..p.signif..),
 p
 ```
 
-If you prefer, it’s also possible to specify the argument label as a character vector:
+## Comparar medias con más de dos grupos (ANOVA)
+
+- Para comparar más de dos grupos, se utiliza el método `anova`.
+- Recuerda que el análisis de varianza (ANOVA) es una técnica estadística que se utiliza para comparar las medias de tres o más grupos. Si el p-valor es menor a 0.05, se rechaza la hipótesis nula de que las medias son iguales. Si el valor es mayor a 0.05, no hay evidencia suficiente para rechazar la hipótesis nula.
+- Sin embargo, recuerda que el ANOVA NO nos dice cuáles grupos son diferentes entre sí. Para esto, se utilizan pruebas post hoc, que veremos más a detalle en la siguiente sección. Esto se hace para evitar errores de tipo I (ver la clase de [pruebas múltiples y errores tipo I](https://riverorca.com/mod/hvp/view.php?id=287)).
+- Para este ejemplo, vamos a comparar las medias de la variable `len` entre los 3 diferentes niveles de la variable `dose`.
+
+1. Primero, vamos a realizar la prueba ANOVA con `compare_means()`. Esta es una prueba general que nos dice si hay diferencias significativas entre alguno(s) de los grupos. Observa que nos da un resultado con una p-value menor a 0.05, por lo que rechazamos la hipótesis nula.
 
 ```{webr}
 #| autorun: true
 #| warning: false
-p + stat_compare_means( label = "p.signif", label.x = 1.5, label.y = 40)
 
-p
+compare_means(len ~ dose,  
+              data = ToothGrowth, 
+              method = "anova")
 ```
 
-Compare two paired samples
-
-Perform the test:
+Para agregar este resultado del valor p global, solo hay que agregar `stat_compare_means()` al gráfico.
 
 ```{webr}
 #| autorun: true
 #| warning: false
-compare_means(len ~ supp, data = ToothGrowth, paired = TRUE)
-```
 
-Visualize paired data using the ggpaired() function:
 
-```{webr}
-#| autorun: true
-#| warning: false
-ggpaired(ToothGrowth, x = "supp", y = "len",
-         color = "supp", line.color = "gray", line.size = 0.4,
-         palette = "jco")+
-  stat_compare_means(paired = TRUE)
-```
-
-Compare more than two groups
-
-    Global test:
-
-```{webr}
-#| autorun: true
-#| warning: false
-# Global test
-compare_means(len ~ dose,  data = ToothGrowth, method = "anova")
-```
-
-Plot with global p-value:
-
-```{r}```{webr}
-#| autorun: true
-#| warning: false# Default method = "kruskal.test" for multiple groups
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-          color = "dose", palette = "jco")+
-  stat_compare_means()
-# Change method to anova
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-          color = "dose", palette = "jco")+
+ggboxplot(ToothGrowth, 
+          x = "dose", 
+          y = "len",
+          color = "dose", 
+          palette = "jco") +
   stat_compare_means(method = "anova")
-
 ```
 
+- Ahora, como el resultado de la prueba ANOVA fue significativo (tenemos evidencia que al menos un grupo es diferente), normalmente realizaríamos una prueba post hoc (comparaciones múltiples) para ver cuáles grupos son diferentes entre sí. Esto lo veremos en las siguientes lecciones.
 
-Pairwise comparisons. If the grouping variable contains more than two levels, then pairwise tests will be performed automatically. The default method is “wilcox.test”. You can change this to “t.test”.
+## Más ejemplos
 
+- A continuación se muestran varios ejemplos de distintos tipos de gráficos y pruebas estadísticas que puedes realizar con la función `compare_means()` y `stat_compare_means()`.
+- Puedes usar estos ejemplos de referencia para tus propios análisis.
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# Perorm pairwise comparisons
+p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
+          color = "supp", palette = "jco",
+          add = "jitter",
+          facet.by = "dose", short.panel.labs = FALSE)
+
+
+p + stat_compare_means(label = "p.format")
 compare_means(len ~ dose,  data = ToothGrowth)
 ```
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# Visualize: Specify the comparisons you want
-my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-          color = "dose", palette = "jco")+ 
-  stat_compare_means(comparisons = my_comparisons)+ # Add pairwise comparisons p-value
-  stat_compare_means(label.y = 50)     # Add global p-value
-```
-
-
-If you want to specify the precise y location of bars, use the argument label.y:
-
-
-```{webr}
-#| autorun: true
-#| warning: false
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-          color = "dose", palette = "jco")+ 
-  stat_compare_means(comparisons = my_comparisons, label.y = c(29, 35, 40))+
-  stat_compare_means(label.y = 45)
-```
-
-(Adding bars, connecting compared groups, has been facilitated by the ggsignif R package )
-
-    Multiple pairwise tests against a reference group:
-
-```{webr}
-#| autorun: true
-#| warning: false
-
-# Pairwise comparison against reference
-compare_means(len ~ dose,  data = ToothGrowth, ref.group = "0.5",
-              method = "t.test")
-```
-
-
-```{webr}
-#| autorun: true
-#| warning: false
-# Visualize
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-          color = "dose", palette = "jco")+
-  stat_compare_means(method = "anova", label.y = 40)+      # Add global p-value
-  stat_compare_means(label = "p.signif", method = "t.test",
-                     ref.group = "0.5")                    # Pairwise comparison against reference
-```
-
-Multiple pairwise tests against all (base-mean):
-
-```{webr}
-#| autorun: true
-#| warning: false
-# Comparison of each group against base-mean
-compare_means(len ~ dose,  data = ToothGrowth, ref.group = ".all.",
-              method = "t.test")
-```
-
-
-```{webr}
-#| autorun: true
-#| warning: false
-# Visualize
-ggboxplot(ToothGrowth, x = "dose", y = "len",
-          color = "dose", palette = "jco")+
-  stat_compare_means(method = "anova", label.y = 40)+      # Add global p-value
-  stat_compare_means(label = "p.signif", method = "t.test",
-                     ref.group = ".all.")                  # Pairwise comparison against all
-```
-
-Visualize (1/2). Create a multi-panel box plots facetted by group (here, “dose”):
-
-```{webr}
-#| autorun: true
-#| warning: false
-# Box plot facetted by "dose"
-p <- ggboxplot(ToothGrowth, x = "supp", y = "len",
-          color = "supp", palette = "jco",
-          add = "jitter",
-          facet.by = "dose", short.panel.labs = FALSE)
-# Use only p.format as label. Remove method name.
-p + stat_compare_means(label = "p.format")
-```
-
-```{webr}
-#| autorun: true
-#| warning: false
-# Or use significance symbol as label
 p + stat_compare_means(label =  "p.signif", label.x = 1.5)
 ```
 
-To hide the ‘ns’ symbol, use the argument hide.ns = TRUE.
 
-Visualize (2/2). Create one single panel with all box plots. Plot y = “len” by x = “dose” and color by “supp”:
 
 ```{webr}
 #| autorun: true
@@ -320,75 +213,46 @@ p <- ggboxplot(ToothGrowth, x = "dose", y = "len",
 p + stat_compare_means(aes(group = supp))
 ```
 
-```{webr}
-#| autorun: true
-#| warning: false
-# Show only p-value
-p + stat_compare_means(aes(group = supp), label = "p.format")
-```
+
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# Use significance symbol as label
-p + stat_compare_means(aes(group = supp), label = "p.signif")
-```
 
-
-
-    Paired sample comparisons after grouping the data by another variable:
-
-Perform the test:
-
-```{webr}
-#| autorun: true
-#| warning: false
-compare_means(len ~ supp, data = ToothGrowth, 
-              group.by = "dose", paired = TRUE)
-```
-
-Visualize. Create a multi-panel box plots facetted by group (here, “dose”):
-
-```{webr}
-#| autorun: true
-#| warning: false
-# Box plot facetted by "dose"
 p <- ggpaired(ToothGrowth, x = "supp", y = "len",
           color = "supp", palette = "jco", 
           line.color = "gray", line.size = 0.4,
           facet.by = "dose", short.panel.labs = FALSE)
-# Use only p.format as label. Remove method name.
+# 
 p + stat_compare_means(label = "p.format", paired = TRUE)
 ```
 
-Other plot types
-
-    Bar and line plots (one grouping variable):
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# Bar plot of mean +/-se
+# Bar plot  +/-se
 ggbarplot(ToothGrowth, x = "dose", y = "len", add = "mean_se")+
   stat_compare_means() +                                         # Global p-value
   stat_compare_means(ref.group = "0.5", label = "p.signif",
                      label.y = c(22, 29))                   # compare to ref.group
-# Line plot of mean +/-se
+# Line plot  +/-se
 ggline(ToothGrowth, x = "dose", y = "len", add = "mean_se")+
   stat_compare_means() +                                         # Global p-value
   stat_compare_means(ref.group = "0.5", label = "p.signif",
                      label.y = c(22, 29))
 ```
 
-Bar and line plots (two grouping variables):
 
 ```{webr}
 #| autorun: true
 #| warning: false
+
 ggbarplot(ToothGrowth, x = "dose", y = "len", add = "mean_se",
           color = "supp", palette = "jco", 
           position = position_dodge(0.8))+
   stat_compare_means(aes(group = supp), label = "p.signif", label.y = 29)
+
 ggline(ToothGrowth, x = "dose", y = "len", add = "mean_se",
           color = "supp", palette = "jco")+
   stat_compare_means(aes(group = supp), label = "p.signif", 

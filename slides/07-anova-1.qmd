@@ -28,9 +28,9 @@ engine: knitr
 
 ## Introducción al Análisis de Varianza (ANOVA)
 
-El **Análisis de Varianza** (ANOVA, por sus siglas en inglés) es una técnica estadística utilizada para comparar las medias de tres o más grupos o muestras independientes. Fue desarrollado por Ronald A. Fisher en la década de 1920 y es una extensión de la prueba t de Student diseñada para comparar dos medias.
+El **Análisis de Varianza** (ANOVA, por sus siglas en inglés) es una técnica estadística utilizada para comparar las medias de tres o más grupos o muestras. Fue desarrollado por [Ronald A. Fisher](https://en.wikipedia.org/wiki/Ronald_Fisher) en la década de 1920. La prueba de ANOVA permite determinar si existen diferencias estadísticamente significativas entre las medias de diferentes grupos, basándose en la variabilidad dentro de los grupos y entre los grupos. Sin embargo, ANOVA no indica cuáles grupos son diferentes entre sí; para ello, se utilizan pruebas post-hoc.
 
-ANOVA permite determinar si existen diferencias estadísticamente significativas entre las medias de diferentes grupos, basándose en la variabilidad dentro de los grupos y entre los grupos.
+En esta lección, vamos a ver los fundamentos del ANOVA, incluyendo los conceptos clave, los supuestos, los tipos de ANOVA y cómo realizar un ANOVA paso a paso en R. Además, veremos cómo interpretar los resultados y cómo verificar los supuestos del ANOVA. En las próximas lecciones, veremos cómo realizar ANOVA en R de forma sencilla y cómo visualizar los resultados con `ggpubr` de manera directa.
 
 ---
 

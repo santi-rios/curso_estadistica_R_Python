@@ -1,5 +1,5 @@
 ---
-title: "Prueba de t pubs"
+title: "Prueba de t - Ejemplo Completo"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com
@@ -23,13 +23,11 @@ webr:
 engine: knitr
 ---
 
-Methods 	R function 	Description
-T-test 	t.test() 	Compare two groups (parametric)
-Wilcoxon test 	wilcox.test() 	Compare two groups (non-parametric)
-ANOVA 	aov() or anova() 	Compare multiple groups (parametric)
-Kruskal-Wallis 	kruskal.test() 	Compare multiple groups (non-parametric)
+Vamos a realizar un ejemplo de una prueba de t desde 0 hasta la obtención de resultados con gráficos presentables.
 
-Datos con peso de 10 ratones
+## Datos
+
+- Vamos a similuar datos de pesos de 10 ratones
 
 ```{webr}
 #| autorun: true
@@ -37,150 +35,137 @@ Datos con peso de 10 ratones
 
 set.seed(1234)
 my_data <- data.frame(
-  name = paste0(rep("M_", 10), 1:10),
-  weight = round(rnorm(10, 20, 2), 1)
+  nombre = paste0(rep("Raton_", 10), 1:10),
+  peso = round(rnorm(10, 20, 2), 1)
 )
 
-head(my_data, 10)
+my_data
 ```
+
+- Vamos a obtener un resumen estadístico de los datos:
 
 ```{webr}
 #| autorun: true
 #| warning: false
 
-# Statistical summaries of weight
-summary(my_data$weight)
+summary(my_data$peso)
 ```
 
+- Min: el valor mínimo
+- 1st Qu.: el primer cuartil. 25% de los valores son menores que este.
+- Mediana: el valor mediano. La mitad
+- 3rd Qu.: el tercer cuartil. 75% de los valores son mayores que este.
+- Max.: el valor máximo
 
-    Min.: the minimum value
-    1st Qu.: The first quartile. 25% of values are lower than this.
-    Median: the median value. Half the values are lower; half are higher.
-    3rd Qu.: the third quartile. 75% of values are higher than this.
-    Max.: the maximum value
 
-Visualize your data using box plots
+
+> Vamos a visualizar los datos con un boxplot
 
 ```{webr}
 #| autorun: true
 #| warning: false
 
 library(ggpubr)
-ggboxplot(my_data$weight, 
-          ylab = "Weight (g)", xlab = FALSE,
-          ggtheme = theme_minimal())
+
+ggboxplot(
+  my_data$peso,         
+  ylab = "Peso (g)", 
+  xlab = FALSE,
+  add = "jitter",
+  ggtheme = theme_minimal()
+)
 ```
 
-Preleminary test to check one-sample t-test assumptions
+> Antes de realizar la prueba de t, vamos a realizar una prueba de normalidad
 
-    Is this a large sample? - No, because n < 30.
-    Since the sample size is not large enough (less than 30, central limit theorem), we need to check whether the data follow a normal distribution.
-
-
-    Shapiro-Wilk test:
-        Null hypothesis: the data are normally distributed
-        Alternative hypothesis: the data are not normally distributed
+- Shapiro-Wilk test:
+    - Hipótesis nula: los datos siguen una distribución normal
+    - Hipótesis alternativa: los datos no siguen una distribución normal
 
 ```{webr}
 #| autorun: true
 #| warning: false
-shapiro.test(my_data$weight) # => p-value = 0.6993
+shapiro.test(my_data$peso) # => p-value = 0.6993
 ```
 
-From the output, the p-value is greater than the significance level 0.05 implying that the distribution of the data are not significantly different from normal distribtion. In other words, we can assume the normality.
+- El p-valor es mayor que el nivel de significancia 0.05, lo que implica que la distribución de los datos no es significativamente diferente de la distribución normal. En otras palabras, podemos asumir la normalidad.
 
-Visual inspection of the data normality using Q-Q plots (quantile-quantile plots). Q-Q plot draws the correlation between a given sample and the normal distribution.
+- También podemos inspeccionar visualmente la normalidad de los datos utilizando gráficos Q-Q (quantile-quantile plots). Q-Q plot dibuja la correlación entre una muestra dada y la distribución normal.
 
 ```{webr}
 #| autorun: true
 #| warning: false
 
-ggqqplot(my_data$weight, ylab = "Men's weight",
-         ggtheme = theme_minimal())
+ggqqplot(my_data$peso, ylab = "Peso", xlab = "Teórico", ggtheme = theme_minimal())
+
 ```
 
-From the normality plots, we conclude that the data may come from normal distributions.
+- Como cumple este supuesto, vamos a realizar la prueba de t (paramétrica) de una muestra.
+- Supongamos que queremos saber si el peso promedio de los ratones difiere de 25g (prueba de dos colas porque puede ser mayor o menor).
 
-Note that, if the data are not normally distributed, it’s recommended to use the non parametric one-sample Wilcoxon rank test.
-
-Compute one-sample t-test
-
-We want to know, if the average weight of the mice differs from 25g (two-tailed test)?
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# One-sample t-test
-res <- t.test(my_data$weight, mu = 25)
-# Printing the results
+# 
+res <- t.test(my_data$peso, mu = 25)
+# 
 res
 ```
 
+- En este resultado, t es el valor estadístico de la prueba t (t = -9.078),
+- df es el número de grados de libertad (df= 9),
+- p-value es el nivel de significancia de la prueba t (p-value = 7.95310^{-6}).
+- conf.int es el intervalo de confianza del promedio al 95% (conf.int = [17.8172, 20.6828]);
+- sample estimates es el valor promedio de la muestra (mean = 19.25).
 
-
-
-In the result above :
-
-    t is the t-test statistic value (t = -9.078),
-    df is the degrees of freedom (df= 9),
-    p-value is the significance level of the t-test (p-value = 7.95310^{-6}).
-    conf.int is the confidence interval of the mean at 95% (conf.int = [17.8172, 20.6828]);
-    sample estimates is he mean value of the sample (mean = 19.25).
-
-
-if you want to test whether the mean weight of mice is less than 25g (one-tailed test), type this:
+> si quisieras hacer una prueba de una cola, puedes hacerlo de la siguiente manera:
 
 ```{webr}
 #| autorun: true
 #| warning: false
-t.test(my_data$weight, mu = 25,
+t.test(my_data$peso, mu = 25,
               alternative = "less")
 ```
 
-Or, if you want to test whether the mean weight of mice is greater than 25g (one-tailed test), type this:
 
 ```{webr}
 #| autorun: true
 #| warning: false
-t.test(my_data$weight, mu = 25,
+t.test(my_data$peso, mu = 25,
               alternative = "greater")
 ```
 
-Interpretation of the result
+::: {.callout-tip}
+Si quisieras acceder a los valores específicos de la prueba de t, puedes hacerlo de la siguiente manera:
 
-The p-value of the test is 7.95310^{-6}, which is less than the significance level alpha = 0.05. We can conclude that the mean weight of the mice is significantly different from 25g with a p-value = 7.95310^{-6}.
+El resultado de la función t.test() es una lista que contiene los siguientes componentes:
 
-
-Access to the values returned by t.test() function
-
-The result of t.test() function is a list containing the following components:
-
-    statistic: the value of the t test statistics
-    parameter: the degrees of freedom for the t test statistics
-    p.value: the p-value for the test
-    conf.int: a confidence interval for the mean appropriate to the specified alternative hypothesis.
-    estimate: the means of the two groups being compared (in the case of independent t test) or difference in means (in the case of paired t test).
-
-
-The format of the R code to use for getting these values is as follow:
+   > statistic: el valor de la estadística de prueba t
+   > parameter: los grados de libertad para la estadística de prueba t
+   > p.value: el valor p para la prueba
+   > conf.int: un intervalo de confianza para la media apropiado para la hipótesis alternativa especificada.
+   > estimate: las medias de los dos grupos que se comparan (en el caso de la prueba t independiente) o la diferencia en las medias (en el caso de la prueba t emparejada).
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# printing the p-value
+# valor p
 res$p.value
 ```
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# printing the mean
+# estimate
 res$estimate
 ```
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# printing the confidence interval
+# intervalos de confianza
 res$conf.int
 ```
+
+:::

@@ -1,5 +1,5 @@
 ---
-title: "Comparing the means of two independent groups"
+title: "Comparar media de dos grupos independientes con t-test en R"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com
@@ -24,289 +24,220 @@ engine: knitr
 ---
 
 
-Unpaired two samples t-test (parametric)
-
-    What is unpaired two-samples t-test?
-    Research questions and statistical hypotheses
-    Formula of unpaired two-samples t-test
-    Visualize your data and compute unpaired two-samples t-test in R
-        R function to compute unpaired two-samples t-test
-        Visualize your data using box plots
-        Preliminary test to check independent t-test assumptions
-        Compute unpaired two-samples t-test
-    Interpretation of the result
-
-What is unpaired two-samples t-test?
-
-The unpaired two-samples t-test is used to compare the mean of two independent groups.
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
 
-For example, suppose that we have measured the weight of 100 individuals: 50 women (group A) and 50 men (group B). We want to know if the mean weight of women (mA
-) is significantly different from that of men (mB
+> **Muestra independiente**: Las muestras son independientes si las observaciones en un grupo no están relacionadas con las observaciones en el otro grupo. Por ejemplo, si se mide el peso de dos grupos (placebo vs tratamiento) de personas diferentes, los datos de un grupo no están relacionados con los datos del otro grupo.
+> **Muestra pareada o emparejada**: Las muestras son pareadas si las observaciones en un grupo están relacionadas con las observaciones en el otro grupo. Por ejemplo, si se mide el peso de las mismas personas antes y después de un tratamiento, los datos de un grupo están relacionados con los datos del otro grupo.
 
-).
+## Ejemplo Práctico
 
-In this case, we have two unrelated (i.e., independent or unpaired) groups of samples. Therefore, it’s possible to use an independent t-test to evaluate whether the means are different.
-
-
-::: {.callout-note}
-
-
-Note that, unpaired two-samples t-test can be used only under certain conditions:
-
-    when the two groups of samples (A and B), being compared, are normally distributed. This can be checked using Shapiro-Wilk test.
-    and when the variances of the two groups are equal. This can be checked using F-test.
-
-
-:::
-
-Research questions and statistical hypotheses
-
-Typical research questions are:
-
-    whether the mean of group A (mA
-
-) is equal to the mean of group B (mB
-)?
-whether the mean of group A (mA
-) is less than the mean of group B (mB
-)?
-whether the mean of group A (mA
-) is greather than the mean of group B (mB
-
-    )?
-
-
-In statistics, we can define the corresponding null hypothesis (H0
-
-) as follow:
-
-    H0:mA=mB
-
-H0:mA≤mB
-H0:mA≥mB
-
-The corresponding alternative hypotheses (Ha
-
-) are as follow:
-
-    Ha:mA≠mB
-
-(different)
-Ha:mA>mB
-(greater)
-Ha:mA<mB
-
-    (less)
-
-Note that:
-
-    Hypotheses 1) are called two-tailed tests
-    Hypotheses 2) and 3) are called one-tailed tests
-
-
-
-Visualize your data and compute unpaired two-samples t-test in R
-
-R function to compute unpaired two-samples t-test
-
-To perform two-samples t-test comparing the means of two independent samples (x & y), the R function t.test() can be used as follow:
-
-```r
-t.test(x, y, alternative = "two.sided", var.equal = FALSE)
-```
-
-
-    x,y: numeric vectors
-    alternative: the alternative hypothesis. Allowed value is one of “two.sided” (default), “greater” or “less”.
-    var.equal: a logical variable indicating whether to treat the two variances as being equal. If TRUE then the pooled variance is used to estimate the variance otherwise the Welch test is used.
-
-
-Import your data into R
-
-    Prepare your data as specified here: Best practices for preparing your data set for R
-
-    Save your data in an external .txt tab or .csv files
-
-    Import your data into R as follow:
+- Vamos a trabajar con datos simulados. En estos datos, tenemos las medidas de peso de dos grupos de personas: 50 mujeres (grupo A) y 50 hombres (grupo B). Queremos saber si la media de peso de las mujeres (A) es significativamente diferente de la de los hombres (B).
+- En este caso, tenemos dos grupos de muestras no relacionadas (es decir, independientes o no pareadas). Por lo tanto, es posible utilizar una prueba t independiente para evaluar si las medias son diferentes.
 
 ```{webr}
 #| autorun: true
 #| warning: false
-# Data in two numeric vectors
-women_weight <- c(38.9, 61.2, 73.3, 21.8, 63.4, 64.6, 48.4, 48.8, 48.5)
-men_weight <- c(67.8, 60, 63.4, 76, 89.4, 73.3, 67.3, 61.3, 62.4) 
-# Create a data frame
+
+# Datos Simulados
+A_mujeres <- c(38.9, 61.2, 73.3, 21.8, 63.4, 64.6, 48.4, 48.8, 48.5)
+
+B_hombres <- c(67.8, 60, 63.4, 76, 89.4, 73.3, 67.3, 61.3, 62.4) 
+
 my_data <- data.frame( 
-                group = rep(c("Woman", "Man"), each = 9),
-                weight = c(women_weight,  men_weight)
+                grupo = rep(c("Mujer", "Hombre"), each = 9),
+                pesos = c(A_mujeres,  B_hombres)
                 )
+
+my_data
 ```
 
+::: {.callout-note}
+## Condiciones para usar la prueba t de dos muestras no pareadas
 
-    Compute summary statistics by groups:
+- Las dos muestras (A y B) deben ser independientes. Esto lo comprobamos al recolectar los datos (sabemos que el grupo de mujeres no está relacionado con el grupo de hombres).
+- Las dos muestras (A y B) deben ser aproximadamente distribuidas normalmente. Esto se puede verificar utilizando la prueba de Shapiro-Wilk.
+- Las dos muestras (A y B) deben tener varianzas iguales. Esto se puede verificar utilizando la prueba F.
+
+:::
+
+## Hipótesis de investigación
+
+- $H_0$: La media de peso de las mujeres (A) es igual a la media de peso de los hombres (B).
+- $H_1$: La media de peso de las mujeres (A) es diferente de la media de peso de los hombres (B).
+
+
+## Visualización preliminar de los datos
+
+**Gráfico de caja**
+
+```{webr}
+#| autorun: true
+#| warning: false
+
+library("ggpubr")
+
+ggboxplot(my_data, x = "grupo", y = "pesos", 
+          color = "grupo", palette = c("#00AFBB", "#E7B800"),
+        ylab = "Peso", xlab = "Grupos")
+
+```
+
+**Estadísticas descriptivas**
 
 ```{webr}
 #| autorun: true
 #| warning: false
 
 library(dplyr)
-group_by(my_data, group) %>%
+
+group_by(my_data, grupo) %>%
   summarise(
-    count = n(),
-    mean = mean(weight, na.rm = TRUE),
-    sd = sd(weight, na.rm = TRUE)
+    cuenta_n = n(), # Número de observaciones
+    media = mean(pesos, na.rm = TRUE), # Media
+    sd = sd(pesos, na.rm = TRUE) # Desviación estándar
   )
 ```
 
-Visualize your data using box plots
+## Prueba de normalidad
+
+**Prueba de Shapiro-Wilk**
+
+- Hipótesis nula: los datos siguen una distribución normal.
+- Hipótesis alternativa: los datos no siguen una distribución normal.
 
 ```{webr}
 #| autorun: true
 #| warning: false
 
-# Plot weight by group and color by group
-library("ggpubr")
-ggboxplot(my_data, x = "group", y = "weight", 
-          color = "group", palette = c("#00AFBB", "#E7B800"),
-        ylab = "Weight", xlab = "Groups")
+library(dplyr)
+
+# Prueba de normalidad para el grupo de mujeres
+my_data %>%
+    filter(grupo == "Mujer") %>%
+    summarise(p_value = shapiro.test(pesos)$p.value)
+
+# Prueba de normalidad para el grupo de hombres
+my_data %>%
+    filter(grupo == "Hombre") %>%
+    summarise(p_value = shapiro.test(pesos)$p.value)
+```
+
+::: {.callout}
+En ambos casos, el *p-value* es mayor que el nivel de significancia `0.05`, lo que indica que los datos no son significativamente diferentes de una distribución normal.
+:::
+
+
+## Prueba de homogeneidad de varianzas
+
+- Podemos usar la prueba F para probar la homogeneidad de varianzas con la función `var.test()`.
+- $H_0$: Las varianzas de los dos grupos son iguales.
+- $H_1$: Las varianzas de los dos grupos son diferentes.
+
+```{webr}
+#| autorun: true
+#| warning: false
+
+res.ftest <- var.test(pesos ~ grupo, data = my_data)
+res.ftest
+```
+
+::: {.callout}
+
+- No hay evidencia significativa para rechazar la hipótesis nula de igualdad de varianzas.
+- Por lo tanto, podemos usar la prueba t clásica que asume igualdad de varianzas.
+- En caso que las varianzas no fueran iguales, se recomienda usar la prueba t de Welch. Para esto, solo necesitas cambiar el argumento `var.equal = FALSE` en la función `t.test()`.
+
+:::
+
+## Prueba de t de Student
+
+```{webr}	
+#| autorun: true
+#| warning: false
+
+res <- t.test(pesos ~ grupo, data = my_data, var.equal = TRUE)
+
+res
+
+```
+
+::: {.callout}
+
+- El valor p de la prueba es `0.01327`, que es menor que el nivel de significancia `alpha = 0.05`.
+- Por lo tanto, podemos concluir que la media de peso de los hombres es significativamente diferente de la de las mujeres con un valor p = `0.01327`.
+
+:::
+
+
+
+```{webr}	
+#| autorun: true
+#| warning: false
+
+res$p.value # p-value
 ```
 
 
-Preleminary test to check independent t-test assumptions
+```{webr}	
+#| autorun: true
+#| warning: false
 
-Assumption 1: Are the two samples independents?
+res$estimate # media
 
-Yes, since the samples from men and women are not related.
+```
 
-Assumtion 2: Are the data from each of the 2 groups follow a normal distribution?
-
-Use Shapiro-Wilk normality test as described at: Normality Test in R. - Null hypothesis: the data are normally distributed - Alternative hypothesis: the data are not normally distributed
-
-We’ll use the functions with() and shapiro.test() to compute Shapiro-Wilk test for each group of samples.
-
-# Shapiro-Wilk normality test for Men's weights
-with(my_data, shapiro.test(weight[group == "Man"]))# p = 0.1
-# Shapiro-Wilk normality test for Women's weights
-with(my_data, shapiro.test(weight[group == "Woman"])) # p = 0.6
-
-From the output, the two p-values are greater than the significance level 0.05 implying that the distribution of the data are not significantly different from the normal distribution. In other words, we can assume the normality.
-
-Note that, if the data are not normally distributed, it’s recommended to use the non parametric two-samples Wilcoxon rank test.
-
-Assumption 3. Do the two populations have the same variances?
-
-We’ll use F-test to test for homogeneity in variances. This can be performed with the function var.test() as follow:
-
-res.ftest <- var.test(weight ~ group, data = my_data)
-res.ftest
+```{webr}	
+#| autorun: true
+#| warning: false
 
 
-    F test to compare two variances
-data:  weight by group
-F = 0.36134, num df = 8, denom df = 8, p-value = 0.1714
-alternative hypothesis: true ratio of variances is not equal to 1
-95 percent confidence interval:
- 0.08150656 1.60191315
-sample estimates:
-ratio of variances 
-         0.3613398 
-
-The p-value of F-test is p = 0.1713596. It’s greater than the significance level alpha = 0.05. In conclusion, there is no significant difference between the variances of the two sets of data. Therefore, we can use the classic t-test witch assume equality of the two variances.
-Compute unpaired two-samples t-test
-
-Question : Is there any significant difference between women and men weights?
-
-1) Compute independent t-test - Method 1: The data are saved in two different numeric vectors.
-
-# Compute t-test
-res <- t.test(women_weight, men_weight, var.equal = TRUE)
-res
+res$conf.int # intervalo de confianza
+```
 
 
-    Two Sample t-test
-data:  women_weight and men_weight
-t = -2.7842, df = 16, p-value = 0.01327
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
- -29.748019  -4.029759
-sample estimates:
-mean of x mean of y 
- 52.10000  68.98889 
-
-2) Compute independent t-test - Method 2: The data are saved in a data frame.
-
-# Compute t-test
-res <- t.test(weight ~ group, data = my_data, var.equal = TRUE)
-res
+## Gráfico para visualizar la diferencia de medias y la prueba estadística
 
 
-    Two Sample t-test
-data:  weight by group
-t = 2.7842, df = 16, p-value = 0.01327
-alternative hypothesis: true difference in means is not equal to 0
-95 percent confidence interval:
-  4.029759 29.748019
-sample estimates:
-  mean in group Man mean in group Woman 
-           68.98889            52.10000 
+::: {.callout}
 
-As you can see, the two methods give the same results.
+Podemos visualizar la diferencia de medias y la prueba estadística en un gráfico de caja. 
 
-In the result above :
+OJO. El gráfico de `ggpubr` redondea el valor de la prueba de t a 3 decimales, mientras que la función `t.test()` devuelve un valor más preciso.
+:::
 
-    t is the t-test statistic value (t = 2.784),
-    df is the degrees of freedom (df= 16),
-    p-value is the significance level of the t-test (p-value = 0.01327).
-    conf.int is the confidence interval of the mean at 95% (conf.int = [4.0298, 29.748]);
-    sample estimates is he mean value of the sample (mean = 68.9888889, 52.1).
+```{webr}
+#| autorun: true
+#| warning: false
 
+library("ggpubr")
 
+p <- ggboxplot(my_data, x = "grupo", y = "pesos", 
+          color = "grupo", palette = c("#00AFBB", "#E7B800"),
+        ylab = "Peso", xlab = "Grupos",
+               add = "jitter")
 
-Note that:
+p + stat_compare_means(method = "t.test", paired = FALSE)
 
-    if you want to test whether the average men’s weight is less than the average women’s weight, type this:
+```
 
-t.test(weight ~ group, data = my_data,
-        var.equal = TRUE, alternative = "less")
+::: {.callout}
+## Opción 2 - Con gráficos de barras y Error Estándar de la Media
 
-    Or, if you want to test whether the average men’s weight is greater than the average women’s weight, type this
+```{webr}
+#| autorun: true
+#| warning: false
 
-t.test(weight ~ group, data = my_data,
-        var.equal = TRUE, alternative = "greater")
+library("ggpubr")
 
+p <- ggbarplot(my_data, x = "grupo", y = "pesos", 
+          fill = "grupo", palette = c("#00AFBB", "#E7B800"),
+        ylab = "Peso", xlab = "Grupos",
+               add = c("mean_se", "jitter")
+                      )
 
-Interpretation of the result
+p + stat_compare_means(method = "t.test", paired = FALSE)
 
-The p-value of the test is 0.01327, which is less than the significance level alpha = 0.05. We can conclude that men’s average weight is significantly different from women’s average weight with a p-value = 0.01327.
-Access to the values returned by t.test() function
+```
 
-The result of t.test() function is a list containing the following components:
-
-    statistic: the value of the t test statistics
-    parameter: the degrees of freedom for the t test statistics
-    p.value: the p-value for the test
-    conf.int: a confidence interval for the mean appropriate to the specified alternative hypothesis.
-    estimate: the means of the two groups being compared (in the case of independent t test) or difference in means (in the case of paired t test).
-
-
-The format of the R code to use for getting these values is as follow:
-
-# printing the p-value
-res$p.value
-
-[1] 0.0132656
-
-# printing the mean
-res$estimate
-
-  mean in group Man mean in group Woman 
-           68.98889            52.10000 
-
-# printing the confidence interval
-res$conf.int
-
-[1]  4.029759 29.748019
-attr(,"conf.level")
-[1] 0.95
-
+:::
