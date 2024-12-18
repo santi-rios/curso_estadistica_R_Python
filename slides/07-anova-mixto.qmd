@@ -1,6 +1,5 @@
 ---
 title: "ANOVA Mixto"
-subtitle: "Valores atípicos, normalidad y homogeneidad de varianzas"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com

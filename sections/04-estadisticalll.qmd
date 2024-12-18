@@ -38,7 +38,11 @@ format:
 
 {{< revealjs file="../slides/07-compare-2meansB.html" height="500px">}}
 
-X{{< revealjs file="../slides/07-comparar-3medias.html" height="500px">}}
+{{< revealjs file="../slides/07-anova-medidasrep.html" height="500px">}}
+
+{{< revealjs file="../slides/07-anova-mixto.html" height="500px">}}
+
+{{< revealjs file="../slides/07-comparar-3medias.html" height="500px">}}
 
 {{< revealjs file="../slides/07-comparar-32wayaov.html" height="500px">}}
 
@@ -51,13 +55,16 @@ X{{< revealjs file="../slides/07-comparar-3medias.html" height="500px">}}
 {{< revealjs file="../slides/07-comparar-plots.html" height="500px">}}
 
 {{< revealjs file="../slides/07-tablas-pubs.html" height="500px">}}
-https://santi-rios.github.io/R_ejecutar_lec1/slides/07-tablas-pubs.html
+
+{{< revealjs file="../slides/07-normalidad-correcciones.html" height="500px">}}
+
+
 
 ## Otros temas
 
-<!-- {{< revealjs file="../slides/08-no-parametrico.html" height="500px">}}
+<!-- {{< revealjs file="../slides/08-no-parametrico.html" height="500px">}} -->
 
-{{< revealjs file="../slides/08-markdown.html" height="500px">}} -->
+{{< revealjs file="../slides/08-markdown.html" height="500px">}}
 
 ## apps
 

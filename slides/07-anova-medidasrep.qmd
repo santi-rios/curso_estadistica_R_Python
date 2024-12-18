@@ -1,5 +1,5 @@
 ---
-title: "Problemas comunes en ANOVA"
+title: "ANOVA de medidas repetidas"
 subtitle: "Valores atípicos, normalidad y homogeneidad de varianzas"
 author:
   - name: "Mtro. Santiago Ríos"
