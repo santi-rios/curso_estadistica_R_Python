@@ -1,5 +1,5 @@
 ---
-title: "Plots comparar medias"
+title: "Tablas para Publicación en R"
 author:
   - name: "Mtro. Santiago Ríos"
     email: santiagoboo99@gmail.com
@@ -24,15 +24,18 @@ webr:
 engine: knitr
 ---
 
-¡Claro! A continuación, te guiaré a través de los pasos para crear tablas listas para publicación en R, utilizando paquetes del tidyverse y otros paquetes útiles como `gt` y `flextable`. Estos paquetes te permitirán crear tablas elegantes y personalizables para incluir en documentos de tesis o artículos.
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-### Paso 1: Preparar el entorno de trabajo
+En esta lección, aprenderás a crear tablas elegantes y listas para publicación en R utilizando los paquetes `gt` y `flextable`. Estos paquetes te permiten personalizar el diseño de las tablas y exportarlas a diferentes formatos para su uso en Word, PDF, o Markdown.
+
+
+## Paso 1: Preparar el entorno de trabajo
 
 Primero, necesitas instalar y cargar los paquetes necesarios. Si aún no los tienes instalados, puedes hacerlo con `install.packages()`.
 
-```r
+```{r}
 # Instalar paquetes necesarios
-install.packages(c("dplyr", "gt", "flextable"))
+# install.packages(c("dplyr", "gt", "flextable"))
 
 # Cargar paquetes
 library(dplyr)
@@ -40,11 +43,11 @@ library(gt)
 library(flextable)
 ```
 
-### Paso 2: Crear una tabla con `dplyr`
+## Paso 2: Crear una tabla con `dplyr`
 
 Supongamos que tienes un conjunto de datos y deseas resumirlo antes de presentarlo en una tabla. Usaremos `dplyr` para manipular los datos.
 
-```r
+```{r}
 # Crear un conjunto de datos de ejemplo
 data <- data.frame(
   Categoria = c("A", "A", "B", "B"),
@@ -55,15 +58,60 @@ data <- data.frame(
 resumen <- data %>%
   group_by(Categoria) %>%
   summarise(Media = mean(Valores), Suma = sum(Valores))
+
+# Tabla sin formato
+print(resumen)
 ```
 
-### Paso 3: Crear una tabla con `gt`
+## Paso 3: Crear una tabla con `gt`
 
 El paquete `gt` es excelente para crear tablas atractivas y listas para publicación.
 
+> Primero, cargamos los datos en una tabla `gt`. Observa que es tan fácil como usar `gt(datos)`.
+
+```{r}
+# Crear una tabla usando gt
+
+gt(resumen)
+
+```
+
+> Luego, personalizamos el diseño de la tabla, como agregar un título y subtítulo.
+
+```{r}
+
+gt(resumen) %>%
+  tab_header(
+    title = "Resumen de Categorías",
+    subtitle = "Media y Suma de Valores por Categoría"
+  )
+```
+
+> Ahora vamos a dar formato a los números para que se vean mejor.
+
+```{r}
+
+gt(resumen) %>%
+  tab_header(
+    title = "Resumen de Categorías",
+    subtitle = "Media y Suma de Valores por Categoría"
+  ) %>%
+  fmt_number(
+    columns = vars(Media, Suma),
+    decimals = 2
+  ) 
+
+
+```
+
+> Finalmente, podemos guardar la tabla en diferentes formatos.
+
+- Tenemos que guardar la tabla en una variable para poder exportarla.
+- Luego, usaremos `gtsave()` para guardar la tabla como imagen o PDF. Esta función toma los siguientes argumentos: `gtsave(data, filename, path = NULL, ...)` , donde `data` es la tabla `gt` que deseas guardar, `filename` es el nombre del archivo, y `path` es la ubicación donde deseas guardar el archivo.
+
 
 ```r
-# Crear una tabla usando gt
+
 tabla_gt <- gt(resumen) %>%
   tab_header(
     title = "Resumen de Categorías",
@@ -72,65 +120,63 @@ tabla_gt <- gt(resumen) %>%
   fmt_number(
     columns = vars(Media, Suma),
     decimals = 2
-  ) %>%
-  tab_options(
-    table.border.top.style = "solid",
-    table.border.bottom.style = "solid"
-  )
+  ) 
 
-# Mostrar la tabla
-print(tabla_gt)
-```
-
-### Paso 4: Crear una tabla con `flextable`
-
-Si necesitas exportar tablas a Word o PowerPoint, `flextable` es una excelente opción.
-
-```r
-# Crear una tabla usando flextable
-tabla_flextable <- flextable(resumen) %>%
-  set_header_labels(
-    Categoria = "Categoría",
-    Media = "Media",
-    Suma = "Total"
-  ) %>%
-  theme_vanilla() %>%
-  autofit()
-
-# Exportar a Word
-library(officer)
-
-doc <- read_docx() %>%
-  body_add_flextable(tabla_flextable)
-
-print(doc, target = "tabla_resumen.docx")
-```
-
-### Paso 5: Exportar la tabla
-
-Dependiendo de tus necesidades, puedes exportar las tablas a diferentes formatos:
-
-- **Para `gt`:** Puedes guardar la tabla como imagen o PDF utilizando `gtsave()`.
-
-```r
-# Guardar la tabla gt como PNG
+# guardar en imagen
 gtsave(tabla_gt, filename = "tabla_resumen.png")
 
-# Guardar la tabla gt como PDF
-gtsave(tabla_gt, filename = "tabla_resumen.pdf")
+# guardar en word
+gtsave(tabla_gt, filename = "tabla_resumen.docx")
+
 ```
 
-- **Para `flextable`:** Ya hemos visto cómo exportar a Word, pero también puedes exportar a PowerPoint.
 
-```r
-# Exportar a PowerPoint
-ppt <- read_pptx() %>%
-  add_slide(layout = "Title and Content", master = "Office Theme") %>%
-  ph_with_flextable(tabla_flextable, location = ph_location_type(type = "body"))
+### Extra
 
-print(ppt, target = "tabla_resumen.pptx")
+- Puedes aprender más del paquete `gt` en su [documentación oficial](https://gt.rstudio.com/articles/gt.html).
+
+
+## Tablas de ANOVA
+
+- Con el paquete `rsatix`, puedes realizar ANOVA y obtener tablas de los resultados de manera sencilla con dos funciones: `anova_test()` y `get_anova_table()`.
+
+### Datos
+
+```{r}
+library(rstatix)
+library(datarium)
+library(tidyverse)
+
+data("selfesteem", package = "datarium")
+
+selfesteem_long <- selfesteem %>% 
+  pivot_longer(cols = starts_with("t"), names_to = "tiempo", values_to = "autoestima")
+
+head(selfesteem_long)
 ```
 
-### Conclusión
+### ANOVA
 
-Con estos pasos, puedes crear tablas elegantes y listas para publicación utilizando los paquetes `gt` y `flextable`. Estos paquetes ofrecen una gran cantidad de opciones para personalizar el diseño y exportar tablas en diferentes formatos, lo cual es crucial para presentar resultados de manera profesional en tesis o artículos académicos.
+- Para obtener la tabla de ANOVA, solo hay que usar `get_anova_table()` dentro de la función `gt()`.
+
+```{r}
+res.aov <- anova_test(data = selfesteem_long, dv = autoestima, wid = id, within = tiempo)
+
+gt(get_anova_table(res.aov))
+
+# get_anova_table(res.aov)
+
+```
+
+
+- Podemos hacer lo mismo con las comparaciones post-hoc:
+
+```{r}
+
+# Comparaciones post-hoc
+pwc <- selfesteem_long %>%
+  pairwise_t_test(autoestima ~ tiempo, p.adjust.method = "bonferroni")
+
+gt(pwc)
+
+```

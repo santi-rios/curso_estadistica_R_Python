@@ -23,234 +23,98 @@ webr:
 engine: knitr
 ---
 
--   [What is Kruskal-Wallis test?](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#what-is-kruskal-wallis-test)
--   [Visualize your data and compute Kruskal-Wallis test in R](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#visualize-your-data-and-compute-kruskal-wallis-test-in-r)
-    -   [Import your data into R](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#import-your-data-into-r)
-    -   [Check your data](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#check-your-data)
-    -   [Visualize the data using box plots](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#visualize-the-data-using-box-plots)
-    -   [Compute Kruskal-Wallis test](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#compute-kruskal-wallis-test)
-    -   [Interpret](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#interpret)
-    -   [Multiple pairwise-comparison between groups](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#multiple-pairwise-comparison-between-groups)
--   [See also](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#see-also)
--   [Infos](https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r#infos)
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
-## What is Kruskal-Wallis test?
 
-**Kruskal-Wallis test** by rank is a **non-parametric alternative** to [one-way **ANOVA test**](https://www.sthda.com/english/wiki/one-way-anova-test-in-r), which extends the [two-samples Wilcoxon test](https://www.sthda.com/english/wiki/unpaired-two-samples-wilcoxon-test-in-r) in the situation where there are more than two groups. It’s recommended when the assumptions of one-way ANOVA test are not met. This tutorial describes how to compute Kruskal-Wallis test in **R** software.
 
-  
-![Kruskal Wallis Test](https://www.sthda.com/sthda/RDoc/images/kruskal-wallis-test.png)  
+# ¿Qué es el test de Kruskal-Wallis?
 
-  
+El test de Kruskal-Wallis es una prueba no paramétrica utilizada para determinar si hay diferencias significativas entre tres o más grupos en una variable continua. Es una alternativa al ANOVA de una vía cuando los datos no cumplen con los supuestos de normalidad y homogeneidad de varianzas.
 
-## Visualize your data and compute Kruskal-Wallis test in R
+Supongamos que tenemos un experimento con dos factores: Tipo de Suplemento (con niveles "OJ" para jugo de naranja y "VC" para vitamina C) y Dosis (con niveles 0.5, 1 y 2). La variable de respuesta es la Longitud del Diente. Aquí está cómo se vería una tabla que muestra las celdas formadas por las combinaciones de niveles de estos factores:
 
-## Import your data into R
+| Tipo de Suplemento | Dosis | Longitud del Diente (ejemplo) |
+|--------------------|-------|-------------------------------|
+| OJ                 | 0.5   | 13.2                          |
+| OJ                 | 1.0   | 22.7                          |
+| OJ                 | 2.0   | 26.4                          |
+| VC                 | 0.5   | 8.2                           |
+| VC                 | 1.0   | 15.5                          |
+| VC                 | 2.0   | 23.3                          |
 
-1.  **Prepare your data** as specified here: [Best practices for preparing your data set for R](https://www.sthda.com/english/wiki/best-practices-for-preparing-your-data-set-for-r)
-    
-2.  **Save your data** in an external .txt tab or .csv files
-    
-3.  **Import your data into R** as follow:
-    
+Vamos a utilizar el test de Kruskal-Wallis para determinar si hay diferencias significativas en la longitud del diente entre los diferentes niveles del factor `Tipo de Suplemento`.
 
-```
-<span># If .txt tab file, use this</span>
-<span>my_data</span> <span>&lt;-</span> <span>read.delim</span><span>(</span><span>file.choose</span><span>(</span><span>)</span><span>)</span>
-<span># Or, if .csv file, use this</span>
-<span>my_data</span> <span>&lt;-</span> <span>read.csv</span><span>(</span><span>file.choose</span><span>(</span><span>)</span><span>)</span>
-```
+## Hipótesis del test de Kruskal-Wallis
 
-Here, we’ll use the built-in R data set named _PlantGrowth_. It contains the weight of plants obtained under a control and two different treatment conditions.
+1. **Hipótesis Nula (H0)**: La media de longitud del diente es igual para todos los tipos de suplemento.
+2. **Hipótesis Alternativa (H1)**: Al menos una de las medias de longitud del diente es diferente.
 
-```
-<span>my_data</span> <span>&lt;-</span> <span>PlantGrowth</span>
-```
+## Datos
 
-## Check your data
+Usaremos el conjunto de datos incorporado en R llamado `ToothGrowth`. Contiene datos de un estudio que evalúa el efecto de la vitamina C en el crecimiento dental en cobayas. El experimento se ha realizado en 60 cobayas, donde cada animal recibió uno de tres niveles de dosis de vitamina C (0.5, 1 y 2 mg/día) mediante uno de dos métodos de administración (jugo de naranja o ácido ascórbico, y codificado como VC). Se midió la longitud del diente y se muestra una muestra de los datos a continuación.
 
-```
-<span># print the head of the file</span>
-<span>head</span><span>(</span><span>my_data</span><span>)</span>
-```
+```{webr}
+#| autorun: true
+#| warning: false
 
-```
-  weight group
-1   4.17  ctrl
-2   5.58  ctrl
-3   5.18  ctrl
-4   6.11  ctrl
-5   4.50  ctrl
-6   4.61  ctrl
-```
+# Almacena los datos en la variable my_data
+my_data <- ToothGrowth
 
-In R terminology, the column “group” is called factor and the different categories (“ctr”, “trt1”, “trt2”) are named factor levels. **The levels are ordered alphabetically**.
+# Convierte dose en un factor y recodifica los niveles
+# como "D0.5", "D1", "D2"
+my_data$dose <- factor(my_data$dose, 
+                  levels = c(0.5, 1, 2),
+                  labels = c("D0.5", "D1", "D2"))
 
-```
-<span># Show the group levels</span>
-<span>levels</span><span>(</span><span>my_data</span><span>$</span><span>group</span><span>)</span>
-```
 
-```
-[1] "ctrl" "trt1" "trt2"
-```
-
-If the levels are not automatically in the correct order, re-order them as follow:
-
-```
-<span>my_data</span><span>$</span><span>group</span> <span>&lt;-</span> <span>ordered</span><span>(</span><span>my_data</span><span>$</span><span>group</span>,
-                         <span>levels</span> <span>=</span> <span>c</span><span>(</span><span>"ctrl"</span>, <span>"trt1"</span>, <span>"trt2"</span><span>)</span><span>)</span>
-```
-
-It’s possible to compute summary statistics by groups. The dplyr package can be used.
-
--   To install **dplyr** package, type this:
-
-```
-<span>install.packages</span><span>(</span><span>"dplyr"</span><span>)</span>
-```
-
--   Compute summary statistics by groups:
-
-```
-<span>library</span><span>(</span><span>dplyr</span><span>)</span>
-<span>group_by</span><span>(</span><span>my_data</span>, <span>group</span><span>)</span> <span>%&gt;%</span>
-  <span>summarise</span><span>(</span>
-    <span>count</span> <span>=</span> <span>n</span><span>(</span><span>)</span>,
-    <span>mean</span> <span>=</span> <span>mean</span><span>(</span><span>weight</span>, <span>na.rm</span> <span>=</span> <span>TRUE</span><span>)</span>,
-    <span>sd</span> <span>=</span> <span>sd</span><span>(</span><span>weight</span>, <span>na.rm</span> <span>=</span> <span>TRUE</span><span>)</span>,
-    <span>median</span> <span>=</span> <span>median</span><span>(</span><span>weight</span>, <span>na.rm</span> <span>=</span> <span>TRUE</span><span>)</span>,
-    <span>IQR</span> <span>=</span> <span>IQR</span><span>(</span><span>weight</span>, <span>na.rm</span> <span>=</span> <span>TRUE</span><span>)</span>
-  <span>)</span>
-```
-
-```
-Source: local data frame [3 x 6]
-   group count  mean        sd median    IQR
-  (fctr) (int) (dbl)     (dbl)  (dbl)  (dbl)
-1   ctrl    10 5.032 0.5830914  5.155 0.7425
-2   trt1    10 4.661 0.7936757  4.550 0.6625
-3   trt2    10 5.526 0.4425733  5.435 0.4675
-```
-
-## Visualize the data using box plots
-
--   To use R base graphs read this: [R base graphs](https://www.sthda.com/english/wiki/r-base-graphs). Here, we’ll use the [**ggpubr** R package](https://www.sthda.com/english/wiki/ggpubr-r-package-ggplot2-based-publication-ready-plots) for an easy ggplot2-based data visualization.
-    
--   Install the latest version of ggpubr from GitHub as follow (recommended):
-    
-
-```
-<span># Install</span>
-<span>if</span><span>(</span><span>!</span><span>require</span><span>(</span><span>devtools</span><span>)</span><span>)</span> <span>install.packages</span><span>(</span><span>"devtools"</span><span>)</span>
-<span>devtools</span><span>:</span><span>:</span><span>install_github</span><span>(</span><span>"kassambara/ggpubr"</span><span>)</span>
-```
-
--   Or, install from CRAN as follow:
-
-```
-<span>install.packages</span><span>(</span><span>"ggpubr"</span><span>)</span>
-```
-
--   Visualize your data with ggpubr:
-
-```
-<span># Box plots</span>
-<span># ++++++++++++++++++++</span>
-<span># Plot weight by group and color by group</span>
-<span>library</span><span>(</span><span>"ggpubr"</span><span>)</span>
-<span>ggboxplot</span><span>(</span><span>my_data</span>, <span>x</span> <span>=</span> <span>"group"</span>, <span>y</span> <span>=</span> <span>"weight"</span>, 
-          <span>color</span> <span>=</span> <span>"group"</span>, <span>palette</span> <span>=</span> <span>c</span><span>(</span><span>"#00AFBB"</span>, <span>"#E7B800"</span>, <span>"#FC4E07"</span><span>)</span>,
-          <span>order</span> <span>=</span> <span>c</span><span>(</span><span>"ctrl"</span>, <span>"trt1"</span>, <span>"trt2"</span><span>)</span>,
-          <span>ylab</span> <span>=</span> <span>"Weight"</span>, <span>xlab</span> <span>=</span> <span>"Treatment"</span><span>)</span>
-```
-
-![Kruskal-Wallis Test in R](https://www.sthda.com/sthda/RDoc/figure/statistics/kruskal-wallis-test-box-plot-1.png)
-
-```
-<span># Mean plots</span>
-<span># ++++++++++++++++++++</span>
-<span># Plot weight by group</span>
-<span># Add error bars: mean_se</span>
-<span># (other values include: mean_sd, mean_ci, median_iqr, ....)</span>
-<span>library</span><span>(</span><span>"ggpubr"</span><span>)</span>
-<span>ggline</span><span>(</span><span>my_data</span>, <span>x</span> <span>=</span> <span>"group"</span>, <span>y</span> <span>=</span> <span>"weight"</span>, 
-       <span>add</span> <span>=</span> <span>c</span><span>(</span><span>"mean_se"</span>, <span>"jitter"</span><span>)</span>, 
-       <span>order</span> <span>=</span> <span>c</span><span>(</span><span>"ctrl"</span>, <span>"trt1"</span>, <span>"trt2"</span><span>)</span>,
-       <span>ylab</span> <span>=</span> <span>"Weight"</span>, <span>xlab</span> <span>=</span> <span>"Treatment"</span><span>)</span>
-```
-
-![Kruskal-Wallis Test in R](https://www.sthda.com/sthda/RDoc/figure/statistics/kruskal-wallis-test-box-plot-2.png)
-
-## Compute Kruskal-Wallis test
-
-We want to know if there is any significant difference between the average weights of plants in the 3 experimental conditions.
-
-The test can be performed using the function **kruskal.test**() as follow:
-
-```
-<span>kruskal.test</span><span>(</span><span>weight</span> <span>~</span> <span>group</span>, <span>data</span> <span>=</span> <span>my_data</span><span>)</span>
-```
+str(my_data)
 
 ```
 
-    Kruskal-Wallis rank sum test
-data:  weight by group
-Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842
-```
+## Visualiza tus datos
 
-## Interpret
+```{webr}
+#| autorun: true
+#| warning: false
 
-As the p-value is less than the significance level 0.05, we can conclude that there are significant differences between the treatment groups.
+library("ggpubr")
 
-## Multiple pairwise-comparison between groups
-
-From the output of the Kruskal-Wallis test, we know that there is a significant difference between groups, but we don’t know which pairs of groups are different.
-
-It’s possible to use the function **pairwise.wilcox.test**() to calculate pairwise comparisons between group levels with corrections for multiple testing.
-
-```
-<span>pairwise.wilcox.test</span><span>(</span><span>PlantGrowth</span><span>$</span><span>weight</span>, <span>PlantGrowth</span><span>$</span><span>group</span>,
-                 <span>p.adjust.method</span> <span>=</span> <span>"BH"</span><span>)</span>
-```
+ggboxplot(my_data, x = "dose", y = "len", color = "dose",
+          palette = "jco")
 
 ```
 
-    Pairwise comparisons using Wilcoxon rank sum test 
-data:  PlantGrowth$weight and PlantGrowth$group 
-     ctrl  trt1 
-trt1 0.199 -    
-trt2 0.095 0.027
-P value adjustment method: BH 
+## Calcular el test de Kruskal-Wallis
+
+Queremos saber si la longitud del diente depende de `supp`.
+
+- Podemos usar la función `kruskal.test()` para realizar el test de Kruskal-Wallis en R.
+- La función `kruskal.test()` toma la fórmula `fórmula` y los datos `data` como argumentos.
+  - La fórmula es de la forma `y ~ x`, donde `y` es la variable de respuesta y `x` es la variable de factor.
+
+```{webr}
+#| autorun: true
+#| warning: false
+
+kruskal.test(len ~ dose, data = my_data)
+
 ```
 
-The pairwise comparison shows that, only trt1 and trt2 are significantly different (p < 0.05).
 
-## See also
+## Visualizar los resultados y agregar p-valores a los gráficos
 
--   Analysis of variance (ANOVA, parametric):
-    -   [One-Way ANOVA Test in R](https://www.sthda.com/english/wiki/one-way-anova-test-in-r)
-    -   [Two-Way ANOVA Test in R](https://www.sthda.com/english/wiki/two-way-anova-test-in-r)
-    -   [MANOVA Test in R: Multivariate Analysis of Variance](https://www.sthda.com/english/wiki/manova-test-in-r-multivariate-analysis-of-variance)
 
-## Infos
+```{webr}
+#| autorun: true
+#| warning: false
 
-This analysis has been performed using **R software** (ver. 3.2.4).
+library("ggpubr")
 
-  
+my_comparisons <- list( c("0.5", "1"), c("1", "2"), c("0.5", "2") )
 
-Enjoyed this article? I’d be very grateful if you’d help it spread by emailing it to a friend, or sharing it on Twitter, Facebook or Linked In.
+ggboxplot(ToothGrowth, x = "dose", y = "len",
+          color = "dose", palette = "jco") + 
+  stat_compare_means(label.y = 45) +
+  stat_compare_means(comparisons = my_comparisons, label.y = c(29, 35, 40))
 
-Show me some love with the like buttons below... Thank you and please don't forget to share and comment below!!
-
-  
-
-  
-
-## Recommended for You!
-
-  
-
- **Get involved :**  
-  Click to **follow us** on [Facebook](https://www.facebook.com/1570814953153056) : [](https://www.facebook.com/1570814953153056)    
-  **Comment this article** by clicking on "Discussion" button (top-right position of this page) 
+```

@@ -375,3 +375,8 @@ ggboxplot(diamantes, x = "corte", y = "precio",
                      ref.group = "Ideal") # comparaciones múltiples
 ```
 
+
+::: {.callout-important}
+
+En las siguientes lecciones, veremos cómo realizar el ANOVA, el gráfico, y las comparaciones múltiples en un solo paso con la función `anova_test()` del paquete `rstatix`. Esta función es muy similar a `ezANOVA()`, pero es un poco más fácil de usar en los gráficos.
+:::
