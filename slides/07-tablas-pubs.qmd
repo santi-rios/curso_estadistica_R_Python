@@ -17,6 +17,7 @@ sidebar: false
 webr:
     packages: 
         - tidyverse
+        - dplyr
         - ggpubr
         - gt
         - flextable
