@@ -25,13 +25,15 @@ webr:
 engine: knitr
 ---
 
-<!-- {{< include ../_extensions/r-wasm/live/_knitr.qmd >}} -->
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
 En esta presentación veremos algunos ejemplos de gráficos avanzados en R:
 
 ## Combinar múltiples gráficos con ggplot:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(ggplot2)
 
 # Con facet_wrap
@@ -49,7 +51,9 @@ ggplot(diamonds, aes(price)) +
 - Vamos a crear un gráfico de *lollipop* con los datos de `gapminder` para representa la distribución de países por continente para el año 2007.
 - Esta es una alternativa a los gráficos de barras.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 #Cargar los paquetes
 library(ggplot2)
 library(gapminder)
@@ -80,7 +84,9 @@ ggplot(aes(x=continent, y=n)) +
 - Este tipo de gráfico es útil para comparar dos puntos en el tiempo. 
 - Es una alternativa a los gráficos de líneas:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(ggplot2)
 library(gapminder)
 library(dplyr)
@@ -110,7 +116,9 @@ ggplot() +
 
 - Los *treemap* muestran la distribución de los datos en un solo periodo de tiempo usando rectángulos para identificar qué observaciones componen los grupos y subgrupos.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 #Se cargan los paquetes
 
@@ -135,7 +143,9 @@ geom_treemap_text(colour = "white", place = "centre")+
 
 - Los gráficos de waffle son otra alternativa para mostrar la composición de los datos en un solo período de tiempo. Cada observación está representada por un cuadrado, y el color de su área corresponde al grupo del que hace parte.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 #Se cargan los paquetes
 library(gapminder)
 library(dplyr)
@@ -163,7 +173,9 @@ ggplot(aes(fill = continent, values=n)) +
 
 El gráfico de waffle tambien puede ser útil par mostrar la evolución de la composición. Por ejemplo:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Se crea la base de datos
 datos.wafle.pob <- gapminder %>% 
   group_by(continent, year) %>% 
@@ -189,7 +201,9 @@ ggplot(aes(fill = continent, values = pop)) +
 
 Otra forma interesante de emplear los gráficos de waffle para mostrar la evolución de composición:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Se crea la base de datos
 library(dplyr)
 datos.storms <- storms %>% 
