@@ -32,7 +32,9 @@ Por último, vamos a ver cómo realizar un anova mixto en R. Este tipo de análi
 
 Vamos a usar los datos `anxiety`del paquete `datarium` para realizar un ANOVA mixto. Estos datos contienen mediciones de ansiedad en diferentes momentos y bajo diferentes condiciones.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(tidyverse)
 library(ggpubr)
 library(rstatix)
@@ -50,7 +52,9 @@ head(ansiedad)
 
 Ahora vamos a realizar un ANOVA mixto para analizar la ansiedad en diferentes momentos y condiciones. Utilizaremos la función `anova_test` del paquete `rstatix` para realizar el análisis. Observa que ahora especificamos tanto el factor entre sujetos (`group`) como el factor dentro de sujetos (`time`).
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 res.aov <- anova_test(
   data = ansiedad, 
@@ -67,13 +71,17 @@ get_anova_table(res.aov)
 ::: {.callout}
 Con aov():
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 aov(score ~ group * time + Error(id/time), data = ansiedad)
 ```
 
 Con ezANOVA:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(ez)
 
 ezANOVA(
@@ -88,7 +96,9 @@ ezANOVA(
 
 :::
 
-```{r}	
+```{webr}
+#| autorun: true
+#| warning: false	
 # Visualizar los resultados
 bxp <- ggboxplot(
   ansiedad, x = "time", y = "score",
