@@ -33,7 +33,9 @@ En esta lección, aprenderás a crear tablas elegantes y listas para publicació
 
 Primero, necesitas instalar y cargar los paquetes necesarios. Si aún no los tienes instalados, puedes hacerlo con `install.packages()`.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Instalar paquetes necesarios
 # install.packages(c("dplyr", "gt", "flextable"))
 
@@ -47,7 +49,9 @@ library(flextable)
 
 Supongamos que tienes un conjunto de datos y deseas resumirlo antes de presentarlo en una tabla. Usaremos `dplyr` para manipular los datos.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Crear un conjunto de datos de ejemplo
 data <- data.frame(
   Categoria = c("A", "A", "B", "B"),
@@ -69,7 +73,9 @@ El paquete `gt` es excelente para crear tablas atractivas y listas para publicac
 
 > Primero, cargamos los datos en una tabla `gt`. Observa que es tan fácil como usar `gt(datos)`.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 # Crear una tabla usando gt
 
 gt(resumen)
@@ -78,7 +84,9 @@ gt(resumen)
 
 > Luego, personalizamos el diseño de la tabla, como agregar un título y subtítulo.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 gt(resumen) %>%
   tab_header(
@@ -89,7 +97,9 @@ gt(resumen) %>%
 
 > Ahora vamos a dar formato a los números para que se vean mejor.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 gt(resumen) %>%
   tab_header(
@@ -142,7 +152,9 @@ gtsave(tabla_gt, filename = "tabla_resumen.docx")
 
 ### Datos
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(rstatix)
 library(datarium)
 library(tidyverse)
@@ -159,7 +171,9 @@ head(selfesteem_long)
 
 - Para obtener la tabla de ANOVA, solo hay que usar `get_anova_table()` dentro de la función `gt()`.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 res.aov <- anova_test(data = selfesteem_long, dv = autoestima, wid = id, within = tiempo)
 
 gt(get_anova_table(res.aov))
@@ -171,7 +185,9 @@ gt(get_anova_table(res.aov))
 
 - Podemos hacer lo mismo con las comparaciones post-hoc:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 # Comparaciones post-hoc
 pwc <- selfesteem_long %>%
