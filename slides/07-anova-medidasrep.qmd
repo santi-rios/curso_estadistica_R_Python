@@ -42,7 +42,9 @@ Recuerda revisar los valores atípicos y la normalidad antes de realizar un ANOV
 :::
 
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(tidyverse)
 library(ggpubr)
 library(rstatix)
@@ -55,7 +57,9 @@ library(datarium)
 
 - vamos a usar datos de autoestima medido en tres momentos diferentes:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 data("selfesteem", package = "datarium")
 head(selfesteem, 3)
 ```
@@ -65,7 +69,9 @@ head(selfesteem, 3)
 
 Vamos a ordenar los datos para que las 3 columnas de tiempo estén juntas en una sola columna:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 selfesteem_long <- selfesteem %>% 
   pivot_longer(cols = starts_with("t"), names_to = "tiempo", values_to = "autoestima")
 
@@ -78,7 +84,9 @@ selfesteem_long
 - Vamos a realizar el ANOVA con la función `anova_test()` de `rstatix`.
 - Observa que estamos especificando el `id` del sujeto y la variable `tiempo` como factores intra-sujetos. Esto es importante para que el análisis sea correcto y considere que es un diseño de medidas repetidas. Al final, se usa `get_anova_table()` para obtener la tabla ANOVA.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 res.aov <- anova_test(data = selfesteem_long, dv = autoestima, wid = id, within = tiempo)
 
@@ -90,7 +98,9 @@ get_anova_table(res.aov)
 
 Si quisiéramos realizar este mismo ANOVA con la función `aov()` de R, tendríamos que especificar el diseño de medidas repetidas con la función `Error()`. Esto puede ser un poco más complicado que con `anova_test()`.
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 res.aov.2 <- aov(autoestima ~ tiempo + Error(id/tiempo), data = selfesteem_long)
 
 summary(res.aov.2)
@@ -98,7 +108,9 @@ summary(res.aov.2)
 
 También se puede realizar con la función `ezANOVA()` del paquete `ez`:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 library(ez)
 
 
@@ -121,7 +133,9 @@ print(res.ez)
 
 - Vamos a hacer el gráfico con los valores del ANOVA y los resultados del post-hoc:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 pwc <- selfesteem_long %>%
   pairwise_t_test(
     autoestima ~ tiempo, paired = TRUE,
@@ -149,7 +163,9 @@ bxp +
 Ahora usaremos los datos `selfesteem2` que contienen autoestima de 12 individuos en 2 tiempos bajo 2 condiciones diferentes: control y tratamiento.
 
 
-```{r}	
+```{webr}
+#| autorun: true
+#| warning: false	
 set.seed(123)
 data("selfesteem2", package = "datarium")
 selfesteem2 %>% sample_n_by(treatment, size = 1)
@@ -157,7 +173,9 @@ selfesteem2 %>% sample_n_by(treatment, size = 1)
 
 > Limpiar datos:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 selfesteem2_long <- selfesteem2 %>%
   gather(key = "time", value = "score", t1, t2, t3) %>%
@@ -170,7 +188,9 @@ head(selfesteem2_long)
 ### ANOVA
 
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 res.aov.3 <- anova_test(
   data = selfesteem2_long, dv = score, wid = id,
   within = c(treatment, time)
@@ -182,13 +202,17 @@ get_anova_table(res.aov.3)
 ::: {.callout}
 - con `aov`:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 aov(score ~ treatment * time + Error(id/(treatment*time)), data = selfesteem2_long)
 ```
 
 - Con `ez`:
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 
 ezANOVA(
   data = selfesteem2_long,
@@ -203,7 +227,9 @@ ezANOVA(
 
 :::
 
-```{r}
+```{webr}
+#| autorun: true
+#| warning: false
 bxp.2 <- ggboxplot(
   selfesteem2_long, x = "time", y = "score",
   color = "treatment", palette = "jco"
