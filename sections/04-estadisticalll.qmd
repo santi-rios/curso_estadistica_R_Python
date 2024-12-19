@@ -20,7 +20,7 @@ format:
 
 
 
-{{< revealjs file="../slides/06-evaluar-modelo.html" height="500px">}}
+
 
 ## Plots
 
