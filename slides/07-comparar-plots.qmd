@@ -23,6 +23,8 @@ webr:
 engine: knitr
 ---
 
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
 A continuación, vamos a ver cómo comparar medias de diferentes grupos con gráficos. Para ello, vamos a utilizar el paquete `ggpubr` que nos permite hacer comparaciones de medias de manera sencilla y visual.
 
 ## Datos
