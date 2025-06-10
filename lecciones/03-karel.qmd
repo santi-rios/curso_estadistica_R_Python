@@ -20,7 +20,7 @@ pyodide:
   packages:
     - matplotlib
     - ipython
-    - https://santi-rios.github.io/pykarel_web/pykarel_web-0.2.6-py3-none-any.whl
+    - https://santi-rios.github.io/pykarel_web/pykarel_web-0.3.0-py3-none-any.whl
 engine: knitr
 ---
 
