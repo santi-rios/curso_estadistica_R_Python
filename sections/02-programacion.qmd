@@ -1,0 +1,16 @@
+---
+title: "Primera lección con R"
+subtitle: "Aprende a programar y estadística con R"
+format:
+  html:
+    toc: true
+    toc-depth: 2
+---
+
+### Aprende a programar con Karel
+
+{{< revealjs file="../slides/03-karel.html" height="500px">}}
+
+
+{{< revealjs file="../slides/04-karel.html" height="500px">}}
+

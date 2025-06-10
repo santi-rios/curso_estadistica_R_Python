@@ -31,7 +31,7 @@ Por ejemplo, si tienes una caja (variable que llamaremos X) que guarda la edad d
 ### Asignación de Variables
 Para asignar un valor a una variable, usamos un símbolo especial. En R, usamos `<-`, y en Python, usamos `=`.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -98,7 +98,7 @@ Veamos cómo crear variables y asignarles valores en R y Python. Tienes que crea
   - En R, usamos `typeof()` para verificar el tipo de datos.
   - En Python, usamos `type()` para el mismo propósito
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -213,7 +213,7 @@ Una vez que tienes variables, puedes realizar operaciones con ellas.
 
 ### Operaciones Numéricas
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -251,7 +251,7 @@ print(imc)
 
 Intenta remplazar los valores de las variables `nombre` y `apellido` con tu propio nombre y apellido. Si tienes un segundo apellido, puedes agregarlo también e intentar concatenarlo. 
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 

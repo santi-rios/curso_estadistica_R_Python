@@ -1,6 +1,6 @@
 ---
-title: "Empieza a programar con R"
-subtitle: "Familiarízate con R"
+title: "Empieza a programar con R/python"
+subtitle: "Karel, el robot programador"
 author: "Cursos Orca"
 format: 
     live-html: 
@@ -27,6 +27,7 @@ engine: knitr
 {{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
 En esta lección veremos algunos conceptos de programación un tanto complejos. Dominar estos conceptos es un proceso que tarda tiempo y experiencia con un lenguaje de programación. En este curso, no esperamos que domines estos conceptos de inmediato, pero es recomendable que los conozcas para que puedas aplicarlos en el futuro.
+
 
 ```{webr}
 #| autorun: true
@@ -89,16 +90,13 @@ girar_derecha <- function() {
 
 -   Programación: es la actividad por la cual las personas entregan a una computadora un conjunto de instrucciones que, al ejecutarlas, permite a la computadora resolver un problema.
 -   Los conjuntos de instrucciones que las computadoras reciben se denominan programas.
--   En programación, muchas veces se pueden seguir diferentes rutas para completar una tarea, y el programador debe imaginar cuáles son y elegir una.
--   Algunos de estos caminos pueden ser más eficientes que otros.
 -   Para darle instrucciones a una computadora, necesitamos utilizar un lenguaje de programación.
 -   En esta lección, aprenderemos conceptos básicos de programación para desarrollar el pensamiento abstracto y lógico necesario para comunicarnos eficientemente con la computadora.
--   El lenguaje de programación que usaremos es R.
 -   Para comprender algunas ideas básicas de programación, utilizaremos a Karel, un robot que se mueve por mundos rectangulares.
--   En esta primera lección, el objetivo no es aprender R, sino comprender conceptos básicos de programación y cómo se aplican en R.
+-   En esta primera lección, el objetivo no es aprender R/python, sino comprender conceptos básicos de programación y cómo comenzar a pensar como un programador.
 -   Las dos habilidades que deberás desarrollar son:
-    -   Diseñar algoritmos: desarrollar o elegir un algoritmo que resuelva un problema.
-    -   Codificación: escribir el algoritmo en un lenguaje de programación para que la computadora pueda entenderlo y ejecutarlo.
+    -   **Diseñar algoritmos**: desarrollar o pensar un algoritmo que resuelva un problema.
+    -   **Codificación**: escribir el algoritmo en un lenguaje de programación para que la computadora pueda entenderlo y ejecutarlo.
 
 ## Qué es Karel
 
@@ -113,9 +111,9 @@ girar_derecha <- function() {
 -   Para que R/python pueda usar Karel, primero debemos cargar el paquete `karel`.
 -   Esto pemrite que R/python reconozca las funciones y objetos que contiene el paquete. Esto se verá más adelante a detalle.
     -   En este caso, el paquete `karel` contiene las funciones que le permiten a Karel moverse por el mundo y realizar tareas específicas.
--   Por el momento no veras ningún output al cargar el paquete, pero es importante que lo hagas para poder usar Karel.
+-   Por el momento no veras ningún output al cargar el paquete, pero es importante que corras el código para poder usar Karel en la lección.
 
-::: panel-tabset
+::: {.panel-tabset group="language"}
 ## R
 
 -   En R, importamos paquetes con la función `library()`.
@@ -128,20 +126,22 @@ library(karel)
 ## python
 
 -   En python, importamos paquetes con la palabra clave `import`.
--   En este caso, el paquete se llama [pykarel_web](https://github.com/santi-rios/pykarel_web) y lo importamos con el siguiente código:
-    -   Este paquete es una versión de Karel que construí para python y se puede usar en el navegador.
-    -   Revisa el repositorio en [pykarel_web](https://github.com/santi-rios/pykarel_web) para más información, ejemplos y documentación.
 
 ```{pyodide}
 from pykarel_web import Karel
 ```
+
 :::
+
+-   En este caso, el paquete se llama [pykarel_web](https://github.com/santi-rios/pykarel_web) y lo importamos con el siguiente código:
+    -   Este paquete es una versión de Karel que construí para python y se puede usar en el navegador.
+    -   Revisa el repositorio en [pykarel_web](https://github.com/santi-rios/pykarel_web) para más información, ejemplos y documentación.
 
 ## Generar un mundo
 
 -   Ahora que hemos cargado el paquete, podemos crear un mundo para Karel.
 
-::: panel-tabset
+::: {.panel-tabset group="language"}
 ## R
 
 -   Esto se hace con la función `generar_mundo()`.
@@ -160,7 +160,7 @@ generar_mundo("mundo001")
 -   Las avenidas corren verticalmente (columnas).
 -   La intersección entre una calle y una avenida es llamada celda y se puede identificar por los números fuera del recuadro.
 -   Karel siempre mira hacia una de las cuatro direcciones posibles: este, norte, oeste o sur.
--   Los bordes negros representan paredes que Karel no puede cruzar.
+-   Los bordes negros representan paredes que Karel no debe cruzar.
 -   El cubo morado se llama en el programa un `coso`. Estos `cosos` pueden ser tomados por Karel y guardarlos en su mochila. En el mundo que acabamos de crear, el coso se encuentra en la celda (2, 1)
 
 ## python
@@ -202,7 +202,7 @@ Karel puede realizar las siguientes acciones (funciones):
 
 Veamos un primer ejemplo.
 
-::::: panel-tabset
+::::: {.panel-tabset group="language"}
 ## R
 
 Vamos a pedirle a Karel que avance, junte el coso y vuelva a avanzar:
@@ -248,7 +248,7 @@ karel.ejecutar_acciones()
 
 ```
 
-::: callout-warning
+::: {.panel-tabset group="language"}
 Qué pasa si intentas avanzar cuando hay una pared enfrente de Karel? Intenta hacerlo y observa el resultado.
 
 ```{pyodide}
@@ -263,10 +263,10 @@ karel.ejecutar_acciones()
 
 ## Ejercicio 2
 
-::: panel-tabset
+::: {.panel-tabset group="language"}
 ## R
 
--   Ahora queremos que Karel junte el coso, lo coloque en la Calle 2 y Avenida 5 () y finalmente avance a la Calle 2 y Avenida 6, como en la imagen de abajo:
+-   Ahora queremos que Karel junte el coso, lo coloque en la Calle 2 y Avenida 5 y finalmente avance a la Calle 2 y Avenida 6, como en la imagen de abajo:
 
 ![](https://ropensci.github.io/karel/articles/15.png)
 
@@ -323,7 +323,11 @@ karel.ejecutar_acciones()
 ```
 :::
 
+Como ves, el código se vuelve un poco más largo y repetitivo. Esto es normal al principio, pero a medida que aprendas más sobre programación, podrás escribir código más eficiente y legible. 
+
 # Descomponer un problema en pasos
+
+![](https://www.origoeducation.com/wp-content/uploads/2019/10/Decomposing-Situations-1.jpg)
 
 -   Para solucionar el problema (**algorítmo**) pasado, es más sencillo dividir el problema en partes más pequeñas (**subalgoritmos**), lo que se conoce como **descomposición algorítmica o modular**.
     -   Un subalgoritmo se escribe una vez y es reutilizado por cualquier algoritmo que lo necesite.
@@ -339,7 +343,7 @@ karel.ejecutar_acciones()
 -   Vamos a crear una función que nos permita girar a la derecha para no tener que escribir `girar_izquierda` 3 veces cada vez que queramos girar a la izquierda.
 
 
-::: panel-tabset
+::: {.panel-tabset group="language"}
 ## R
 
 -   En R, las funciones se crean con la palabra clave `function`. Observa el siguiente código que indica la estructura básica de una función en R:
@@ -351,7 +355,8 @@ nombre_funcion_nueva <- function() {
 ```
 
 -   Ahora, para crear la función `girar_derecha()`, necesitamos que Karel gire tres veces a la izquierda.
--   Vamos a crearla:
+-   Esta función se puede definir de la siguiente manera:
+  - Observa que la función `girar_derecha()` no recibe ningún argumento, ya que no necesita información adicional para realizar su tarea.
 
 ``` r
 girar_derecha <- function() {
@@ -362,7 +367,6 @@ girar_derecha <- function() {
 ```
 
 -   Observa que usamos el operador de asignación `<-` para asociar a ese nombre la definición de una función, similar a como lo hacemos con las variables.
--   Nota que tienes que ejecutar el código para que la función `girar_derecha()` esté disponible en tu sesión de R.
 -   Ahora, vamos a usar la función `girar_derecha()` en el programa de Karel para que pueda girar a la derecha.
 
 ```{webr}
@@ -431,7 +435,7 @@ karel.ejecutar_acciones()
 -   Llama la función `dar_vuelta()`.
 -   Si tienes problemas, puedes ver la solución.
 
-:::: panel-tabset
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -449,10 +453,8 @@ dar_vuelta <- function() {
 generar_mundo("mundo001")
 avanzar()
 avanzar()
-avanzar()
 # llamar a la función dar vuelta
 dar_vuelta()
-avanzar()
 avanzar()
 avanzar()
 ejecutar_acciones()
@@ -494,7 +496,7 @@ karel.girar_izquierda()
 karel.avanzar()
 karel.avanzar()
 # llamar a la función dar vuelta
-karel.dar_vuelta()
+dar_vuelta()
 karel.avanzar()
 karel.avanzar()
 karel.ejecutar_acciones()
@@ -526,14 +528,14 @@ def dar_vuelta():
 
 :::
 
-## más ejercicios
+## Ejercicios
 
 -   Antes de continuar con los siguientes temas, intenta resolver los siguientes ejercicios con lo que has aprendido hasta ahora.
 -   Puedes resolverlos en R o python, como prefieras. Recuerda la sintaxis de cada lenguaje presentada en @tbl-funcioneskarel.
     -   Puedes utilizar las funciones de la @tbl-funcioneskarel, o crear tus propias funciones para resolver los problemas. 
 -   Si tienes problemas en solucionarlos, corre el código de Karel con pocos pasos y observa lo que está haciendo bien y lo que está haciendo mal.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 

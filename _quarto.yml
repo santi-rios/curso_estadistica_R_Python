@@ -47,10 +47,10 @@ website:
     # contents: 
     #   - href: index.qmd
     #     title: "Inicio"
-      # - section: "Introducción a R"
-        # contents:
-          # - sections/00-presentacion.qmd
-          # - sections/01-intro-r.qmd
+      - text: "Introducción"
+        href: sections/01-intro-r.qmd
+      - text: "Aprende a Programar"
+        href: sections/02-programacion.qmd
       # - section: "Introducción a Estadística"
       #   contents:
       #     - sections/02-estadistica.qmd

@@ -1,6 +1,6 @@
 ---
-title: "Empieza a programar con R"
-subtitle: "Familiarízate con R"
+title: "Estructuras de control con Karel"
+subtitle: "Comienza a programar con Karel"
 author: "Cursos Orca"
 format: 
     live-html: 
@@ -84,7 +84,11 @@ girar_derecha <- function() {
 ```
 
 
-Ahora, antes de comenzar un tema más avanzado (estructuras de control), considera este ejemplo:
+Ahora, antes de comenzar un tema más avanzado (**estructuras de control**), considera este ejemplo:
+
+:::: {.panel-tabset group="language"}
+
+## R
 
 Carga el mundo `mundo001` y ejecuta el siguiente código:
 
@@ -97,14 +101,6 @@ generar_mundo("mundo014")
 
 ```
 
-```{pyodide}
-# Inicializar a Karel en el mundo predeterminado
-from pykarel_web import Karel
-
-karel = Karel(mundo="recta")
-karel.ejecutar_acciones()
-
-```
 
 - Este mundo es relativamente sencillo. Si queremos que Karel llegué al final (columna 20), podemos decirle que avance 19 veces.
 
@@ -136,6 +132,16 @@ avanzar() # 21
 ejecutar_acciones()
 ```
 
+## Python
+
+```{pyodide}
+# Inicializar a Karel en el mundo predeterminado
+from pykarel_web import Karel
+
+karel = Karel(mundo="recta")
+karel.ejecutar_acciones()
+
+```
 
 ```{pyodide}
 # Inicializar a Karel en el mundo predeterminado
@@ -164,6 +170,14 @@ karel.avanzar() # 18
 karel.avanzar() # 19
 karel.ejecutar_acciones()
 ```
+
+::::
+
+
+
+
+
+
 
 
 - Este código, aunque sencillo, es muy ineficiente. Si queremos que Karel avance 100 veces, tendríamos que escribir `avanzar()` 100 veces.
@@ -217,9 +231,13 @@ for i in range(valor_inicial, valor_final):
 - Esto significa que si queremos repetir un bloque de código 5 veces en R, escribimos `for (i in 1:5)`, mientras que en Python escribimos `for i in range(0, 5)`.
 - En R, el valor final es inclusivo, mientras que en Python es exclusivo.
 
-:::
+::::
 
 - Ahora, vamos a ver un ejemplo de cómo usar un `for` para que Karel avance 19 veces en el mundo `mundo014`.
+
+:::: {.panel-tabset group="language"}
+
+## R
 
 ```{webr}
 generar_mundo("mundo014")
@@ -229,6 +247,7 @@ for (i in 1:19) {
 ejecutar_acciones()
 ```
 
+## Python
 
 ```{pyodide}
 # Inicializar a Karel en el mundo predeterminado
@@ -243,6 +262,7 @@ for i in range(0,19):
 karel.ejecutar_acciones()
 ```
 
+:::
 
 - En este caso, Karel avanzará 19 veces en lugar de tener que escribir `avanzar()` 19 veces.
 
@@ -288,6 +308,10 @@ while condición:
 
 - Vamos a ver un ejemplo de cómo usar un `while` para que Karel avance hasta que encuentre una pared en el mundo `mundo014`.
 
+:::: {.panel-tabset group="language"}
+
+## R
+
 ```{webr}
 generar_mundo("mundo014")
 while (frente_abierto()) {
@@ -296,6 +320,7 @@ while (frente_abierto()) {
 ejecutar_acciones()
 ```
 
+## Python
 
 ```{pyodide}
 # Inicializar a Karel en el mundo predeterminado
@@ -308,6 +333,8 @@ while karel.frente_abierto():
 
 karel.ejecutar_acciones()
 ```
+
+::::
 
 ::: {.callout-tip}
 A veces es más facil visualizar el flujo de un script con un diagrama de flujo. Por ejemplo, el siguiente diagrama de flujo representa el código anterior:
@@ -425,8 +452,11 @@ if (frente_abierto()) {
 
 #### if else
 
+
+
 - A veces, queremos que se ejecute un bloque de código si una condición es verdadera y otro bloque si es falsa.
 - Para esto, usamos la estructura `if else`, que significa "si no es verdadero, entonces realiza esto".
+
 - la sintaxis básica de un `if else` en R es la siguiente:
 
 ```r
