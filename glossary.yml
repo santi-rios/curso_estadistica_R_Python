@@ -1,0 +1,8 @@
+dataframe: |
+  Colección de datos organizados en filas y columnas, donde cada fila representa una observación y cada columna una variable.
+
+variables: |
+  Características o propiedades que se miden o registran en un estudio. En un dataframe, cada columna representa una variable.
+
+observación: |
+  Un conjunto de valores de variables para un caso específico. En un dataframe, cada fila representa una observación.

@@ -2,27 +2,95 @@ project:
   type: website
   output-dir: _site
 
+# theme:
+#   light: flatly
+#   dark: darkly
+
 website:
   title: "Curso introductorio a R"
   description: "Aprende R y bioestadística con contenido interactivo"
   repo-url: https://github.com/santi-rios/R_interactivo_ejecutar
   repo-actions: [edit, issue]
+  announcement: 
+    icon: info-circle
+    dismissable: true
+    content: "**Alert** - this is some information that you should pay attention to"
+    type: primary
+    position: below-navbar
+  page-navigation: true
+  page-footer: 
+    left: "Copyright 2021, Norah Jones" 
+    right: 
+      - icon: github
+        href: https://github.com/
+      - icon: twitter 
+        href: https://twitter.com/
   sidebar:
     style: docked
     search: true
-    contents: 
-      - href: index.qmd
-        title: "Inicio"
-      - section: "Introducción a R"
-        contents:
-          - sections/00-presentacion.qmd
-          - sections/01-intro-r.qmd
-      - section: "Introducción a Estadística"
-        contents:
-          - sections/02-estadistica.qmd
-      - section: "Modelado Estadístico"
-        contents:
-          - sections/03-estadisticall.qmd
-      - section: "Estadística Avanzada"
-        contents:
-          - sections/04-estadisticalll.qmd
+    tools:
+      - icon: twitter
+        href: https://twitter.com
+      - icon: github
+        menu:
+          - text: Source Code
+            href:  https://code.com
+          - text: Report a Bug
+            href:  https://bugs.com
+  navbar:
+    background: primary
+    search: true
+    logo: images/logo.png
+    left:
+      - text: "Inicio"
+        href: index.qmd
+    # contents: 
+    #   - href: index.qmd
+    #     title: "Inicio"
+      # - section: "Introducción a R"
+        # contents:
+          # - sections/00-presentacion.qmd
+          # - sections/01-intro-r.qmd
+      # - section: "Introducción a Estadística"
+      #   contents:
+      #     - sections/02-estadistica.qmd
+      # - section: "Modelado Estadístico"
+      #   contents:
+      #     - sections/03-estadisticall.qmd
+      # - section: "Estadística Avanzada"
+      #   contents:
+      #     - sections/04-estadisticalll.qmd
+  # navbar:
+  #   background: primary
+  #   search: true
+  #   title: false
+  #   logo: images/logo.png
+  #   background: "Logo"
+  #   tools:
+  #     - search: true
+  #     - icon: "fa-solid fa-moon"
+  #       href: "
+  #         - text: "Dark"
+  #         - text: "Light"
+      # - icon: twitter
+      #   href: https://twitter.com
+      # - icon: github
+      #   menu:
+      #     - text: Source Code
+      #       href:  https://code.com
+      #     - text: Report a Bug
+      #       href:  https://bugs.com  
+  #   left:
+  #     - text: "Home"
+  #       href: index.qmd
+  #     - talks.qmd
+  #     - about.qmd
+
+
+# format:
+#   html:
+#     theme: cosmo
+
+# execute:
+#   echo: false  # do not show code in output
+#   freeze: false  # never re-render during project render

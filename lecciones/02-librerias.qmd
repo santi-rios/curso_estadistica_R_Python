@@ -1,0 +1,295 @@
+---
+title: "Librerías en R y Python"
+subtitle: "Instalación y carga de paquetes"
+author: "Cursos Orca"
+format: 
+    live-html: 
+        toc: true
+        # theme: simple
+        # scrollable: true
+        toc-depth: 2
+        toc-title: Contenido de la Lección
+        # progress: true
+        # slide-number: true
+        lang: es
+        # logo: "https://cran.r-project.org/Rlogo.svg"
+webr:
+    packages: 
+        - karel
+pyodide:
+  packages:
+    - matplotlib
+    - ipython
+    - https://santi-rios.github.io/pykarel_web/pykarel_web-0.2.6-py3-none-any.whl
+engine: knitr
+---
+
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
+
+## Introducción
+
+- Una de las características más poderosas de R y python es la capacidad de ampliar su funcionalidad mediante *paquetes/librerías/módulos*.
+- Estos *paquetes/librerías/módulos* pueden ser funciones (siguiente lección), datos y documentación que extienden las herramientas básicas del lenguaje. 
+
+
+
+- Por ejemplo, si queremos promediar un vector, 
+
+:::: panel-tabset
+
+
+::::
+
+- Existen miles de paquetes disponibles que facilitan tareas como análisis estadístico, visualización de datos, manipulación de datos, y más.
+- Por ejemplo, el paquete `ggplot2` permite realizar gráficos avanzados, mientras que `dplyr` su usa para manipulación de datos.
+
+## Cómo Instalar Paquetes en R
+
+- Puedes instalar un paquete desde [CRAN](https://cran.r-project.org/) (la red de archivos principal de R) usando la función `install.packages()`.
+- La sintaxis para instalar un paquete es la siguiente:
+
+```r
+# Instalar un paquete
+install.packages("nombre_del_paquete")`
+```
+
+## Ejemplo
+- Vamos a instalar el conjunto de paquetes 'tidyverse', que incluye muchos paquetes útiles para el análisis de datos.
+- Veremos más sobre estos paquetes en las próximas lecciones, por ahora solo necesitas instalarlos.
+- Para instalar 'tidyverse', usa: `install.packages("tidyverse")`
+
+##
+
+realiza la instalación en la consola que se encuentra abajo. Después, instalalo de la misma manera en tu RStudio. Espera unos segundos hasta que tengas un mensaje de la consola. Por el momento verás algunas advertencias, pero no te preocupes por ellas.
+
+```{webr}
+install.packages("tidyverse") 
+
+```
+
+## Cargar Paquetes en R
+
+- Comprueba que el paquete 'tidyverse' se haya instalado correctamente en tu RStudio.
+- Para esto, carga el paquete con la función `library(nombre_del_paquete)`.
+- Si todo está bien, no deberías ver ningún mensaje de error. Deberías ver un mensaje similar a `Attaching core tidyverse packages...` 
+- Corre el siguiente código en esta consola y en tu RStudio.
+
+```{webr}
+library(tidyverse)
+
+```
+---
+
+##
+- Solamente se necesita instalar el paquete una vez en tu sesión de R.
+- Sin embargo, necesitas cargarlo en cada sesión de R en la que quieras usarlo.
+- Cuando cargas un paquete, estamos haciendo disponible a R todas las funciones y datos que contiene.
+
+
+## Breve nota sobre Tidyverse
+- El Tidiverse contiene varios paquetes que son útiles para el análisis de datos.
+- Algunos de los paquetes más útiles son:
+    - `ggplot2` - para gráficos
+    - `dplyr` - para manipulación de datos
+    - `tidyr` - para limpieza de datos
+- Puedes ver todos los paquetes que contiene Tidyverse con la función `tidyverse_packages()`.
+- Puedes acceder a un paquete del tidyverse cargando todos los paquetes con `library(tidyverse)` o cargando un paquete específico con `library(dplyr)`.
+- Los paquetes dentro del Tidyverse siguen una estructura similar, por lo que es fácil aprender a usarlos. Esto se verá más adelante en el curso.
+
+
+# Fin
+
+
+## Ejemplo de funciones con dplyr
+- dplyr es un paquete parte de tidyverse que facilita la manipulación de datos en R.
+- para comenza a usarlo, primero debes instalarlo y cargarlo en tu sesión de R.
+- Para instalarlo, usa `install.packages("dplyr")` y para cargarlo, usa `library(dplyr)` o bien, `library(tidyverse)` para cargar todos los paquetes de tidyverse.
+
+```{{webr}}
+# cargar paquete dplyr
+library(______)
+```
+##
+
+- dplyr se centra en una serie de funciones verbales que hacen que la manipulación de datos sea intuitiva. 
+- Aquí están las funciones más utilizadas:
+
+    `select()` - Seleccionar columnas específicas de un marco de datos.
+    `filter()` - Filtrar filas basadas en condiciones.
+    `arrange()` - Reordenar filas de un marco de datos.
+- Veremos más a detalle estas funciones en otra sección. Por ahora, solo familiarízate con ellas.
+
+## Uso de dplyr
+
+
+```{webr}
+
+# Cargar el conjunto de datos
+# este conjunto viene por defecto en R
+data("mtcars")
+
+# explorar el conjunto de datos
+head(mtcars)
+
+
+```
+
+## 
+
+
+```{webr}
+
+
+# 1. Seleccionar columnas específicas
+mtcars_selected <- select(mtcars, mpg, hp, wt)
+head(mtcars_selected)
+
+
+
+
+```
+
+## 
+
+
+```{webr}
+
+# 2. Filtrar filas: coches con más de 100 caballos de fuerza
+mtcars_filtered <- filter(mtcars, hp > 100)
+head(mtcars_filtered)
+
+
+
+```
+
+
+## Operator %>% (pipa)
+- El operador `%>%` (pipa) se utiliza para encadenar funciones en R, lo que facilita la manipulación de datos.
+- Observa cómo podemos select, filter y head en una sola línea de código usando `%>%`.
+
+```{webr}
+
+# Encadenar funciones con el operador %>% (pipe)
+mtcars %>%
+  select(mpg, hp, wt) %>%
+  filter(hp > 100) %>%
+  head()
+
+```
+
+
+## Ejemplo de funciones con pandas (Python)
+
+- `pandas` es una librería fundamental en Python para la manipulación y análisis de datos. Ofrece estructuras de datos de alto rendimiento y fáciles de usar, como el DataFrame.
+- Para comenzar a usarla, primero necesitas tenerla instalada (generalmente viene con distribuciones de Python para ciencia de datos como Anaconda) y luego importarla en tu script o notebook.
+- Para importarla, usa `import pandas as pd`. El `as pd` es una convención estándar para referirse a pandas de forma abreviada.
+
+```{{python}}
+# importar la librería pandas
+import pandas as pd
+```
+
+##
+- `pandas` se basa en el objeto DataFrame, que es similar a una tabla de SQL o a un data frame en R.
+- Aquí algunas operaciones comunes análogas a dplyr:
+    - Selección de columnas: Se puede hacer usando la indexación con corchetes `[]` o el atributo `.loc`.
+    - Filtrado de filas: Se logra mediante la indexación booleana.
+
+## Uso de pandas
+
+```{pyodide}
+# Importar pandas
+import pandas as pd
+
+# Crear un DataFrame similar a mtcars para el ejemplo
+# (En un entorno completo de Python, podrías cargar mtcars desde un CSV o usar librerías como statsmodels)
+data = {
+    'nombre': ['Mazda RX4', 'Mazda RX4 Wag', 'Datsun 710', 'Hornet 4 Drive', 'Hornet Sportabout', 'Valiant'],
+    'mpg': [21.0, 21.0, 22.8, 21.4, 18.7, 18.1],
+    'cyl': [6, 6, 4, 6, 8, 6],
+    'hp': [110, 110, 93, 110, 175, 105],
+    'wt': [2.620, 2.875, 2.320, 3.215, 3.440, 3.460]
+}
+mtcars_py = pd.DataFrame(data)
+
+# Explorar el DataFrame
+print("DataFrame original:")
+print(mtcars_py.head())
+```
+
+##
+
+```{pyodide}
+# ...existing code...
+# (continuación del bloque anterior si es necesario, o nuevo bloque)
+# Si no se ejecutó en el bloque anterior:
+import pandas as pd
+data = {
+    'nombre': ['Mazda RX4', 'Mazda RX4 Wag', 'Datsun 710', 'Hornet 4 Drive', 'Hornet Sportabout', 'Valiant'],
+    'mpg': [21.0, 21.0, 22.8, 21.4, 18.7, 18.1],
+    'cyl': [6, 6, 4, 6, 8, 6],
+    'hp': [110, 110, 93, 110, 175, 105],
+    'wt': [2.620, 2.875, 2.320, 3.215, 3.440, 3.460]
+}
+mtcars_py = pd.DataFrame(data)
+# ---
+
+# 1. Seleccionar columnas específicas
+mtcars_py_selected = mtcars_py[['nombre', 'mpg', 'hp', 'wt']]
+print("\nDataFrame con columnas seleccionadas:")
+print(mtcars_py_selected.head())
+```
+
+##
+
+```{pyodide}
+# ...existing code...
+# (continuación del bloque anterior si es necesario, o nuevo bloque)
+# Si no se ejecutó en el bloque anterior:
+import pandas as pd
+data = {
+    'nombre': ['Mazda RX4', 'Mazda RX4 Wag', 'Datsun 710', 'Hornet 4 Drive', 'Hornet Sportabout', 'Valiant'],
+    'mpg': [21.0, 21.0, 22.8, 21.4, 18.7, 18.1],
+    'cyl': [6, 6, 4, 6, 8, 6],
+    'hp': [110, 110, 93, 110, 175, 105],
+    'wt': [2.620, 2.875, 2.320, 3.215, 3.440, 3.460]
+}
+mtcars_py = pd.DataFrame(data)
+# ---
+
+# 2. Filtrar filas: coches con más de 100 caballos de fuerza
+mtcars_py_filtered = mtcars_py[mtcars_py['hp'] > 100]
+print("\nDataFrame filtrado (hp > 100):")
+print(mtcars_py_filtered.head())
+```
+
+## Encadenamiento de métodos en pandas
+- En pandas, es común encadenar métodos para realizar múltiples operaciones de forma concisa, similar al operador `%>%` en R.
+- Cada método que devuelve un DataFrame puede ser seguido por otro método.
+
+```{pyodide}
+# ...existing code...
+# (continuación del bloque anterior si es necesario, o nuevo bloque)
+# Si no se ejecutó en el bloque anterior:
+import pandas as pd
+data = {
+    'nombre': ['Mazda RX4', 'Mazda RX4 Wag', 'Datsun 710', 'Hornet 4 Drive', 'Hornet Sportabout', 'Valiant'],
+    'mpg': [21.0, 21.0, 22.8, 21.4, 18.7, 18.1],
+    'cyl': [6, 6, 4, 6, 8, 6],
+    'hp': [110, 110, 93, 110, 175, 105],
+    'wt': [2.620, 2.875, 2.320, 3.215, 3.440, 3.460]
+}
+mtcars_py = pd.DataFrame(data)
+# ---
+
+# Encadenar operaciones en pandas
+resultado_encadenado = (mtcars_py
+                        .loc[:, ['nombre', 'mpg', 'hp', 'wt']]  # Selección de columnas
+                        .query('hp > 100')  # Filtrado de filas (alternativa a la indexación booleana)
+                        .head())
+
+print("\nDataFrame con operaciones encadenadas:")
+print(resultado_encadenado)
+```
+
+## Fin
