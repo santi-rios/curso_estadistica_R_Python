@@ -30,7 +30,6 @@ engine: knitr
 
 - Una de las características más poderosas de R y python es la capacidad de ampliar su funcionalidad mediante *paquetes/librerías/módulos*.
 - Estos *paquetes/librerías/módulos* contienen **funciones** que extienden las herramientas básicas del lenguaje. 
-  - Las funciones son bloques de código que realizan una tarea específica. En R, las funciones son fundamentales para realizar tareas de análisis de datos, cálculos estadísticos y visualizaciones.
 - La estructura básica de una función en R y python es la siguiente: 
   - la función es una palabra clave (*verbo*) seguida de una o varias instrucciones entre paréntesis `()`.
 
@@ -155,6 +154,14 @@ altura_cm <- 175
 cm_a_metros(altura_cm)
 ```
 
+- Ahora usa la función `cm_a_metros()` para convertir diferentes alturas a metros.
+
+```{webr}
+# Usar la función cm_a_metros() para convertir diferentes alturas a metros
+cm_a_metros(______) # 1.6 metros
+```
+
+
 ## Python
 
 La sintaxis para crear una función en Python es la siguiente:
@@ -179,6 +186,13 @@ altura_cm = 175
 cm_a_metros(altura_cm)
 ```
 
+- Ahora usa la función `cm_a_metros()` para convertir diferentes alturas a metros.
+
+```{pyodide}
+# Usar la función cm_a_metros() para convertir diferentes alturas a metros
+cm_a_metros(______) # 1.6 metros
+```
+
 :::
 
 ## Funciones de paquetes/librerías
@@ -201,6 +215,8 @@ cm_a_metros(altura_cm)
 ```{webr}
 # Instalar y cargar el paquete dplyr
 install.packages("dplyr")
+
+# Cargar el paquete dplyr para usar sus funciones
 library(dplyr)
 
 ```

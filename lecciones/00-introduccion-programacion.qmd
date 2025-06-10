@@ -53,7 +53,7 @@ R y Python son dos de los lenguajes de programación más populares en la cienci
 > Selecciona (en las pestañas R y/o Python) el lenguaje que más te interese o el que creas que se adapta mejor a tus necesidades. 
 > Ambos son excelentes opciones y aprender uno te facilitará aprender el otro en el futuro.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -136,7 +136,7 @@ Puedes realizar operaciones como suma, resta, multiplicación y división.
 
 ### Suma
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -162,7 +162,7 @@ Puedes realizar operaciones como suma, resta, multiplicación y división.
 
 Si realizas múltiples operaciones, verás múltiples salidas.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -191,7 +191,7 @@ print(30 + 7)
 
 ### Resta
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -221,7 +221,7 @@ print(30 + 7)
 
 Observa cómo en el siguiente bloque, si las operaciones están comentadas, no se produce ninguna salida.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 

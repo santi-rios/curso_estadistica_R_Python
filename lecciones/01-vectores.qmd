@@ -1,6 +1,6 @@
 ---
-title: "Empieza a programar con R"
-subtitle: "Familiarízate con R"
+title: "Vectores"
+# subtitle: "Familiarízate con R"
 author: "Cursos Orca"
 format: 
     live-html: 
@@ -29,7 +29,9 @@ engine: knitr
 - A diferencia de los vectores en matemáticas, los vectores pueden contener diferentes tipos de datos, como números, texto, o valores lógicos.
   - Por el momento, nos enfocaremos en `vectores numéricos`. 
 
-:::: {.panel-tabset}
+![Piensa en los vectores como variables con muchos valores](./figuras/vectores.jpg)
+
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -65,7 +67,7 @@ mis_numeros = [1, 2, 3, 4, 5]
 - Si ya corriste el código de arriba, podemos imprimir el vector `mis_numeros` para ver su contenido. 
 - Ten en cuenta que si no has corrido el código, o reinicias la página, no podrás imprimir el vector ya que no existe en la memoria de R/python (tendrías que volver a correr el código de arriba). 
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -91,7 +93,7 @@ print(mis_numeros)
   - Observa que en cualquier caso, separamos los elementos con comas `,`. 
 
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -121,7 +123,7 @@ print(frutas)
 - Podemos utilizar vectores para realizar operaciones en todos los elementos del vector. 
 - Por ejemplo, puedes sumar todos los elementos de un vector utilizando la función `sum()`.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -158,7 +160,7 @@ i, Crea un vector llamado `mis_numeros_ejercicio` con los valores `1, 2, 3, 4, y
 3. Calcula la media de los números en este vector como  `mis_numeros_suma/5`, guardando el resultado en la variable `mis_numeros_media`.
 4. Imprime el resultado de `mis_numeros_media`.
 
-:::: {.panel-tabset}
+:::: {.panel-tabset group="language"}
 
 ## R
 
@@ -246,6 +248,4 @@ print(mis_numeros_media)
 :::
 
 ::::
----
-
 
