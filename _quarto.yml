@@ -37,20 +37,7 @@ website:
             href:  https://code.com
           - text: Report a Bug
             href:  https://bugs.com
-  navbar:
-    background: primary
-    search: true
-    logo: images/logo.png
-    left:
-      - text: "Inicio"
-        href: index.qmd
-    # contents: 
-    #   - href: index.qmd
-    #     title: "Inicio"
-      - text: "Introducción"
-        href: sections/01-intro-r.qmd
-      - text: "Aprende a Programar"
-        href: sections/02-programacion.qmd
+
       # - section: "Introducción a Estadística"
       #   contents:
       #     - sections/02-estadistica.qmd
