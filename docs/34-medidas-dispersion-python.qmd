@@ -10,7 +10,11 @@ pyodide:
         - matplotlib
         - seaborn
         - scipy
+engine: knitr
 ---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+
 
 ## Medidas de Dispersión
 

@@ -15,7 +15,10 @@ pyodide:
         - seaborn
         - numpy
         - statsmodels
+engine: knitr
 ---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ## Introducción al ANOVA de Dos Vías
 

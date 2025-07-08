@@ -12,7 +12,10 @@ pyodide:
         - seaborn
 resources:
   - datos
+engine: knitr
 ---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ## Introducción
 

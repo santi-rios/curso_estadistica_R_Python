@@ -11,7 +11,10 @@ pyodide:
         - matplotlib
         - seaborn
         - numpy
+engine: knitr
 ---
+
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ## Ejercicio 1: Histograma de datos simulados
 
