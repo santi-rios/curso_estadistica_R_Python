@@ -8,22 +8,23 @@ author:
         city: CDMX
         url: orcaasesina.com
 format: 
-    live-html
+    live-html:
+      pyodide: 
+        packages: 
+          - pandas
+          - matplotlib
+          - seaborn
+          - numpy
+          - statsmodels
+          - nbformat
         # highlight-style: github
         # highlight-lines: true
         # theme: solar
 toc: true
 sidebar: false
-pyodide: 
-    packages: 
-        - pandas
-        - matplotlib
-        - seaborn
-        - numpy
-        - statsmodels
-        - nbformat
 ---
 
+{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
 
 ### Lección sobre ANCOVA: Análisis de Covarianza en Ciencias de la Salud y Biológicas
 
