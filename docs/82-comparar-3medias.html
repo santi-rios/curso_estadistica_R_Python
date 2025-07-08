@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Mtro. Santiago Ríos">
+
+<title>Comparing the means of more than two groups – Curso introductorio a R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-dark-2fef5ea3f8957b3e4ecc936fc74692ca.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-e84a5287704c3c48b2246d49c9744461.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="dark">
+<script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <div id="quarto-announcement" data-announcement-id="9616bfb5c47a60811ea96e08f2ae1bd0" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>Alert</strong> - this is some information that you should pay attention to</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#what-is-one-way-anova-test" id="toc-what-is-one-way-anova-test" class="nav-link active" data-scroll-target="#what-is-one-way-anova-test">What is one-way ANOVA test?</a></li>
+  <li><a href="#assumptions-of-anova-test" id="toc-assumptions-of-anova-test" class="nav-link" data-scroll-target="#assumptions-of-anova-test">Assumptions of ANOVA test</a></li>
+  <li><a href="#how-one-way-anova-test-works" id="toc-how-one-way-anova-test-works" class="nav-link" data-scroll-target="#how-one-way-anova-test-works">How one-way ANOVA test works?</a></li>
+  <li><a href="#visualize-your-data-and-compute-one-way-anova-in-r" id="toc-visualize-your-data-and-compute-one-way-anova-in-r" class="nav-link" data-scroll-target="#visualize-your-data-and-compute-one-way-anova-in-r">Visualize your data and compute one-way ANOVA in R</a></li>
+  <li><a href="#import-your-data-into-r" id="toc-import-your-data-into-r" class="nav-link" data-scroll-target="#import-your-data-into-r">Import your data into R</a></li>
+  <li><a href="#check-your-data" id="toc-check-your-data" class="nav-link" data-scroll-target="#check-your-data">Check your data</a></li>
+  <li><a href="#visualize-your-data" id="toc-visualize-your-data" class="nav-link" data-scroll-target="#visualize-your-data">Visualize your data</a></li>
+  <li><a href="#compute-one-way-anova-test" id="toc-compute-one-way-anova-test" class="nav-link" data-scroll-target="#compute-one-way-anova-test">Compute one-way ANOVA test</a></li>
+  <li><a href="#interpret-the-result-of-one-way-anova-tests" id="toc-interpret-the-result-of-one-way-anova-tests" class="nav-link" data-scroll-target="#interpret-the-result-of-one-way-anova-tests">Interpret the result of one-way ANOVA tests</a></li>
+  <li><a href="#multiple-pairwise-comparison-between-the-means-of-groups" id="toc-multiple-pairwise-comparison-between-the-means-of-groups" class="nav-link" data-scroll-target="#multiple-pairwise-comparison-between-the-means-of-groups">Multiple pairwise-comparison between the means of groups</a>
+  <ul class="collapse">
+  <li><a href="#tukey-multiple-pairwise-comparisons" id="toc-tukey-multiple-pairwise-comparisons" class="nav-link" data-scroll-target="#tukey-multiple-pairwise-comparisons">Tukey multiple pairwise-comparisons</a></li>
+  <li><a href="#multiple-comparisons-using-multcomp-package" id="toc-multiple-comparisons-using-multcomp-package" class="nav-link" data-scroll-target="#multiple-comparisons-using-multcomp-package">Multiple comparisons using multcomp package</a></li>
+  <li><a href="#pairewise-t-test" id="toc-pairewise-t-test" class="nav-link" data-scroll-target="#pairewise-t-test">Pairewise t-test</a></li>
+  </ul></li>
+  <li><a href="#check-anova-assumptions-test-validity" id="toc-check-anova-assumptions-test-validity" class="nav-link" data-scroll-target="#check-anova-assumptions-test-validity">Check ANOVA assumptions: test validity?</a>
+  <ul class="collapse">
+  <li><a href="#check-the-homogeneity-of-variance-assumption" id="toc-check-the-homogeneity-of-variance-assumption" class="nav-link" data-scroll-target="#check-the-homogeneity-of-variance-assumption">Check the homogeneity of variance assumption</a></li>
+  <li><a href="#relaxing-the-homogeneity-of-variance-assumption" id="toc-relaxing-the-homogeneity-of-variance-assumption" class="nav-link" data-scroll-target="#relaxing-the-homogeneity-of-variance-assumption">Relaxing the homogeneity of variance assumption</a></li>
+  <li><a href="#check-the-normality-assumption" id="toc-check-the-normality-assumption" class="nav-link" data-scroll-target="#check-the-normality-assumption">Check the normality assumption</a></li>
+  </ul></li>
+  <li><a href="#non-parametric-alternative-to-one-way-anova-test" id="toc-non-parametric-alternative-to-one-way-anova-test" class="nav-link" data-scroll-target="#non-parametric-alternative-to-one-way-anova-test">Non-parametric alternative to one-way ANOVA test</a></li>
+  <li><a href="#summary" id="toc-summary" class="nav-link" data-scroll-target="#summary">Summary</a></li>
+  <li><a href="#see-also" id="toc-see-also" class="nav-link" data-scroll-target="#see-also">See also</a></li>
+  <li><a href="#read-more" id="toc-read-more" class="nav-link" data-scroll-target="#read-more">Read more</a></li>
+  <li><a href="#infos" id="toc-infos" class="nav-link" data-scroll-target="#infos">Infos</a></li>
+  <li><a href="#recommended-for-you" id="toc-recommended-for-you" class="nav-link" data-scroll-target="#recommended-for-you">Recommended for You!</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/edit/main/docs/82-comparar-3medias.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Comparing the means of more than two groups</h1>
+<p class="subtitle lead">One-way ANOVA test</p>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Mtro. Santiago Ríos <a href="mailto:santiagoboo99@gmail.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="orcaasesina.com">
+            Cursos Orca
+            </a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<ul>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#what-is-one-way-anova-test">What is one-way ANOVA test?</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#assumptions-of-anova-test">Assumptions of ANOVA test</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#how-one-way-anova-test-works">How one-way ANOVA test works?</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#visualize-your-data-and-compute-one-way-anova-in-r">Visualize your data and compute one-way ANOVA in R</a>
+<ul>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#import-your-data-into-r">Import your data into R</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#check-your-data">Check your data</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#visualize-your-data">Visualize your data</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#compute-one-way-anova-test">Compute one-way ANOVA test</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#interpret-the-result-of-one-way-anova-tests">Interpret the result of one-way ANOVA tests</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#multiple-pairwise-comparison-between-the-means-of-groups">Multiple pairwise-comparison between the means of groups</a>
+<ul>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#tukey-multiple-pairwise-comparisons">Tukey multiple pairwise-comparisons</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#multiple-comparisons-using-multcomp-package">Multiple comparisons using multcomp package</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#pairewise-t-test">Pairewise t-test</a></li>
+</ul></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#check-anova-assumptions-test-validity">Check ANOVA assumptions: test validity?</a>
+<ul>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#check-the-homogeneity-of-variance-assumption">Check the homogeneity of variance assumption</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#relaxing-the-homogeneity-of-variance-assumption">Relaxing the homogeneity of variance assumption</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#check-the-normality-assumption">Check the normality assumption</a></li>
+</ul></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#non-parametric-alternative-to-one-way-anova-test">Non-parametric alternative to one-way ANOVA test</a></li>
+</ul></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#summary">Summary</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#see-also">See also</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#read-more">Read more</a></li>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r#infos">Infos</a></li>
+</ul>
+<section id="what-is-one-way-anova-test" class="level2">
+<h2 class="anchored" data-anchor-id="what-is-one-way-anova-test">What is one-way ANOVA test?</h2>
+<p>The <strong>one-way</strong> <strong>analysis of variance</strong> (<strong>ANOVA</strong>), also known as <em>one-factor ANOVA</em>, is an extension of <a href="https://www.sthda.com/english/wiki/unpaired-two-samples-t-test-in-r">independent two-samples <strong>t-test</strong></a> for comparing means in a situation where there are more than two groups. In <strong>one-way ANOVA</strong>, the data is organized into several groups base on one single grouping variable (also called <em>factor</em> variable). This tutorial describes the basic principle of the <strong>one-way</strong> <strong>ANOVA test</strong> and provides practical <strong>anova test examples</strong> in R software.</p>
+<p><strong>ANOVA test hypotheses</strong>:</p>
+<ul>
+<li>Null hypothesis: the means of the different groups are the same</li>
+<li>Alternative hypothesis: At least one sample mean is not equal to the others.</li>
+</ul>
+<p>Note that, if you have only two groups, you can use <a href="https://www.sthda.com/english/wiki/unpaired-two-samples-t-test-in-r">t-test</a>. In this case the F-test and the t-test are equivalent.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.sthda.com/sthda/RDoc/images/one-way-anova-test.png" class="img-fluid figure-img"></p>
+<figcaption>One-Way ANOVA Test</figcaption>
+</figure>
+</div>
+</section>
+<section id="assumptions-of-anova-test" class="level2">
+<h2 class="anchored" data-anchor-id="assumptions-of-anova-test">Assumptions of ANOVA test</h2>
+<p>Here we describe the requirement for <strong>ANOVA test</strong>. ANOVA test can be applied only when:</p>
+<ul>
+<li>The observations are obtained independently and randomly from the population defined by the factor levels</li>
+<li>The data of each factor level are normally distributed.</li>
+<li>These normal populations have a common variance. (<strong>Levene’s test</strong> can be used to check this.)</li>
+</ul>
+</section>
+<section id="how-one-way-anova-test-works" class="level2">
+<h2 class="anchored" data-anchor-id="how-one-way-anova-test-works">How one-way ANOVA test works?</h2>
+<p>Assume that we have 3 groups (A, B, C) to compare:</p>
+<ol type="1">
+<li>Compute the common variance, which is called <strong>variance within samples</strong> (Swithin2) or <strong>residual variance</strong>.</li>
+<li>Compute the variance between sample means as follow:
+<ul>
+<li>Compute the mean of each group</li>
+<li>Compute the <strong>variance between sample means</strong> (Sbetween2)</li>
+</ul></li>
+<li>Produce F-statistic as the ratio of Sbetween2/Swithin2.</li>
+</ol>
+<p>Note that, a lower ratio (ratio &lt; 1) indicates that there are no significant difference between the means of the samples being compared. However, a higher ratio implies that the variation among group means are significant.</p>
+</section>
+<section id="visualize-your-data-and-compute-one-way-anova-in-r" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-your-data-and-compute-one-way-anova-in-r">Visualize your data and compute one-way ANOVA in R</h2>
+</section>
+<section id="import-your-data-into-r" class="level2">
+<h2 class="anchored" data-anchor-id="import-your-data-into-r">Import your data into R</h2>
+<ol type="1">
+<li><p><strong>Prepare your data</strong> as specified here: <a href="https://www.sthda.com/english/wiki/best-practices-for-preparing-your-data-set-for-r">Best practices for preparing your data set for R</a></p></li>
+<li><p><strong>Save your data</strong> in an external .txt tab or .csv files</p></li>
+<li><p><strong>Import your data into R</strong> as follow:</p></li>
+</ol>
+<pre><code>&lt;span&gt;# If .txt tab file, use this&lt;/span&gt;
+&lt;span&gt;my_data&lt;/span&gt; &lt;span&gt;&amp;lt;-&lt;/span&gt; &lt;span&gt;read.delim&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;file.choose&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;# Or, if .csv file, use this&lt;/span&gt;
+&lt;span&gt;my_data&lt;/span&gt; &lt;span&gt;&amp;lt;-&lt;/span&gt; &lt;span&gt;read.csv&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;file.choose&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<p>Here, we’ll use the built-in R data set named <em>PlantGrowth</em>. It contains the weight of plants obtained under a control and two different treatment conditions.</p>
+<pre><code>&lt;span&gt;my_data&lt;/span&gt; &lt;span&gt;&amp;lt;-&lt;/span&gt; &lt;span&gt;PlantGrowth&lt;/span&gt;</code></pre>
+</section>
+<section id="check-your-data" class="level2">
+<h2 class="anchored" data-anchor-id="check-your-data">Check your data</h2>
+<p>To have an idea of what the data look like, we use the the function <strong>sample_n</strong>()[in <strong>dplyr</strong> package]. The <strong>sample_n</strong>() function randomly picks a few of the observations in the data frame to print out:</p>
+<pre><code>&lt;span&gt;# Show a random sample&lt;/span&gt;
+&lt;span&gt;set.seed&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;1234&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;dplyr&lt;/span&gt;&lt;span&gt;:&lt;/span&gt;&lt;span&gt;:&lt;/span&gt;&lt;span&gt;sample_n&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;, &lt;span&gt;10&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>   weight group
+19   4.32  trt1
+18   4.89  trt1
+29   5.80  trt2
+24   5.50  trt2
+17   6.03  trt1
+1    4.17  ctrl
+6    4.61  ctrl
+16   3.83  trt1
+12   4.17  trt1
+15   5.87  trt1</code></pre>
+<p>In R terminology, the column “group” is called factor and the different categories (“ctr”, “trt1”, “trt2”) are named factor levels. <strong>The levels are ordered alphabetically</strong>.</p>
+<pre><code>&lt;span&gt;# Show the levels&lt;/span&gt;
+&lt;span&gt;levels&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;group&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>[1] "ctrl" "trt1" "trt2"</code></pre>
+<p>If the levels are not automatically in the correct order, re-order them as follow:</p>
+<pre><code>&lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;group&lt;/span&gt; &lt;span&gt;&amp;lt;-&lt;/span&gt; &lt;span&gt;ordered&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;group&lt;/span&gt;,
+                         &lt;span&gt;levels&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;c&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"ctrl"&lt;/span&gt;, &lt;span&gt;"trt1"&lt;/span&gt;, &lt;span&gt;"trt2"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<p>It’s possible to compute summary statistics (mean and sd) by groups using the <strong>dplyr</strong> package.</p>
+<ul>
+<li>Compute summary statistics by groups - count, mean, sd:</li>
+</ul>
+<pre><code>&lt;span&gt;library&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;dplyr&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;group_by&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;, &lt;span&gt;group&lt;/span&gt;&lt;span&gt;)&lt;/span&gt; &lt;span&gt;%&amp;gt;%&lt;/span&gt;
+  &lt;span&gt;summarise&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;
+    &lt;span&gt;count&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;n&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;,
+    &lt;span&gt;mean&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;mean&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt;, &lt;span&gt;na.rm&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;TRUE&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;,
+    &lt;span&gt;sd&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;sd&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt;, &lt;span&gt;na.rm&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;TRUE&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+  &lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>Source: local data frame [3 x 4]
+   group count  mean        sd
+  (fctr) (int) (dbl)     (dbl)
+1   ctrl    10 5.032 0.5830914
+2   trt1    10 4.661 0.7936757
+3   trt2    10 5.526 0.4425733</code></pre>
+</section>
+<section id="visualize-your-data" class="level2">
+<h2 class="anchored" data-anchor-id="visualize-your-data">Visualize your data</h2>
+<ul>
+<li><p>To use R base graphs read this: <a href="https://www.sthda.com/english/wiki/r-base-graphs">R base graphs</a>. Here, we’ll use the <a href="https://www.sthda.com/english/wiki/ggpubr-r-package-ggplot2-based-publication-ready-plots"><strong>ggpubr</strong> R package</a> for an easy ggplot2-based data visualization.</p></li>
+<li><p>Install the latest version of ggpubr from GitHub as follow (recommended):</p></li>
+</ul>
+<pre><code>&lt;span&gt;# Install&lt;/span&gt;
+&lt;span&gt;if&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;!&lt;/span&gt;&lt;span&gt;require&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;devtools&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt; &lt;span&gt;install.packages&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"devtools"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;devtools&lt;/span&gt;&lt;span&gt;:&lt;/span&gt;&lt;span&gt;:&lt;/span&gt;&lt;span&gt;install_github&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"kassambara/ggpubr"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<ul>
+<li>Or, install from CRAN as follow:</li>
+</ul>
+<pre><code>&lt;span&gt;install.packages&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"ggpubr"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<ul>
+<li>Visualize your data with ggpubr:</li>
+</ul>
+<pre><code>&lt;span&gt;# Box plots&lt;/span&gt;
+&lt;span&gt;# ++++++++++++++++++++&lt;/span&gt;
+&lt;span&gt;# Plot weight by group and color by group&lt;/span&gt;
+&lt;span&gt;library&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"ggpubr"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;ggboxplot&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;, &lt;span&gt;x&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"group"&lt;/span&gt;, &lt;span&gt;y&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"weight"&lt;/span&gt;, 
+          &lt;span&gt;color&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"group"&lt;/span&gt;, &lt;span&gt;palette&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;c&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"#00AFBB"&lt;/span&gt;, &lt;span&gt;"#E7B800"&lt;/span&gt;, &lt;span&gt;"#FC4E07"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;,
+          &lt;span&gt;order&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;c&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"ctrl"&lt;/span&gt;, &lt;span&gt;"trt1"&lt;/span&gt;, &lt;span&gt;"trt2"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;,
+          &lt;span&gt;ylab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Weight"&lt;/span&gt;, &lt;span&gt;xlab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Treatment"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.sthda.com/sthda/RDoc/figure/statistics/one-way-anova-box-plot-1.png" class="img-fluid figure-img"></p>
+<figcaption>One-way ANOVA Test in R</figcaption>
+</figure>
+</div>
+<pre><code>&lt;span&gt;# Mean plots&lt;/span&gt;
+&lt;span&gt;# ++++++++++++++++++++&lt;/span&gt;
+&lt;span&gt;# Plot weight by group&lt;/span&gt;
+&lt;span&gt;# Add error bars: mean_se&lt;/span&gt;
+&lt;span&gt;# (other values include: mean_sd, mean_ci, median_iqr, ....)&lt;/span&gt;
+&lt;span&gt;library&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"ggpubr"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;ggline&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;, &lt;span&gt;x&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"group"&lt;/span&gt;, &lt;span&gt;y&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"weight"&lt;/span&gt;, 
+       &lt;span&gt;add&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;c&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"mean_se"&lt;/span&gt;, &lt;span&gt;"jitter"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;, 
+       &lt;span&gt;order&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;c&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"ctrl"&lt;/span&gt;, &lt;span&gt;"trt1"&lt;/span&gt;, &lt;span&gt;"trt2"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;,
+       &lt;span&gt;ylab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Weight"&lt;/span&gt;, &lt;span&gt;xlab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Treatment"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.sthda.com/sthda/RDoc/figure/statistics/one-way-anova-box-plot-2.png" class="img-fluid figure-img"></p>
+<figcaption>One-way ANOVA Test in R</figcaption>
+</figure>
+</div>
+<p>If you still want to use R base graphs, type the following scripts:</p>
+<pre><code>&lt;span&gt;# Box plot&lt;/span&gt;
+&lt;span&gt;boxplot&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt; &lt;span&gt;~&lt;/span&gt; &lt;span&gt;group&lt;/span&gt;, &lt;span&gt;data&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;my_data&lt;/span&gt;,
+        &lt;span&gt;xlab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Treatment"&lt;/span&gt;, &lt;span&gt;ylab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Weight"&lt;/span&gt;,
+        &lt;span&gt;frame&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;FALSE&lt;/span&gt;, &lt;span&gt;col&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;c&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"#00AFBB"&lt;/span&gt;, &lt;span&gt;"#E7B800"&lt;/span&gt;, &lt;span&gt;"#FC4E07"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;# plotmeans&lt;/span&gt;
+&lt;span&gt;library&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;"gplots"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;plotmeans&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt; &lt;span&gt;~&lt;/span&gt; &lt;span&gt;group&lt;/span&gt;, &lt;span&gt;data&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;my_data&lt;/span&gt;, &lt;span&gt;frame&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;FALSE&lt;/span&gt;,
+          &lt;span&gt;xlab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Treatment"&lt;/span&gt;, &lt;span&gt;ylab&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Weight"&lt;/span&gt;,
+          &lt;span&gt;main&lt;/span&gt;&lt;span&gt;=&lt;/span&gt;&lt;span&gt;"Mean Plot with 95% CI"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt; </code></pre>
+</section>
+<section id="compute-one-way-anova-test" class="level2">
+<h2 class="anchored" data-anchor-id="compute-one-way-anova-test">Compute one-way ANOVA test</h2>
+<p>We want to know if there is any significant difference between the average weights of plants in the 3 experimental conditions.</p>
+<p>The R function <strong>aov</strong>() can be used to answer to this question. The function <strong>summary.aov</strong>() is used to summarize the analysis of variance model.</p>
+<pre><code>&lt;span&gt;# Compute the analysis of variance&lt;/span&gt;
+&lt;span&gt;res.aov&lt;/span&gt; &lt;span&gt;&amp;lt;-&lt;/span&gt; &lt;span&gt;aov&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt; &lt;span&gt;~&lt;/span&gt; &lt;span&gt;group&lt;/span&gt;, &lt;span&gt;data&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;# Summary of the analysis&lt;/span&gt;
+&lt;span&gt;summary&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;res.aov&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>            Df Sum Sq Mean Sq F value Pr(&amp;gt;F)  
+group        2  3.766  1.8832   4.846 0.0159 *
+Residuals   27 10.492  0.3886                 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<p>The output includes the columns <em>F value</em> and <em>Pr(&gt;F)</em> corresponding to the p-value of the test.</p>
+</section>
+<section id="interpret-the-result-of-one-way-anova-tests" class="level2">
+<h2 class="anchored" data-anchor-id="interpret-the-result-of-one-way-anova-tests">Interpret the result of one-way ANOVA tests</h2>
+<p>As the p-value is less than the significance level 0.05, we can conclude that there are significant differences between the groups highlighted with “*” in the model summary.</p>
+</section>
+<section id="multiple-pairwise-comparison-between-the-means-of-groups" class="level2">
+<h2 class="anchored" data-anchor-id="multiple-pairwise-comparison-between-the-means-of-groups">Multiple pairwise-comparison between the means of groups</h2>
+<p>In one-way ANOVA test, a significant p-value indicates that some of the group means are different, but we don’t know which pairs of groups are different.</p>
+<p>It’s possible to perform multiple pairwise-comparison, to determine if the mean difference between specific pairs of group are statistically significant.</p>
+<section id="tukey-multiple-pairwise-comparisons" class="level3">
+<h3 class="anchored" data-anchor-id="tukey-multiple-pairwise-comparisons">Tukey multiple pairwise-comparisons</h3>
+<p>As the ANOVA test is significant, we can compute <strong>Tukey HSD</strong> (Tukey Honest Significant Differences, R function: <strong>TukeyHSD</strong>()) for performing multiple pairwise-comparison between the means of groups.</p>
+<p>The function <strong>TukeyHD</strong>() takes the fitted ANOVA as an argument.</p>
+<pre><code>&lt;span&gt;TukeyHSD&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;res.aov&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>  Tukey multiple comparisons of means
+    95% family-wise confidence level
+Fit: aov(formula = weight ~ group, data = my_data)
+$group
+            diff        lwr       upr     p adj
+trt1-ctrl -0.371 -1.0622161 0.3202161 0.3908711
+trt2-ctrl  0.494 -0.1972161 1.1852161 0.1979960
+trt2-trt1  0.865  0.1737839 1.5562161 0.0120064</code></pre>
+<ul>
+<li><strong>diff</strong>: difference between means of the two groups</li>
+<li><strong>lwr</strong>, <strong>upr</strong>: the lower and the upper end point of the confidence interval at 95% (default)</li>
+<li><strong>p adj</strong>: p-value after adjustment for the multiple comparisons.</li>
+</ul>
+<p>It can be seen from the output, that only the difference between trt2 and trt1 is significant with an adjusted p-value of 0.012.</p>
+</section>
+<section id="multiple-comparisons-using-multcomp-package" class="level3">
+<h3 class="anchored" data-anchor-id="multiple-comparisons-using-multcomp-package">Multiple comparisons using multcomp package</h3>
+<p>It’s possible to use the function <strong>glht</strong>() [in <strong>multcomp</strong> package] to perform multiple comparison procedures for an ANOVA. <strong>glht</strong> stands for general linear hypothesis tests. The simplified format is as follow:</p>
+<pre><code>&lt;span&gt;glht&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;model&lt;/span&gt;, &lt;span&gt;lincft&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<ul>
+<li><strong>model</strong>: a fitted model, for example an object returned by <strong>aov</strong>().</li>
+<li><strong>lincft</strong>(): a specification of the linear hypotheses to be tested. Multiple comparisons in ANOVA models are specified by objects returned from the function <strong>mcp</strong>().</li>
+</ul>
+<p>Use glht() to perform multiple pairwise-comparisons for a one-way ANOVA:</p>
+<pre><code>&lt;span&gt;library&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;multcomp&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;summary&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;glht&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;res.aov&lt;/span&gt;, &lt;span&gt;linfct&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;mcp&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;group&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"Tukey"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>
+     Simultaneous Tests for General Linear Hypotheses
+Multiple Comparisons of Means: Tukey Contrasts
+Fit: aov(formula = weight ~ group, data = my_data)
+Linear Hypotheses:
+                 Estimate Std. Error t value Pr(&amp;gt;|t|)  
+trt1 - ctrl == 0  -0.3710     0.2788  -1.331    0.391  
+trt2 - ctrl == 0   0.4940     0.2788   1.772    0.198  
+trt2 - trt1 == 0   0.8650     0.2788   3.103    0.012 *
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+(Adjusted p values reported -- single-step method)</code></pre>
+</section>
+<section id="pairewise-t-test" class="level3">
+<h3 class="anchored" data-anchor-id="pairewise-t-test">Pairewise t-test</h3>
+<p>The function <strong>pairewise.t.test</strong>() can be also used to calculate pairwise comparisons between group levels with corrections for multiple testing.</p>
+<pre><code>&lt;span&gt;pairwise.t.test&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt;, &lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;group&lt;/span&gt;,
+                 &lt;span&gt;p.adjust.method&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"BH"&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>
+    Pairwise comparisons using t tests with pooled SD 
+data:  my_data$weight and my_data$group 
+     ctrl  trt1 
+trt1 0.194 -    
+trt2 0.132 0.013
+P value adjustment method: BH </code></pre>
+<p>The result is a table of p-values for the pairwise comparisons. Here, the p-values have been adjusted by the Benjamini-Hochberg method.</p>
+</section>
+</section>
+<section id="check-anova-assumptions-test-validity" class="level2">
+<h2 class="anchored" data-anchor-id="check-anova-assumptions-test-validity">Check ANOVA assumptions: test validity?</h2>
+<p>The ANOVA test assumes that, the data are normally distributed and the variance across groups are homogeneous. We can check that with some diagnostic plots.</p>
+<section id="check-the-homogeneity-of-variance-assumption" class="level3">
+<h3 class="anchored" data-anchor-id="check-the-homogeneity-of-variance-assumption">Check the homogeneity of variance assumption</h3>
+<p>The <strong>residuals versus fits plot</strong> can be used to check the homogeneity of variances.</p>
+<p>In the plot below, there is no evident relationships between residuals and fitted values (the mean of each groups), which is good. So, we can assume the homogeneity of variances.</p>
+<pre><code>&lt;span&gt;# 1. Homogeneity of variances&lt;/span&gt;
+&lt;span&gt;plot&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;res.aov&lt;/span&gt;, &lt;span&gt;1&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.sthda.com/sthda/RDoc/figure/statistics/one-way-anova-residuals-vs-fits-1.png" class="img-fluid figure-img"></p>
+<figcaption>One-way ANOVA Test in R</figcaption>
+</figure>
+</div>
+<p>Points 17, 15, 4 are detected as outliers, which can severely affect normality and homogeneity of variance. It can be useful to remove outliers to meet the test assumptions.</p>
+<p>It’s also possible to use <strong>Bartlett’s test</strong> or <strong>Levene’s test</strong> to check the <strong>homogeneity of variances</strong>.</p>
+<p>We recommend <strong>Levene’s test</strong>, which is less sensitive to departures from normal distribution. The function <strong>leveneTest</strong>() [in <strong>car</strong> package] will be used:</p>
+<pre><code>&lt;span&gt;library&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;car&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;leveneTest&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt; &lt;span&gt;~&lt;/span&gt; &lt;span&gt;group&lt;/span&gt;, &lt;span&gt;data&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>Levene's Test for Homogeneity of Variance (center = median)
+      Df F value Pr(&amp;gt;F)
+group  2  1.1192 0.3412
+      27               </code></pre>
+<p>From the output above we can see that the p-value is not less than the significance level of 0.05. This means that there is no evidence to suggest that the variance across groups is statistically significantly different. Therefore, we can assume the homogeneity of variances in the different treatment groups.</p>
+</section>
+<section id="relaxing-the-homogeneity-of-variance-assumption" class="level3">
+<h3 class="anchored" data-anchor-id="relaxing-the-homogeneity-of-variance-assumption">Relaxing the homogeneity of variance assumption</h3>
+<p>The classical one-way ANOVA test requires an assumption of equal variances for all groups. In our example, the homogeneity of variance assumption turned out to be fine: the Levene test is not significant.</p>
+<p>How do we save our ANOVA test, in a situation where the homogeneity of variance assumption is violated?</p>
+<p>An alternative procedure (i.e.: <strong>Welch one-way test</strong>), that does not require that assumption have been implemented in the function <strong>oneway.test</strong>().</p>
+<ul>
+<li><strong>ANOVA test with no assumption of equal variances</strong></li>
+</ul>
+<pre><code>&lt;span&gt;oneway.test&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt; &lt;span&gt;~&lt;/span&gt; &lt;span&gt;group&lt;/span&gt;, &lt;span&gt;data&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<ul>
+<li><strong>Pairwise t-tests with no assumption of equal variances</strong></li>
+</ul>
+<pre><code>&lt;span&gt;pairwise.t.test&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt;, &lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;$&lt;/span&gt;&lt;span&gt;group&lt;/span&gt;,
+                 &lt;span&gt;p.adjust.method&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;"BH"&lt;/span&gt;, &lt;span&gt;pool.sd&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;FALSE&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+</section>
+<section id="check-the-normality-assumption" class="level3">
+<h3 class="anchored" data-anchor-id="check-the-normality-assumption">Check the normality assumption</h3>
+<p><strong>Normality plot of residuals</strong>. In the plot below, the quantiles of the residuals are plotted against the quantiles of the normal distribution. A 45-degree reference line is also plotted.</p>
+<p>The normal probability plot of residuals is used to check the assumption that the residuals are normally distributed. It should approximately follow a straight line.</p>
+<pre><code>&lt;span&gt;# 2. Normality&lt;/span&gt;
+&lt;span&gt;plot&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;res.aov&lt;/span&gt;, &lt;span&gt;2&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="https://www.sthda.com/sthda/RDoc/figure/statistics/one-way-anova-normality-plot-1.png" class="img-fluid figure-img"></p>
+<figcaption>One-way ANOVA Test in R</figcaption>
+</figure>
+</div>
+<p>As all the points fall approximately along this reference line, we can assume normality.</p>
+<p>The conclusion above, is supported by the <strong>Shapiro-Wilk test</strong> on the ANOVA residuals (W = 0.96, p = 0.6) which finds no indication that normality is violated.</p>
+<pre><code>&lt;span&gt;# Extract the residuals&lt;/span&gt;
+&lt;span&gt;aov_residuals&lt;/span&gt; &lt;span&gt;&amp;lt;-&lt;/span&gt; &lt;span&gt;residuals&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;object&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;res.aov&lt;/span&gt; &lt;span&gt;)&lt;/span&gt;
+&lt;span&gt;# Run Shapiro-Wilk test&lt;/span&gt;
+&lt;span&gt;shapiro.test&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;x&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;aov_residuals&lt;/span&gt; &lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>
+    Shapiro-Wilk normality test
+data:  aov_residuals
+W = 0.96607, p-value = 0.4379</code></pre>
+</section>
+</section>
+<section id="non-parametric-alternative-to-one-way-anova-test" class="level2">
+<h2 class="anchored" data-anchor-id="non-parametric-alternative-to-one-way-anova-test">Non-parametric alternative to one-way ANOVA test</h2>
+<p>Note that, a non-parametric alternative to one-way ANOVA is <strong>Kruskal-Wallis</strong> <strong>rank sum test</strong>, which can be used when ANNOVA assumptions are not met.</p>
+<pre><code>&lt;span&gt;kruskal.test&lt;/span&gt;&lt;span&gt;(&lt;/span&gt;&lt;span&gt;weight&lt;/span&gt; &lt;span&gt;~&lt;/span&gt; &lt;span&gt;group&lt;/span&gt;, &lt;span&gt;data&lt;/span&gt; &lt;span&gt;=&lt;/span&gt; &lt;span&gt;my_data&lt;/span&gt;&lt;span&gt;)&lt;/span&gt;</code></pre>
+<pre><code>
+    Kruskal-Wallis rank sum test
+data:  weight by group
+Kruskal-Wallis chi-squared = 7.9882, df = 2, p-value = 0.01842</code></pre>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<ol type="1">
+<li>Import your data from a .txt tab file: <em>my_data &lt;- read.delim(file.choose())</em>. Here, we used <em>my_data &lt;- PlantGrowth</em>.</li>
+<li>Visualize your data: <em>ggpubr::ggboxplot(my_data, x = “group”, y = “weight”, color = “group”)</em></li>
+<li>Compute one-way ANOVA test: <em>summary(aov(weight ~ group, data = my_data))</em></li>
+<li>Tukey multiple pairwise-comparisons: <em>TukeyHSD(res.aov)</em></li>
+</ol>
+</section>
+<section id="see-also" class="level2">
+<h2 class="anchored" data-anchor-id="see-also">See also</h2>
+<ul>
+<li>Analysis of variance (ANOVA, parametric):
+<ul>
+<li><a href="https://www.sthda.com/english/wiki/one-way-anova-test-in-r">One-Way ANOVA Test in R</a></li>
+<li><a href="https://www.sthda.com/english/wiki/two-way-anova-test-in-r">Two-Way ANOVA Test in R</a></li>
+<li><a href="https://www.sthda.com/english/wiki/manova-test-in-r-multivariate-analysis-of-variance">MANOVA Test in R: Multivariate Analysis of Variance</a></li>
+</ul></li>
+<li><a href="https://www.sthda.com/english/wiki/kruskal-wallis-test-in-r">Kruskal-Wallis Test in R (non parametric alternative to one-way ANOVA)</a></li>
+</ul>
+</section>
+<section id="read-more" class="level2">
+<h2 class="anchored" data-anchor-id="read-more">Read more</h2>
+<ul>
+<li>(Quick-R: ANOVA/MANOVA)[<a href="http://www.statmethods.net/stats/anova.html">http://www.statmethods.net/stats/anova.html</a>]</li>
+<li>(Quick-R: (M)ANOVA Assumptions)[<a href="http://www.statmethods.net/stats/anovaAssumptions.html">http://www.statmethods.net/stats/anovaAssumptions.html</a>]</li>
+<li>(R and Analysis of Variance)[<a href="http://personality-project.org/r/r.guide/r.anova.html">http://personality-project.org/r/r.guide/r.anova.html</a></li>
+</ul>
+</section>
+<section id="infos" class="level2">
+<h2 class="anchored" data-anchor-id="infos">Infos</h2>
+<p>This analysis has been performed using <strong>R software</strong> (ver. 3.2.4).</p>
+<p>Enjoyed this article? I’d be very grateful if you’d help it spread by emailing it to a friend, or sharing it on Twitter, Facebook or Linked In.</p>
+<p>Show me some love with the like buttons below… Thank you and please don’t forget to share and comment below!!</p>
+</section>
+<section id="recommended-for-you" class="level2">
+<h2 class="anchored" data-anchor-id="recommended-for-you">Recommended for You!</h2>
+<p>&nbsp;<strong>Get involved :</strong><br>
+&nbsp; Click to <strong>follow us</strong> on <a href="https://www.facebook.com/1570814953153056">Facebook</a> : <a href="https://www.facebook.com/1570814953153056"></a>&nbsp;&nbsp;<br>
+&nbsp; <strong>Comment this article</strong> by clicking on “Discussion” button (top-right position of this page)</p>
+
+
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../docs";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/santi-rios\.github\.io\/curso_estadistica_R_Python\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2021, Norah Jones</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/edit/main/docs/82-comparar-3medias.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

@@ -1,0 +1,1 @@
+Sitemap: https://santi-rios.github.io/curso_estadistica_R_Python/sitemap.xml

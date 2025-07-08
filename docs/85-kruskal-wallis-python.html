@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Traducido y adaptado de R por un asistente de IA">
+
+<title>Test de Kruskal-Wallis en Python – Curso introductorio a R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-5e0dcd0db86b1de61a343f58666da61c.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+
+</head>
+
+<body class="nav-sidebar docked fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item">
+      Curso introductorio a R
+      </li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+  <div id="quarto-announcement" data-announcement-id="9616bfb5c47a60811ea96e08f2ae1bd0" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>Alert</strong> - this is some information that you should pay attention to</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Curso introductorio a R</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://twitter.com" title="" class="quarto-navigation-tool px-1" aria-label=""><i class="bi bi-twitter"></i></a>
+    <div class="dropdown">
+      <a href="" title="" id="quarto-navigation-tool-dropdown-0" class="quarto-navigation-tool dropdown-toggle px-1" data-bs-toggle="dropdown" aria-expanded="false" role="link" aria-label=""><i class="bi bi-github"></i></a>
+      <ul class="dropdown-menu" aria-labelledby="quarto-navigation-tool-dropdown-0">
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://code.com">
+            Source Code
+            </a>
+          </li>
+          <li>
+            <a class="dropdown-item sidebar-tools-main-item" href="https://bugs.com">
+            Report a Bug
+            </a>
+          </li>
+      </ul>
+    </div>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Test de Kruskal-Wallis en Python</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Traducido y adaptado de R por un asistente de IA </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="qué-es-el-test-de-kruskal-wallis" class="level2">
+<h2 class="anchored" data-anchor-id="qué-es-el-test-de-kruskal-wallis">¿Qué es el Test de Kruskal-Wallis?</h2>
+<p>El test de Kruskal-Wallis es una <strong>prueba no paramétrica</strong> utilizada para determinar si hay diferencias significativas entre <strong>tres o más grupos</strong> en una variable continua. Es la alternativa no paramétrica al ANOVA de una vía cuando:</p>
+<ul>
+<li>Los datos no siguen una distribución normal</li>
+<li>Las varianzas no son homogéneas entre grupos</li>
+<li>Los tamaños de muestra son pequeños</li>
+</ul>
+<section id="características-del-test" class="level3">
+<h3 class="anchored" data-anchor-id="características-del-test">Características del Test</h3>
+<ul>
+<li><strong>No asume normalidad</strong>: Funciona con distribuciones asimétricas</li>
+<li><strong>Basado en rangos</strong>: Utiliza los rangos de los datos en lugar de los valores originales</li>
+<li><strong>Robusto</strong>: Menos sensible a valores atípicos que el ANOVA</li>
+</ul>
+</section>
+</section>
+<section id="hipótesis-del-test-de-kruskal-wallis" class="level2">
+<h2 class="anchored" data-anchor-id="hipótesis-del-test-de-kruskal-wallis">Hipótesis del Test de Kruskal-Wallis</h2>
+<ul>
+<li><strong>H₀</strong>: Las medianas de todos los grupos son iguales</li>
+<li><strong>H₁</strong>: Al menos una de las medianas es diferente</li>
+</ul>
+<p><em>Nota</em>: Técnicamente, el test compara las distribuciones de los rangos, pero comúnmente se interpreta en términos de medianas.</p>
+</section>
+<section id="ejemplo-práctico-crecimiento-dental-en-cobayas" class="level2">
+<h2 class="anchored" data-anchor-id="ejemplo-práctico-crecimiento-dental-en-cobayas">Ejemplo Práctico: Crecimiento Dental en Cobayas</h2>
+<p>Usaremos un conjunto de datos que evalúa el efecto de la vitamina C en el crecimiento dental en cobayas, con tres niveles de dosis: 0.5, 1.0 y 2.0 mg/día.</p>
+<section id="cargar-librerías-y-datos" class="level3">
+<h3 class="anchored" data-anchor-id="cargar-librerías-y-datos">1. Cargar librerías y datos</h3>
+<div class="cell">
+<div>
+<div id="pyodide-1" class="exercise-cell">
+
+</div>
+<script type="pyodide-1-contents">
+eyJhdHRyIjp7ImVjaG8iOmZhbHNlLCJlZGl0IjpmYWxzZSwiZXZhbCI6dHJ1ZSwib3V0cHV0IjpmYWxzZX0sImNvZGUiOiJpbXBvcnQgbWljcm9waXBcbmF3YWl0IG1pY3JvcGlwLmluc3RhbGwoWydwYW5kYXMnLCAnbnVtcHknLCAnc2NpcHknLCAnc2VhYm9ybicsICdtYXRwbG90bGliJywgJ3BpbmdvdWluJ10pIn0=
+</script>
+</div>
+</div>
+<div class="cell">
+<div>
+<div id="pyodide-2" class="exercise-cell">
+
+</div>
+<script type="pyodide-2-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiaW1wb3J0IHBhbmRhcyBhcyBwZFxuaW1wb3J0IG51bXB5IGFzIG5wXG5pbXBvcnQgc2NpcHkuc3RhdHMgYXMgc3RhdHNcbmltcG9ydCBzZWFib3JuIGFzIHNuc1xuaW1wb3J0IG1hdHBsb3RsaWIucHlwbG90IGFzIHBsdFxuaW1wb3J0IHBpbmdvdWluIGFzIHBnXG5mcm9tIHNjaXB5LnN0YXRzIGltcG9ydCBrcnVza2FsXG5mcm9tIHNjaXB5IGltcG9ydCBzdGF0cyBhcyBzY2lweV9zdGF0c1xuXG4jIENhcmdhciBkYXRvcyBkZSBUb290aEdyb3d0aCAoc2ltaWxhciBhIFIpXG4jIFNpbXVsYW1vcyBkYXRvcyBzaW1pbGFyZXMgYWwgZGF0YXNldCBUb290aEdyb3d0aCBkZSBSXG5ucC5yYW5kb20uc2VlZCg0MilcblxuIyBDcmVhciBkYXRvcyBzaW11bGFkb3MgYmFzYWRvcyBlbiBUb290aEdyb3d0aFxuZG9zZV8wNSA9IG5wLnJhbmRvbS5ub3JtYWwoMTAsIDQsIDIwKSAgIyBEb3NpcyAwLjVcbmRvc2VfMTAgPSBucC5yYW5kb20ubm9ybWFsKDE5LCA0LCAyMCkgICMgRG9zaXMgMS4wICBcbmRvc2VfMjAgPSBucC5yYW5kb20ubm9ybWFsKDI2LCA0LCAyMCkgICMgRG9zaXMgMi4wXG5cbiMgQ3JlYXIgRGF0YUZyYW1lXG5teV9kYXRhID0gcGQuRGF0YUZyYW1lKHtcbiAgICAnbGVuJzogbnAuY29uY2F0ZW5hdGUoW2Rvc2VfMDUsIGRvc2VfMTAsIGRvc2VfMjBdKSxcbiAgICAnZG9zZSc6IFsnRDAuNSddICogMjAgKyBbJ0QxJ10gKiAyMCArIFsnRDInXSAqIDIwXG59KVxuXG4jIENvbnZlcnRpciBkb3NlIGEgY2F0ZWfDs3JpY2EgY29uIG9yZGVuXG5teV9kYXRhWydkb3NlJ10gPSBwZC5DYXRlZ29yaWNhbChteV9kYXRhWydkb3NlJ10sIFxuICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBjYXRlZ29yaWVzPVsnRDAuNScsICdEMScsICdEMiddLCBcbiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgb3JkZXJlZD1UcnVlKVxuXG5wcmludChcIlByaW1lcmFzIGZpbGFzIGRlbCBkYXRhc2V0OlwiKVxucHJpbnQobXlfZGF0YS5oZWFkKDEwKSlcbnByaW50KGZcIlxcbkVzdHJ1Y3R1cmEgZGVsIGRhdGFzZXQ6XCIpXG5wcmludChmXCJGaWxhczoge2xlbihteV9kYXRhKX1cIilcbnByaW50KGZcIkNvbHVtbmFzOiB7bGlzdChteV9kYXRhLmNvbHVtbnMpfVwiKVxucHJpbnQoZlwiXFxuTml2ZWxlcyBkZSBkb3Npczoge215X2RhdGFbJ2Rvc2UnXS5jYXQuY2F0ZWdvcmllcy50b2xpc3QoKX1cIikifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="estadísticas-descriptivas" class="level3">
+<h3 class="anchored" data-anchor-id="estadísticas-descriptivas">2. Estadísticas Descriptivas</h3>
+<div class="cell">
+<div>
+<div id="pyodide-3" class="exercise-cell">
+
+</div>
+<script type="pyodide-3-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBFc3RhZMOtc3RpY2FzIHBvciBncnVwb1xuZXN0YWRpc3RpY2FzID0gbXlfZGF0YS5ncm91cGJ5KCdkb3NlJylbJ2xlbiddLmFnZyhbXG4gICAgKCdjb3VudCcsICdjb3VudCcpLFxuICAgICgnbWVkaWEnLCAnbWVhbicpLFxuICAgICgnbWVkaWFuYScsICdtZWRpYW4nKSxcbiAgICAoJ2Rlc3Zfc3RkJywgJ3N0ZCcpLFxuICAgICgnbWluJywgJ21pbicpLFxuICAgICgnbWF4JywgJ21heCcpXG5dKS5yb3VuZCgzKVxuXG5wcmludChcIkVzdGFkw61zdGljYXMgZGVzY3JpcHRpdmFzIHBvciBncnVwbzpcIilcbnByaW50KGVzdGFkaXN0aWNhcykifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="visualización-de-los-datos" class="level3">
+<h3 class="anchored" data-anchor-id="visualización-de-los-datos">3. Visualización de los Datos</h3>
+<div class="cell">
+<div>
+<div id="pyodide-4" class="exercise-cell">
+
+</div>
+<script type="pyodide-4-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBDb25maWd1cmFyIGVsIGVzdGlsbyBkZSBsb3MgZ3LDoWZpY29zXG5wbHQuc3R5bGUudXNlKCdkZWZhdWx0JylcbmZpZywgYXhlcyA9IHBsdC5zdWJwbG90cygxLCAyLCBmaWdzaXplPSgxMiwgNSkpXG5cbiMgQm94cGxvdFxuc25zLmJveHBsb3QoeD0nZG9zZScsIHk9J2xlbicsIGRhdGE9bXlfZGF0YSwgXG4gICAgICAgICAgICBwYWxldHRlPVsnIzFmNzdiNCcsICcjZmY3ZjBlJywgJyMyY2EwMmMnXSwgYXg9YXhlc1swXSlcbmF4ZXNbMF0uc2V0X3RpdGxlKCdEaXN0cmlidWNpw7NuIGRlIGxhIGxvbmdpdHVkIGRlbCBkaWVudGUgcG9yIGRvc2lzJylcbmF4ZXNbMF0uc2V0X3hsYWJlbCgnRG9zaXMnKVxuYXhlc1swXS5zZXRfeWxhYmVsKCdMb25naXR1ZCBkZWwgZGllbnRlJylcblxuIyBWaW9saW4gcGxvdCBwYXJhIG1vc3RyYXIgbWVqb3IgbGEgZGlzdHJpYnVjacOzblxuc25zLnZpb2xpbnBsb3QoeD0nZG9zZScsIHk9J2xlbicsIGRhdGE9bXlfZGF0YSwgXG4gICAgICAgICAgICAgICBwYWxldHRlPVsnIzFmNzdiNCcsICcjZmY3ZjBlJywgJyMyY2EwMmMnXSwgYXg9YXhlc1sxXSlcbmF4ZXNbMV0uc2V0X3RpdGxlKCdEaXN0cmlidWNpw7NuIGRldGFsbGFkYSBwb3IgZG9zaXMnKVxuYXhlc1sxXS5zZXRfeGxhYmVsKCdEb3NpcycpXG5heGVzWzFdLnNldF95bGFiZWwoJ0xvbmdpdHVkIGRlbCBkaWVudGUnKVxuXG5wbHQudGlnaHRfbGF5b3V0KClcbnBsdC5zaG93KCkifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="verificación-de-supuestos" class="level3">
+<h3 class="anchored" data-anchor-id="verificación-de-supuestos">4. Verificación de Supuestos</h3>
+<p>Antes de decidir entre ANOVA paramétrico y Kruskal-Wallis, verificaremos los supuestos:</p>
+<div class="cell">
+<div>
+<div id="pyodide-5" class="exercise-cell">
+
+</div>
+<script type="pyodide-5-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBQcnVlYmEgZGUgbm9ybWFsaWRhZCBwb3IgZ3J1cG8gKFNoYXBpcm8tV2lsaylcbnByaW50KFwiUHJ1ZWJhcyBkZSBub3JtYWxpZGFkIHBvciBncnVwbyAoU2hhcGlyby1XaWxrKTpcIilcbnByaW50KFwiSOKCgDogTG9zIGRhdG9zIHNpZ3VlbiB1bmEgZGlzdHJpYnVjacOzbiBub3JtYWxcIilcbnByaW50KFwiSOKCgTogTG9zIGRhdG9zIG5vIHNpZ3VlbiB1bmEgZGlzdHJpYnVjacOzbiBub3JtYWxcXG5cIilcblxuZm9yIGRvc2UgaW4gbXlfZGF0YVsnZG9zZSddLmNhdC5jYXRlZ29yaWVzOlxuICAgIGdydXBvX2RhdGEgPSBteV9kYXRhW215X2RhdGFbJ2Rvc2UnXSA9PSBkb3NlXVsnbGVuJ11cbiAgICBzdGF0LCBwX3ZhbHVlID0gc3RhdHMuc2hhcGlybyhncnVwb19kYXRhKVxuICAgIHByaW50KGZcIkdydXBvIHtkb3NlfTpcIilcbiAgICBwcmludChmXCIgIEVzdGFkw61zdGljbzoge3N0YXQ6LjRmfVwiKVxuICAgIHByaW50KGZcIiAgcC12YWxvcjoge3BfdmFsdWU6LjRmfVwiKVxuICAgIHByaW50KGZcIiAgeyfinJMgTm9ybWFsJyBpZiBwX3ZhbHVlID4gMC4wNSBlbHNlICfinJcgTm8gbm9ybWFsJ30gKM6xID0gMC4wNSlcXG5cIikifQ==
+</script>
+</div>
+</div>
+<div class="cell">
+<div>
+<div id="pyodide-6" class="exercise-cell">
+
+</div>
+<script type="pyodide-6-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBQcnVlYmEgZGUgaG9tb2dlbmVpZGFkIGRlIHZhcmlhbnphcyAoTGV2ZW5lKVxuZ3J1cG9zID0gW215X2RhdGFbbXlfZGF0YVsnZG9zZSddID09IGRvc2VdWydsZW4nXSBmb3IgZG9zZSBpbiBteV9kYXRhWydkb3NlJ10uY2F0LmNhdGVnb3JpZXNdXG5zdGF0X2xldmVuZSwgcF9sZXZlbmUgPSBzdGF0cy5sZXZlbmUoKmdydXBvcylcblxucHJpbnQoXCJQcnVlYmEgZGUgaG9tb2dlbmVpZGFkIGRlIHZhcmlhbnphcyAoTGV2ZW5lKTpcIilcbnByaW50KFwiSOKCgDogTGFzIHZhcmlhbnphcyBzb24gaWd1YWxlcyBlbiB0b2RvcyBsb3MgZ3J1cG9zXCIpXG5wcmludChcIkjigoE6IEFsIG1lbm9zIHVuYSB2YXJpYW56YSBlcyBkaWZlcmVudGVcIilcbnByaW50KGZcIkVzdGFkw61zdGljbzoge3N0YXRfbGV2ZW5lOi40Zn1cIilcbnByaW50KGZcInAtdmFsb3I6IHtwX2xldmVuZTouNGZ9XCIpXG5wcmludChmXCJ7J+KckyBWYXJpYW56YXMgaG9tb2fDqW5lYXMnIGlmIHBfbGV2ZW5lID4gMC4wNSBlbHNlICfinJcgVmFyaWFuemFzIGhldGVyb2fDqW5lYXMnfSAozrEgPSAwLjA1KVwiKSJ9
+</script>
+</div>
+</div>
+</section>
+<section id="test-de-kruskal-wallis" class="level3">
+<h3 class="anchored" data-anchor-id="test-de-kruskal-wallis">5. Test de Kruskal-Wallis</h3>
+<div class="cell">
+<div>
+<div id="pyodide-7" class="exercise-cell">
+
+</div>
+<script type="pyodide-7-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBSZWFsaXphciBlbCB0ZXN0IGRlIEtydXNrYWwtV2FsbGlzXG4jIFNlcGFyYXIgbG9zIGRhdG9zIHBvciBncnVwb1xuZ3J1cG9fMDUgPSBteV9kYXRhW215X2RhdGFbJ2Rvc2UnXSA9PSAnRDAuNSddWydsZW4nXVxuZ3J1cG9fMSA9IG15X2RhdGFbbXlfZGF0YVsnZG9zZSddID09ICdEMSddWydsZW4nXVxuZ3J1cG9fMiA9IG15X2RhdGFbbXlfZGF0YVsnZG9zZSddID09ICdEMiddWydsZW4nXVxuXG4jIEFwbGljYXIgZWwgdGVzdFxuaF9zdGF0LCBwX3ZhbHVlID0ga3J1c2thbChncnVwb18wNSwgZ3J1cG9fMSwgZ3J1cG9fMilcblxucHJpbnQoXCJUZXN0IGRlIEtydXNrYWwtV2FsbGlzOlwiKVxucHJpbnQoXCI9XCIqNDApXG5wcmludChcIkjigoA6IExhcyBtZWRpYW5hcyBkZSB0b2RvcyBsb3MgZ3J1cG9zIHNvbiBpZ3VhbGVzXCIpXG5wcmludChcIkjigoE6IEFsIG1lbm9zIHVuYSBtZWRpYW5hIGVzIGRpZmVyZW50ZVwiKVxucHJpbnQoZlwiXFxuRXN0YWTDrXN0aWNvIEg6IHtoX3N0YXQ6LjRmfVwiKVxucHJpbnQoZlwicC12YWxvcjoge3BfdmFsdWU6LjRmfVwiKVxucHJpbnQoZlwiR3JhZG9zIGRlIGxpYmVydGFkOiB7bGVuKG15X2RhdGFbJ2Rvc2UnXS5jYXQuY2F0ZWdvcmllcykgLSAxfVwiKVxuXG4jIEludGVycHJldGFjacOzblxuYWxwaGEgPSAwLjA1XG5pZiBwX3ZhbHVlIDwgYWxwaGE6XG4gICAgcHJpbnQoZlwiXFxu4pyTIENPTkNMVVNJw5NOOlwiKVxuICAgIHByaW50KGZcInAtdmFsb3IgKHtwX3ZhbHVlOi40Zn0pIDwgzrEgKHthbHBoYX0pXCIpXG4gICAgcHJpbnQoXCJSZWNoYXphbW9zIEjigoA6IEhheSBldmlkZW5jaWEgc2lnbmlmaWNhdGl2YSBkZSBkaWZlcmVuY2lhcyBlbnRyZSBncnVwb3MuXCIpXG5lbHNlOlxuICAgIHByaW50KGZcIlxcbuKclyBDT05DTFVTScOTTjpcIilcbiAgICBwcmludChmXCJwLXZhbG9yICh7cF92YWx1ZTouNGZ9KSDiiaUgzrEgKHthbHBoYX0pXCIpXG4gICAgcHJpbnQoXCJObyByZWNoYXphbW9zIEjigoA6IE5vIGhheSBldmlkZW5jaWEgc3VmaWNpZW50ZSBkZSBkaWZlcmVuY2lhcyBlbnRyZSBncnVwb3MuXCIpIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="comparaciones-post-hoc" class="level3">
+<h3 class="anchored" data-anchor-id="comparaciones-post-hoc">6. Comparaciones Post-Hoc</h3>
+<p>Si el test de Kruskal-Wallis es significativo, realizamos comparaciones por pares:</p>
+<div class="cell">
+<div>
+<div id="pyodide-8" class="exercise-cell">
+
+</div>
+<script type="pyodide-8-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBDb21wYXJhY2lvbmVzIHBvc3QtaG9jIGNvbiBjb3JyZWNjacOzbiBkZSBCb25mZXJyb25pXG5mcm9tIHNjaXB5LnN0YXRzIGltcG9ydCBtYW5ud2hpdG5leXVcbmZyb20gaXRlcnRvb2xzIGltcG9ydCBjb21iaW5hdGlvbnNcblxuaWYgcF92YWx1ZSA8IDAuMDU6XG4gICAgcHJpbnQoXCJcXG5Db21wYXJhY2lvbmVzIHBvc3QtaG9jIChNYW5uLVdoaXRuZXkgVSBjb24gY29ycmVjY2nDs24gZGUgQm9uZmVycm9uaSk6XCIpXG4gICAgcHJpbnQoXCI9XCIqNjApXG4gICAgXG4gICAgZ3J1cG9zX2RhdG9zID0ge1xuICAgICAgICAnRDAuNSc6IGdydXBvXzA1LFxuICAgICAgICAnRDEnOiBncnVwb18xLCBcbiAgICAgICAgJ0QyJzogZ3J1cG9fMlxuICAgIH1cbiAgICBcbiAgICAjIFRvZGFzIGxhcyBjb21wYXJhY2lvbmVzIHBvciBwYXJlc1xuICAgIGNvbXBhcmFjaW9uZXMgPSBsaXN0KGNvbWJpbmF0aW9ucyhncnVwb3NfZGF0b3Mua2V5cygpLCAyKSlcbiAgICBuX2NvbXBhcmFjaW9uZXMgPSBsZW4oY29tcGFyYWNpb25lcylcbiAgICBhbHBoYV9jb3JyZWdpZG8gPSAwLjA1IC8gbl9jb21wYXJhY2lvbmVzICAjIENvcnJlY2Npw7NuIGRlIEJvbmZlcnJvbmlcbiAgICBcbiAgICBwcmludChmXCJOw7ptZXJvIGRlIGNvbXBhcmFjaW9uZXM6IHtuX2NvbXBhcmFjaW9uZXN9XCIpXG4gICAgcHJpbnQoZlwizrEgY29ycmVnaWRvIChCb25mZXJyb25pKToge2FscGhhX2NvcnJlZ2lkbzouNGZ9XFxuXCIpXG4gICAgXG4gICAgZm9yIGdydXBvMSwgZ3J1cG8yIGluIGNvbXBhcmFjaW9uZXM6XG4gICAgICAgIHN0YXQsIHBfdmFsID0gbWFubndoaXRuZXl1KGdydXBvc19kYXRvc1tncnVwbzFdLCBncnVwb3NfZGF0b3NbZ3J1cG8yXSwgXG4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYWx0ZXJuYXRpdmU9J3R3by1zaWRlZCcpXG4gICAgICAgIFxuICAgICAgICBzaWduaWZpY2F0aXZvID0gXCLinJMgU2lnbmlmaWNhdGl2b1wiIGlmIHBfdmFsIDwgYWxwaGFfY29ycmVnaWRvIGVsc2UgXCLinJcgTm8gc2lnbmlmaWNhdGl2b1wiXG4gICAgICAgIFxuICAgICAgICBwcmludChmXCJ7Z3J1cG8xfSB2cyB7Z3J1cG8yfTpcIilcbiAgICAgICAgcHJpbnQoZlwiICBVLXN0YXRpc3RpYzoge3N0YXQ6LjFmfVwiKVxuICAgICAgICBwcmludChmXCIgIHAtdmFsb3I6IHtwX3ZhbDouNGZ9XCIpXG4gICAgICAgIHByaW50KGZcIiAge3NpZ25pZmljYXRpdm99XCIpXG4gICAgICAgIHByaW50KCkifQ==
+</script>
+</div>
+</div>
+</section>
+<section id="visualización-de-resultados" class="level3">
+<h3 class="anchored" data-anchor-id="visualización-de-resultados">7. Visualización de Resultados</h3>
+<div class="cell">
+<div>
+<div id="pyodide-9" class="exercise-cell">
+
+</div>
+<script type="pyodide-9-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBDcmVhciB1biBncsOhZmljbyBxdWUgbXVlc3RyZSBsb3MgcmVzdWx0YWRvcyBkZWwgdGVzdFxuZmlnLCAoYXgxLCBheDIpID0gcGx0LnN1YnBsb3RzKDEsIDIsIGZpZ3NpemU9KDE0LCA2KSlcblxuIyBCb3hwbG90IGNvbiBpbmZvcm1hY2nDs24gZXN0YWTDrXN0aWNhXG5ib3hfcGxvdCA9IHNucy5ib3hwbG90KHg9J2Rvc2UnLCB5PSdsZW4nLCBkYXRhPW15X2RhdGEsIFxuICAgICAgICAgICAgICAgICAgICAgIHBhbGV0dGU9WycjMWY3N2I0JywgJyNmZjdmMGUnLCAnIzJjYTAyYyddLCBheD1heDEpXG5heDEuc2V0X3RpdGxlKGYnVGVzdCBkZSBLcnVza2FsLVdhbGxpc1xcbkggPSB7aF9zdGF0Oi4zZn0sIHAgPSB7cF92YWx1ZTouNGZ9JylcbmF4MS5zZXRfeGxhYmVsKCdEb3NpcycpXG5heDEuc2V0X3lsYWJlbCgnTG9uZ2l0dWQgZGVsIGRpZW50ZScpXG5cbiMgQWdyZWdhciBsw61uZWFzIGhvcml6b250YWxlcyBwYXJhIG1vc3RyYXIgbWVkaWFuYXNcbmZvciBpLCBkb3NlIGluIGVudW1lcmF0ZShteV9kYXRhWydkb3NlJ10uY2F0LmNhdGVnb3JpZXMpOlxuICAgIG1lZGlhbmEgPSBteV9kYXRhW215X2RhdGFbJ2Rvc2UnXSA9PSBkb3NlXVsnbGVuJ10ubWVkaWFuKClcbiAgICBheDEuaGxpbmVzKG1lZGlhbmEsIGktMC40LCBpKzAuNCwgY29sb3JzPSdyZWQnLCBsaW5lc3R5bGVzPSctLScsIGxpbmV3aWR0aD0yKVxuXG4jIEdyw6FmaWNvIGRlIG1lZGlhbmFzIGNvbiBpbnRlcnZhbG9zIGRlIGNvbmZpYW56YVxubWVkaWFuYXMgPSBteV9kYXRhLmdyb3VwYnkoJ2Rvc2UnKVsnbGVuJ10ubWVkaWFuKClcbnExID0gbXlfZGF0YS5ncm91cGJ5KCdkb3NlJylbJ2xlbiddLnF1YW50aWxlKDAuMjUpXG5xMyA9IG15X2RhdGEuZ3JvdXBieSgnZG9zZScpWydsZW4nXS5xdWFudGlsZSgwLjc1KVxuXG54X3BvcyA9IHJhbmdlKGxlbihtZWRpYW5hcykpXG5heDIuZXJyb3JiYXIoeF9wb3MsIG1lZGlhbmFzLCB5ZXJyPVttZWRpYW5hcyAtIHExLCBxMyAtIG1lZGlhbmFzXSwgXG4gICAgICAgICAgICAgZm10PSdvJywgY2Fwc2l6ZT01LCBjYXB0aGljaz0yLCBtYXJrZXJzaXplPTgpXG5heDIuc2V0X3h0aWNrcyh4X3BvcylcbmF4Mi5zZXRfeHRpY2tsYWJlbHMobWVkaWFuYXMuaW5kZXgpXG5heDIuc2V0X3RpdGxlKCdNZWRpYW5hcyBjb24gUmFuZ28gSW50ZXJjdWFydMOtbGljbycpXG5heDIuc2V0X3hsYWJlbCgnRG9zaXMnKVxuYXgyLnNldF95bGFiZWwoJ01lZGlhbmEgZGUgbG9uZ2l0dWQgZGVsIGRpZW50ZScpXG5heDIuZ3JpZChUcnVlLCBhbHBoYT0wLjMpXG5cbnBsdC50aWdodF9sYXlvdXQoKVxucGx0LnNob3coKSJ9
+</script>
+</div>
+</div>
+</section>
+<section id="comparación-con-anova-paramétrico" class="level3">
+<h3 class="anchored" data-anchor-id="comparación-con-anova-paramétrico">8. Comparación con ANOVA Paramétrico</h3>
+<p>Para fines educativos, comparemos con ANOVA de una vía:</p>
+<div class="cell">
+<div>
+<div id="pyodide-10" class="exercise-cell">
+
+</div>
+<script type="pyodide-10-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBBTk9WQSBkZSB1bmEgdsOtYSBwYXJhIGNvbXBhcmFjacOzblxuZnJvbSBzY2lweS5zdGF0cyBpbXBvcnQgZl9vbmV3YXlcblxuZl9zdGF0LCBwX2Fub3ZhID0gZl9vbmV3YXkoZ3J1cG9fMDUsIGdydXBvXzEsIGdydXBvXzIpXG5cbnByaW50KFwiQ29tcGFyYWNpw7NuIGRlIG3DqXRvZG9zOlwiKVxucHJpbnQoXCI9XCIqNDApXG5wcmludChmXCJLcnVza2FsLVdhbGxpczogSCA9IHtoX3N0YXQ6LjRmfSwgcCA9IHtwX3ZhbHVlOi40Zn1cIilcbnByaW50KGZcIkFOT1ZBIHVuYSB2w61hOiAgRiA9IHtmX3N0YXQ6LjRmfSwgcCA9IHtwX2Fub3ZhOi40Zn1cIilcbnByaW50KClcblxuaWYgcF92YWx1ZSA8IDAuMDUgYW5kIHBfYW5vdmEgPCAwLjA1OlxuICAgIHByaW50KFwi4pyTIEFtYm9zIHRlc3RzIHNvbiBzaWduaWZpY2F0aXZvcyAtIGNvbmNsdXNpb25lcyBjb25zaXN0ZW50ZXNcIilcbmVsaWYgcF92YWx1ZSA+PSAwLjA1IGFuZCBwX2Fub3ZhID49IDAuMDU6XG4gICAgcHJpbnQoXCLinJMgQW1ib3MgdGVzdHMgbm8gc29uIHNpZ25pZmljYXRpdm9zIC0gY29uY2x1c2lvbmVzIGNvbnNpc3RlbnRlc1wiKVxuZWxzZTpcbiAgICBwcmludChcIuKaoCBMb3MgdGVzdHMgZGlmaWVyZW4gLSBjb25zaWRlcmFyIHN1cHVlc3RvcyB5IHJvYnVzdGV6XCIpIn0=
+</script>
+</div>
+</div>
+</section>
+<section id="tamaño-del-efecto" class="level3">
+<h3 class="anchored" data-anchor-id="tamaño-del-efecto">9. Tamaño del Efecto</h3>
+<div class="cell">
+<div>
+<div id="pyodide-11" class="exercise-cell">
+
+</div>
+<script type="pyodide-11-contents">
+eyJhdHRyIjp7ImVkaXQiOnRydWUsImV2YWwiOnRydWV9LCJjb2RlIjoiIyBDYWxjdWxhciBldGEgY3VhZHJhZG8gcGFyYSBLcnVza2FsLVdhbGxpcyAoZXF1aXZhbGVudGUgbm8gcGFyYW3DqXRyaWNvKVxubiA9IGxlbihteV9kYXRhKVxuayA9IGxlbihteV9kYXRhWydkb3NlJ10uY2F0LmNhdGVnb3JpZXMpXG5ldGFfc3F1YXJlZCA9IChoX3N0YXQgLSBrICsgMSkgLyAobiAtIGspXG5cbnByaW50KGZcIlRhbWHDsW8gZGVsIGVmZWN0byAozrfCsiBwYXJhIEtydXNrYWwtV2FsbGlzKToge2V0YV9zcXVhcmVkOi40Zn1cIilcblxuIyBJbnRlcnByZXRhY2nDs24gZGVsIHRhbWHDsW8gZGVsIGVmZWN0b1xuaWYgZXRhX3NxdWFyZWQgPCAwLjAxOlxuICAgIGludGVycHJldGFjaW9uID0gXCJlZmVjdG8gbXV5IHBlcXVlw7FvXCJcbmVsaWYgZXRhX3NxdWFyZWQgPCAwLjA2OlxuICAgIGludGVycHJldGFjaW9uID0gXCJlZmVjdG8gcGVxdWXDsW9cIlxuZWxpZiBldGFfc3F1YXJlZCA8IDAuMTQ6XG4gICAgaW50ZXJwcmV0YWNpb24gPSBcImVmZWN0byBtZWRpYW5vXCJcbmVsc2U6XG4gICAgaW50ZXJwcmV0YWNpb24gPSBcImVmZWN0byBncmFuZGVcIlxuXG5wcmludChmXCJJbnRlcnByZXRhY2nDs246IHtpbnRlcnByZXRhY2lvbn1cIikifQ==
+</script>
+</div>
+</div>
+</section>
+</section>
+<section id="cuándo-usar-kruskal-wallis-vs-anova" class="level2">
+<h2 class="anchored" data-anchor-id="cuándo-usar-kruskal-wallis-vs-anova">Cuándo Usar Kruskal-Wallis vs ANOVA</h2>
+<p><strong>Usa Kruskal-Wallis cuando:</strong> - Los datos no siguen una distribución normal - Las varianzas no son homogéneas - Tienes datos ordinales - Hay valores atípicos extremos - Los tamaños de muestra son pequeños</p>
+<p><strong>Usa ANOVA cuando:</strong> - Los datos siguen una distribución normal - Las varianzas son homogéneas - Quieres mayor poder estadístico - Los tamaños de muestra son grandes</p>
+</section>
+<section id="resumen-de-la-metodología" class="level2">
+<h2 class="anchored" data-anchor-id="resumen-de-la-metodología">Resumen de la Metodología</h2>
+<ol type="1">
+<li><strong>Explorar los datos</strong>: Estadísticas descriptivas y visualización</li>
+<li><strong>Verificar supuestos</strong>: Normalidad (Shapiro-Wilk) y homogeneidad (Levene)</li>
+<li><strong>Elegir el test</strong>: Kruskal-Wallis si se violan supuestos del ANOVA</li>
+<li><strong>Interpretar resultados</strong>: Estadístico H y p-valor</li>
+<li><strong>Comparaciones post-hoc</strong>: Si el test principal es significativo</li>
+<li><strong>Evaluar tamaño del efecto</strong>: Magnitud práctica de las diferencias</li>
+</ol>
+
+
+<script type="pyodide-data">
+eyJvcHRpb25zIjp7ImVudiI6eyJQTE9UTFlfUkVOREVSRVIiOiJwbG90bHlfbWltZXR5cGUifSwiaW5kZXhVUkwiOiJodHRwczovL2Nkbi5qc2RlbGl2ci5uZXQvcHlvZGlkZS92MC4yNy4wL2Z1bGwvIn0sInBhY2thZ2VzIjp7InBrZ3MiOlsicHlvZGlkZV9odHRwIiwibWljcm9waXAiLCJpcHl0aG9uIiwibnVtcHkiLCJwYW5kYXMiLCJtYXRwbG90bGliIiwic2VhYm9ybiIsInBpbmdvdWluIl19fQ==
+</script>
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W3siY2VsbE5hbWUiOiJweW9kaWRlLTExIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMTEgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTExLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMTEtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xMSA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMTEsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEwIiwiaW5saW5lIjpmYWxzZSwibWV0aG9kTmFtZSI6ImludGVycHJldCIsInNvdXJjZSI6InZpZXdvZiBfcHlvZGlkZV9lZGl0b3JfMTAgPSB7XG4gIGNvbnN0IHsgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yLCBiNjREZWNvZGUgfSA9IHdpbmRvdy5fZXhlcmNpc2Vfb2pzX3J1bnRpbWU7XG5cbiAgY29uc3Qgc2NyaXB0Q29udGVudCA9IGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoYHNjcmlwdFt0eXBlPVxcXCJweW9kaWRlLTEwLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMTAtY29udGVudHNgIH0sIGJsb2NrLmF0dHIpO1xuICBjb25zdCBlZGl0b3IgPSBuZXcgUHlvZGlkZUV4ZXJjaXNlRWRpdG9yKFxuICAgIHB5b2RpZGVPanMucHlvZGlkZVByb21pc2UsXG4gICAgYmxvY2suY29kZSxcbiAgICBvcHRpb25zXG4gICk7XG5cbiAgcmV0dXJuIGVkaXRvci5jb250YWluZXI7XG59XG5fcHlvZGlkZV92YWx1ZV8xMCA9IHB5b2RpZGVPanMucHJvY2VzcyhfcHlvZGlkZV9lZGl0b3JfMTAsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTkiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl85ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS05LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtOS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzkgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzksIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTgiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl84ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS04LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtOC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzggPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzgsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTciLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl83ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS03LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzcgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzcsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTYiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl82ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS02LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzYgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzYsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTUiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl81ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS01LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNS1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzUgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzUsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTQiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl80ID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS00LWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtNC1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzQgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzQsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTMiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8zID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0zLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMy1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzMgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzMsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTIiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoidmlld29mIF9weW9kaWRlX2VkaXRvcl8yID0ge1xuICBjb25zdCB7IFB5b2RpZGVFeGVyY2lzZUVkaXRvciwgYjY0RGVjb2RlIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0yLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oeyBpZDogYHB5b2RpZGUtMi1jb250ZW50c2AgfSwgYmxvY2suYXR0cik7XG4gIGNvbnN0IGVkaXRvciA9IG5ldyBQeW9kaWRlRXhlcmNpc2VFZGl0b3IoXG4gICAgcHlvZGlkZU9qcy5weW9kaWRlUHJvbWlzZSxcbiAgICBibG9jay5jb2RlLFxuICAgIG9wdGlvbnNcbiAgKTtcblxuICByZXR1cm4gZWRpdG9yLmNvbnRhaW5lcjtcbn1cbl9weW9kaWRlX3ZhbHVlXzIgPSBweW9kaWRlT2pzLnByb2Nlc3MoX3B5b2RpZGVfZWRpdG9yXzIsIHt9KTtcbiJ9LHsiY2VsbE5hbWUiOiJweW9kaWRlLTEiLCJpbmxpbmUiOmZhbHNlLCJtZXRob2ROYW1lIjoiaW50ZXJwcmV0Iiwic291cmNlIjoiX3B5b2RpZGVfdmFsdWVfMSA9IHtcbiAgY29uc3QgeyBoaWdobGlnaHRQeXRob24sIGI2NERlY29kZX0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHNjcmlwdENvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwicHlvZGlkZS0xLWNvbnRlbnRzXFxcIl1gKS50ZXh0Q29udGVudDtcbiAgY29uc3QgYmxvY2sgPSBKU09OLnBhcnNlKGI2NERlY29kZShzY3JpcHRDb250ZW50KSk7XG5cbiAgLy8gRGVmYXVsdCBldmFsdWF0aW9uIGNvbmZpZ3VyYXRpb25cbiAgY29uc3Qgb3B0aW9ucyA9IE9iamVjdC5hc3NpZ24oe1xuICAgIGlkOiBcInB5b2RpZGUtMS1jb250ZW50c1wiLFxuICAgIGVjaG86IHRydWUsXG4gICAgb3V0cHV0OiB0cnVlXG4gIH0sIGJsb2NrLmF0dHIpO1xuXG4gIC8vIEV2YWx1YXRlIHRoZSBwcm92aWRlZCBQeXRob24gY29kZVxuICBjb25zdCByZXN1bHQgPSBweW9kaWRlT2pzLnByb2Nlc3Moe2NvZGU6IGJsb2NrLmNvZGUsIG9wdGlvbnN9LCB7fSk7XG5cbiAgLy8gRWFybHkgeWllbGQgd2hpbGUgd2Ugd2FpdCBmb3IgdGhlIGZpcnN0IGV2YWx1YXRpb24gYW5kIHJlbmRlclxuICBpZiAob3B0aW9ucy5vdXRwdXQgJiYgIShcIjFcIiBpbiBweW9kaWRlT2pzLnJlbmRlcmVkT2pzKSkge1xuICAgIGNvbnN0IGNvbnRhaW5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG4gICAgY29uc3Qgc3Bpbm5lciA9IGRvY3VtZW50LmNyZWF0ZUVsZW1lbnQoXCJkaXZcIik7XG5cbiAgICBpZiAob3B0aW9ucy5lY2hvKSB7XG4gICAgICAvLyBTaG93IG91dHB1dCBhcyBoaWdobGlnaHRlZCBzb3VyY2VcbiAgICAgIGNvbnN0IHByZUVsZW0gPSBkb2N1bWVudC5jcmVhdGVFbGVtZW50KFwicHJlXCIpO1xuICAgICAgY29udGFpbmVyLmNsYXNzTmFtZSA9IFwic291cmNlQ29kZVwiO1xuICAgICAgcHJlRWxlbS5jbGFzc05hbWUgPSBcInNvdXJjZUNvZGUgcHl0aG9uXCI7XG4gICAgICBwcmVFbGVtLmFwcGVuZENoaWxkKGhpZ2hsaWdodFB5dGhvbihibG9jay5jb2RlKSk7XG4gICAgICBzcGlubmVyLmNsYXNzTmFtZSA9IFwic3Bpbm5lci1ncm93IHNwaW5uZXItZ3Jvdy1zbSBtLTIgcG9zaXRpb24tYWJzb2x1dGUgdG9wLTAgZW5kLTBcIjtcbiAgICAgIHByZUVsZW0uYXBwZW5kQ2hpbGQoc3Bpbm5lcik7XG4gICAgICBjb250YWluZXIuYXBwZW5kQ2hpbGQocHJlRWxlbSk7XG4gICAgfSBlbHNlIHtcbiAgICAgIHNwaW5uZXIuY2xhc3NOYW1lID0gXCJzcGlubmVyLWJvcmRlciBzcGlubmVyLWJvcmRlci1zbVwiO1xuICAgICAgY29udGFpbmVyLmFwcGVuZENoaWxkKHNwaW5uZXIpO1xuICAgIH1cblxuICAgIHlpZWxkIGNvbnRhaW5lcjtcbiAgfVxuXG4gIHB5b2RpZGVPanMucmVuZGVyZWRPanNbXCIxXCJdID0gdHJ1ZTtcbiAgeWllbGQgYXdhaXQgcmVzdWx0O1xufVxuIn0seyJjZWxsTmFtZSI6InB5b2RpZGUtcHJlbHVkZSIsImlubGluZSI6ZmFsc2UsIm1ldGhvZE5hbWUiOiJpbnRlcnByZXRRdWlldCIsInNvdXJjZSI6InB5b2RpZGVPanMgPSB7XG4gIGNvbnN0IHtcbiAgICBQeW9kaWRlRXZhbHVhdG9yLFxuICAgIFB5b2RpZGVFbnZpcm9ubWVudE1hbmFnZXIsXG4gICAgc2V0dXBQeXRob24sXG4gICAgc3RhcnRQeW9kaWRlV29ya2VyLFxuICAgIGI2NERlY29kZSxcbiAgICBjb2xsYXBzZVBhdGgsXG4gIH0gPSB3aW5kb3cuX2V4ZXJjaXNlX29qc19ydW50aW1lO1xuXG4gIGNvbnN0IHN0YXR1c0NvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1zdGF0dXNcIik7XG4gIGNvbnN0IGluZGljYXRvckNvbnRhaW5lciA9IGRvY3VtZW50LmdldEVsZW1lbnRCeUlkKFwiZXhlcmNpc2UtbG9hZGluZy1pbmRpY2F0b3JcIik7XG4gIGluZGljYXRvckNvbnRhaW5lci5jbGFzc0xpc3QucmVtb3ZlKFwiZC1ub25lXCIpO1xuXG4gIGxldCBzdGF0dXNUZXh0ID0gZG9jdW1lbnQuY3JlYXRlRWxlbWVudChcImRpdlwiKVxuICBzdGF0dXNUZXh0LmNsYXNzTGlzdCA9IFwiZXhlcmNpc2UtbG9hZGluZy1kZXRhaWxzXCI7XG4gIHN0YXR1c1RleHQgPSBzdGF0dXNDb250YWluZXIuYXBwZW5kQ2hpbGQoc3RhdHVzVGV4dCk7XG4gIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgSW5pdGlhbGlzZWA7XG5cbiAgLy8gSG9pc3QgaW5kaWNhdG9yIG91dCBmcm9tIGZpbmFsIHNsaWRlIHdoZW4gcnVubmluZyB1bmRlciByZXZlYWxcbiAgY29uc3QgcmV2ZWFsU3RhdHVzID0gZG9jdW1lbnQucXVlcnlTZWxlY3RvcihcIi5yZXZlYWwgLmV4ZXJjaXNlLWxvYWRpbmctaW5kaWNhdG9yXCIpO1xuICBpZiAocmV2ZWFsU3RhdHVzKSB7XG4gICAgcmV2ZWFsU3RhdHVzLnJlbW92ZSgpO1xuICAgIGRvY3VtZW50LnF1ZXJ5U2VsZWN0b3IoXCIucmV2ZWFsID4gLnNsaWRlc1wiKS5hcHBlbmRDaGlsZChyZXZlYWxTdGF0dXMpO1xuICB9XG5cbiAgLy8gTWFrZSBhbnkgcmV2ZWFsIHNsaWRlcyB3aXRoIGxpdmUgY2VsbHMgc2Nyb2xsYWJsZVxuICBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKFwiLnJldmVhbCAuZXhlcmNpc2UtY2VsbFwiKS5mb3JFYWNoKChlbCkgPT4ge1xuICAgIGVsLmNsb3Nlc3QoJ3NlY3Rpb24uc2xpZGUnKS5jbGFzc0xpc3QuYWRkKFwic2Nyb2xsYWJsZVwiKTtcbiAgfSlcblxuICAvLyBQeW9kaWRlIHN1cHBsZW1lbnRhbCBkYXRhIGFuZCBvcHRpb25zXG4gIGNvbnN0IGRhdGFDb250ZW50ID0gZG9jdW1lbnQucXVlcnlTZWxlY3Rvcihgc2NyaXB0W3R5cGU9XFxcInB5b2RpZGUtZGF0YVxcXCJdYCkudGV4dENvbnRlbnQ7XG4gIGNvbnN0IGRhdGEgPSBKU09OLnBhcnNlKGI2NERlY29kZShkYXRhQ29udGVudCkpO1xuXG4gIC8vIEdyYWIgbGlzdCBvZiByZXNvdXJjZXMgdG8gYmUgZG93bmxvYWRlZFxuICBjb25zdCBmaWxlc0NvbnRlbnQgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yKGBzY3JpcHRbdHlwZT1cXFwidmZzLWZpbGVcXFwiXWApLnRleHRDb250ZW50O1xuICBjb25zdCBmaWxlcyA9IEpTT04ucGFyc2UoYjY0RGVjb2RlKGZpbGVzQ29udGVudCkpO1xuXG4gIGxldCBweW9kaWRlUHJvbWlzZSA9IChhc3luYyAoKSA9PiB7XG4gICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyBQeW9kaWRlYDtcbiAgICBjb25zdCBweW9kaWRlID0gYXdhaXQgc3RhcnRQeW9kaWRlV29ya2VyKGRhdGEub3B0aW9ucyk7XG5cbiAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6IG1pY3JvcGlwYDtcbiAgICBhd2FpdCBweW9kaWRlLmxvYWRQYWNrYWdlKFwibWljcm9waXBcIik7XG4gICAgY29uc3QgbWljcm9waXAgPSBhd2FpdCBweW9kaWRlLnB5aW1wb3J0KFwibWljcm9waXBcIik7XG4gICAgYXdhaXQgZGF0YS5wYWNrYWdlcy5wa2dzLm1hcCgocGtnKSA9PiAoKSA9PiB7XG4gICAgICBzdGF0dXNUZXh0LnRleHRDb250ZW50ID0gYERvd25sb2FkaW5nIHBhY2thZ2U6ICR7cGtnfWA7XG4gICAgICByZXR1cm4gbWljcm9waXAuaW5zdGFsbChwa2cpO1xuICAgIH0pLnJlZHVjZSgoY3VyLCBuZXh0KSA9PiBjdXIudGhlbihuZXh0KSwgUHJvbWlzZS5yZXNvbHZlKCkpO1xuICAgIGF3YWl0IG1pY3JvcGlwLmRlc3Ryb3koKTtcblxuICAgIC8vIERvd25sb2FkIGFuZCBpbnN0YWxsIHJlc291cmNlc1xuICAgIGF3YWl0IGZpbGVzLm1hcCgoZmlsZSkgPT4gYXN5bmMgKCkgPT4ge1xuICAgICAgY29uc3QgbmFtZSA9IGZpbGUuc3Vic3RyaW5nKGZpbGUubGFzdEluZGV4T2YoJy8nKSArIDEpO1xuICAgICAgc3RhdHVzVGV4dC50ZXh0Q29udGVudCA9IGBEb3dubG9hZGluZyByZXNvdXJjZTogJHtuYW1lfWA7XG4gICAgICBjb25zdCByZXNwb25zZSA9IGF3YWl0IGZldGNoKGZpbGUpO1xuICAgICAgaWYgKCFyZXNwb25zZS5vaykge1xuICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYENhbid0IGRvd25sb2FkIFxcYCR7ZmlsZX1cXGAuIEVycm9yICR7cmVzcG9uc2Uuc3RhdHVzfTogXCIke3Jlc3BvbnNlLnN0YXR1c1RleHR9XCIuYCk7XG4gICAgICB9XG4gICAgICBjb25zdCBkYXRhID0gYXdhaXQgcmVzcG9uc2UuYXJyYXlCdWZmZXIoKTtcblxuICAgICAgLy8gU3RvcmUgVVJMcyBpbiB0aGUgY3dkIHdpdGhvdXQgYW55IHN1YmRpcmVjdG9yeSBzdHJ1Y3R1cmVcbiAgICAgIGlmIChmaWxlLmluY2x1ZGVzKFwiOi8vXCIpKSB7XG4gICAgICAgIGZpbGUgPSBuYW1lO1xuICAgICAgfVxuXG4gICAgICAvLyBDb2xsYXBzZSBoaWdoZXIgZGlyZWN0b3J5IHN0cnVjdHVyZVxuICAgICAgZmlsZSA9IGNvbGxhcHNlUGF0aChmaWxlKTtcblxuICAgICAgLy8gQ3JlYXRlIGRpcmVjdG9yeSB0cmVlLCBpZ25vcmluZyBcImRpcmVjdG9yeSBleGlzdHNcIiBWRlMgZXJyb3JzXG4gICAgICBjb25zdCBwYXJ0cyA9IGZpbGUuc3BsaXQoJy8nKS5zbGljZSgwLCAtMSk7XG4gICAgICBsZXQgcGF0aCA9ICcnO1xuICAgICAgd2hpbGUgKHBhcnRzLmxlbmd0aCA+IDApIHtcbiAgICAgICAgcGF0aCArPSBwYXJ0cy5zaGlmdCgpICsgJy8nO1xuICAgICAgICB0cnkge1xuICAgICAgICAgIGF3YWl0IHB5b2RpZGUuRlMubWtkaXIocGF0aCk7XG4gICAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgICBpZiAoZS5uYW1lICE9PSBcIkVycm5vRXJyb3JcIikgdGhyb3cgZTtcbiAgICAgICAgICBpZiAoZS5lcnJubyAhPT0gMjApIHtcbiAgICAgICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgICAgICBjb25zdCBlcnJvclRleHQgPSBhd2FpdCBweW9kaWRlLl9tb2R1bGUuVVRGOFRvU3RyaW5nKGVycm9yVGV4dFB0cik7XG4gICAgICAgICAgICB0aHJvdyBuZXcgRXJyb3IoYEZpbGVzeXN0ZW0gRXJyb3IgJHtlLmVycm5vfSBcIiR7ZXJyb3JUZXh0fVwiLmApO1xuICAgICAgICAgIH1cbiAgICAgICAgfVxuICAgICAgfVxuXG4gICAgICAvLyBXcml0ZSB0aGlzIGZpbGUgdG8gdGhlIFZGU1xuICAgICAgdHJ5IHtcbiAgICAgICAgcmV0dXJuIGF3YWl0IHB5b2RpZGUuRlMud3JpdGVGaWxlKGZpbGUsIG5ldyBVaW50OEFycmF5KGRhdGEpKTtcbiAgICAgIH0gY2F0Y2ggKGUpIHtcbiAgICAgICAgaWYgKGUubmFtZSAhPT0gXCJFcnJub0Vycm9yXCIpIHRocm93IGU7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dFB0ciA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5fc3RyZXJyb3IoZS5lcnJubyk7XG4gICAgICAgIGNvbnN0IGVycm9yVGV4dCA9IGF3YWl0IHB5b2RpZGUuX21vZHVsZS5VVEY4VG9TdHJpbmcoZXJyb3JUZXh0UHRyKTtcbiAgICAgICAgdGhyb3cgbmV3IEVycm9yKGBGaWxlc3lzdGVtIEVycm9yICR7ZS5lcnJub30gXCIke2Vycm9yVGV4dH1cIi5gKTtcbiAgICAgIH1cbiAgICB9KS5yZWR1Y2UoKGN1ciwgbmV4dCkgPT4gY3VyLnRoZW4obmV4dCksIFByb21pc2UucmVzb2x2ZSgpKTtcblxuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBgUHlvZGlkZSBlbnZpcm9ubWVudCBzZXR1cGA7XG4gICAgYXdhaXQgc2V0dXBQeXRob24ocHlvZGlkZSk7XG5cbiAgICBzdGF0dXNUZXh0LnJlbW92ZSgpO1xuICAgIGlmIChzdGF0dXNDb250YWluZXIuY2hpbGRyZW4ubGVuZ3RoID09IDApIHtcbiAgICAgIHN0YXR1c0NvbnRhaW5lci5wYXJlbnROb2RlLnJlbW92ZSgpO1xuICAgIH1cbiAgICByZXR1cm4gcHlvZGlkZTtcbiAgfSkoKS5jYXRjaCgoZXJyKSA9PiB7XG4gICAgc3RhdHVzVGV4dC5zdHlsZS5jb2xvciA9IFwidmFyKC0tZXhlcmNpc2UtZWRpdG9yLWhsLWVyLCAjQUQwMDAwKVwiO1xuICAgIHN0YXR1c1RleHQudGV4dENvbnRlbnQgPSBlcnIubWVzc2FnZTtcbiAgICAvL2luZGljYXRvckNvbnRhaW5lci5xdWVyeVNlbGVjdG9yKFwiLnNwaW5uZXItZ3Jvd1wiKS5jbGFzc0xpc3QuYWRkKFwiZC1ub25lXCIpO1xuICAgIHRocm93IGVycjtcbiAgfSk7XG5cbiAgLy8gS2VlcCB0cmFjayBvZiBpbml0aWFsIE9KUyBibG9jayByZW5kZXJcbiAgY29uc3QgcmVuZGVyZWRPanMgPSB7fTtcblxuICBjb25zdCBwcm9jZXNzID0gYXN5bmMgKGNvbnRleHQsIGlucHV0cykgPT4ge1xuICAgIGNvbnN0IHB5b2RpZGUgPSBhd2FpdCBweW9kaWRlUHJvbWlzZTtcbiAgICBjb25zdCBldmFsdWF0b3IgPSBuZXcgUHlvZGlkZUV2YWx1YXRvcihweW9kaWRlLCBjb250ZXh0KTtcbiAgICBhd2FpdCBldmFsdWF0b3IucHJvY2VzcyhpbnB1dHMpO1xuICAgIHJldHVybiBldmFsdWF0b3IuY29udGFpbmVyO1xuICB9XG5cbiAgcmV0dXJuIHtcbiAgICBweW9kaWRlUHJvbWlzZSxcbiAgICByZW5kZXJlZE9qcyxcbiAgICBwcm9jZXNzLFxuICB9O1xufVxuIn1dfQ==
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../docs";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/santi-rios\.github\.io\/curso_estadistica_R_Python\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2021, Norah Jones</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions"><ul><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/edit/main/docs/85-kruskal-wallis-python.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>

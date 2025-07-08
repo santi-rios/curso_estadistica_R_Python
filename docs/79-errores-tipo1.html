@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Mtro. Santiago Ríos">
+
+<title>Pruebas Múltiples y el Problema del Error Tipo I Acumulado – Curso introductorio a R</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-8de1447c63df1104c60f9d0ca69b1348.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/live-runtime/live-runtime.js" type="module"></script>
+<link href="../site_libs/quarto-contrib/live-runtime/live-runtime.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<script type="module" src="../site_libs/quarto-ojs/quarto-ojs-runtime.js"></script>
+<link href="../site_libs/quarto-ojs/quarto-ojs.css" rel="stylesheet">
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <div id="quarto-announcement" data-announcement-id="9616bfb5c47a60811ea96e08f2ae1bd0" class="alert alert-primary hidden"><i class="bi bi-info-circle quarto-announcement-icon"></i><div class="quarto-announcement-content">
+<p><strong>Alert</strong> - this is some information that you should pay attention to</p>
+</div><i class="bi bi-x-lg quarto-announcement-action"></i></div>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#tasa-de-error-tipo-i-familiar" id="toc-tasa-de-error-tipo-i-familiar" class="nav-link active" data-scroll-target="#tasa-de-error-tipo-i-familiar">Tasa de Error Tipo I Familiar</a></li>
+  <li><a href="#enfoques-para-controlar-el-error-tipo-i-en-pruebas-múltiples" id="toc-enfoques-para-controlar-el-error-tipo-i-en-pruebas-múltiples" class="nav-link" data-scroll-target="#enfoques-para-controlar-el-error-tipo-i-en-pruebas-múltiples">Enfoques para Controlar el Error Tipo I en Pruebas Múltiples</a></li>
+  <li><a href="#cuándo-usar-ajustes-para-pruebas-múltiples" id="toc-cuándo-usar-ajustes-para-pruebas-múltiples" class="nav-link" data-scroll-target="#cuándo-usar-ajustes-para-pruebas-múltiples">Cuándo Usar Ajustes para Pruebas Múltiples</a></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/edit/main/docs/79-errores-tipo1.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Pruebas Múltiples y el Problema del Error Tipo I Acumulado</h1>
+</div>
+
+
+<div class="quarto-title-meta-author">
+  <div class="quarto-title-meta-heading">Author</div>
+  <div class="quarto-title-meta-heading">Affiliation</div>
+  
+    <div class="quarto-title-meta-contents">
+    <p class="author">Mtro. Santiago Ríos <a href="mailto:santiagoboo99@gmail.com" class="quarto-title-author-email"><i class="bi bi-envelope"></i></a> </p>
+  </div>
+  <div class="quarto-title-meta-contents">
+        <p class="affiliation">
+            <a href="orcaasesina.com">
+            Cursos Orca
+            </a>
+          </p>
+      </div>
+  </div>
+
+<div class="quarto-title-meta">
+
+      
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p><img src="https://datascience.recursos.uoc.edu/wp-content/uploads/2020/06/PID_00275831_011.jpg" class="img-fluid"></p>
+<p>Uno de los problemas más desafiantes en las pruebas de hipótesis estadísticas es el riesgo de <strong>acumulación de errores de decisión</strong> cuando se realizan múltiples pruebas al mismo tiempo. A medida que aumenta el número de pruebas, también lo hace la probabilidad de cometer al menos un <strong>error Tipo I</strong> (rechazar incorrectamente la hipótesis nula) entre el conjunto de pruebas. Este problema se conoce como la <strong>tasa de error Tipo I familiar</strong> (o <strong>tasa de error Tipo I en experimentos</strong>), y es importante abordarlo para evitar sacar conclusiones incorrectas a partir de los datos.</p>
+<section id="tasa-de-error-tipo-i-familiar" class="level2">
+<h2 class="anchored" data-anchor-id="tasa-de-error-tipo-i-familiar">Tasa de Error Tipo I Familiar</h2>
+<p>La <strong>tasa de error Tipo I familiar</strong> (también conocida como <strong>tasa de error Tipo I en experimentos</strong>) se refiere a la <strong>probabilidad de cometer al menos un error Tipo I</strong> en un conjunto de pruebas de hipótesis que se realizan simultáneamente. Este problema surge en situaciones como:</p>
+<ul>
+<li>Comparaciones por pares de grupos de tratamiento en un experimento.</li>
+<li>Pruebas de correlaciones entre múltiples variables.</li>
+<li>Múltiples análisis univariados (como pruebas t) en las mismas unidades experimentales.</li>
+</ul>
+<p>Si las pruebas son <strong>independientes</strong> (es decir, ortogonales), la tasa de error Tipo I familiar puede calcularse mediante la siguiente fórmula:</p>
+<p><span class="math display">\[
+1 - (1 - \alpha)^c
+\]</span></p>
+<p>Donde: - <span class="math display">\[\alpha\]</span> es el nivel de significancia para cada prueba individual. - <span class="math inline">\(c\)</span> es el número de pruebas.</p>
+<p>Por ejemplo, si realizamos 10 pruebas con un nivel de significancia <span class="math inline">\(\alpha = 0.05\)</span>, la probabilidad de cometer al menos un error Tipo I sería:</p>
+<p><span class="math display">\[
+1 - (1 - 0.05)^{10} = 1 - 0.95^{10} = 0.401
+\]</span></p>
+<p>Esto significa que hay un 40.1% de probabilidad de cometer al menos un error Tipo I en las 10 pruebas, lo cual es mucho mayor que el 5% esperado para cada prueba individual.</p>
+</section>
+<section id="enfoques-para-controlar-el-error-tipo-i-en-pruebas-múltiples" class="level2">
+<h2 class="anchored" data-anchor-id="enfoques-para-controlar-el-error-tipo-i-en-pruebas-múltiples">Enfoques para Controlar el Error Tipo I en Pruebas Múltiples</h2>
+<p>Existen varios enfoques para controlar la <strong>tasa de error Tipo I familiar</strong> en situaciones de pruebas múltiples. Estos enfoques se basan en ajustar el nivel de significancia de cada prueba individual para mantener controlada la tasa de error global. Veamos algunos de los métodos más comunes:</p>
+<section id="procedimiento-de-bonferroni" class="level5">
+<h5 class="anchored" data-anchor-id="procedimiento-de-bonferroni">1. <strong>Procedimiento de Bonferroni</strong></h5>
+<p>El <strong>procedimiento de Bonferroni</strong> es uno de los métodos más simples y ampliamente utilizados para ajustar el nivel de significancia en pruebas múltiples. La idea básica es dividir el nivel de significancia original (<span class="math inline">\(\alpha\)</span>) entre el número de pruebas (<span class="math inline">\(c\)</span>) para obtener un nivel de significancia ajustado para cada prueba:</p>
+<p><span class="math display">\[
+\alpha_{\text{ajustado}} = \frac{\alpha}{c}
+\]</span></p>
+<p>Por ejemplo, si tenemos <span class="math inline">\(\alpha = 0.05\)</span> y realizamos 10 pruebas, el nivel de significancia ajustado sería:</p>
+<p><span class="math display">\[
+\alpha_{\text{ajustado}} = \frac{0.05}{10} = 0.005
+\]</span></p>
+<p>Esto significa que cada prueba individual debe ser significativa a un nivel de <span class="math inline">\(0.005\)</span> para que podamos rechazar la hipótesis nula, lo que reduce considerablemente la probabilidad de cometer un error Tipo I en el conjunto de pruebas.</p>
+<p><strong>Ventajas:</strong> - Es fácil de aplicar y tiene una gran flexibilidad, ya que puede usarse en cualquier situación con pruebas múltiples.</p>
+<p><strong>Desventajas:</strong> - Es muy <strong>conservador</strong>, lo que significa que reduce mucho el poder de las pruebas individuales, especialmente cuando hay muchas pruebas. - Por lo tanto, puede ser demasiado restrictivo en algunos casos, lo que lleva a un alto riesgo de errores Tipo II (no detectar un efecto real). - Esto podría considerarse incluso más grave que cometer un error Tipo I en algunas situaciones. Por ejemplo, en la investigación médica, es más grave no detectar un tratamiento efectivo y nunca más probarlo que experimentar uno que no lo es y descartarlo luego.</p>
+</section>
+<section id="procedimiento-de-dunn-sidak" class="level5">
+<h5 class="anchored" data-anchor-id="procedimiento-de-dunn-sidak">2. <strong>Procedimiento de Dunn-Sidak</strong></h5>
+<p>El <strong>procedimiento de Dunn-Sidak</strong> es una modificación del procedimiento de Bonferroni que mejora ligeramente el poder de las pruebas. El nivel de significancia ajustado se calcula de la siguiente manera:</p>
+<p><span class="math display">\[
+\alpha_{\text{ajustado}} = 1 - (1 - \alpha)^{1/c}
+\]</span></p>
+<p>Por ejemplo, si tenemos <span class="math inline">\(\alpha = 0.05\)</span> y realizamos 10 pruebas, el nivel de significancia ajustado sería:</p>
+<p><span class="math display">\[
+\alpha_{\text{ajustado}} = 1 - (1 - 0.05)^{1/10} = 0.005116
+\]</span></p>
+<p>El ajuste es muy similar al de Bonferroni, pero ligeramente menos conservador, lo que mejora un poco el poder de las pruebas.</p>
+</section>
+<section id="bonferroni-secuencial-holm-1979" class="level5">
+<h5 class="anchored" data-anchor-id="bonferroni-secuencial-holm-1979">3. <strong>Bonferroni Secuencial (Holm, 1979)</strong></h5>
+<p>El <strong>procedimiento de Bonferroni secuencial</strong>, propuesto por Holm en 1979, es una mejora significativa respecto al Bonferroni estándar. En este procedimiento, los valores p de las pruebas se <strong>ordenan</strong> de menor a mayor, y luego se ajusta el nivel de significancia para cada prueba de la siguiente manera:</p>
+<ol type="1">
+<li>La prueba con el <strong>valor p más pequeño</strong> se compara con <span class="math inline">\(\alpha/c\)</span>.</li>
+<li>La segunda prueba se compara con <span class="math inline">\(\alpha/(c-1)\)</span>, y así sucesivamente.</li>
+<li>Si encontramos una prueba no significativa, dejamos de probar y no rechazamos las hipótesis restantes.</li>
+</ol>
+<p>Este procedimiento tiene más <strong>poder</strong> que el Bonferroni estándar, ya que ajusta gradualmente el nivel de significancia en lugar de hacerlo uniformemente para todas las pruebas.</p>
+</section>
+</section>
+<section id="cuándo-usar-ajustes-para-pruebas-múltiples" class="level2">
+<h2 class="anchored" data-anchor-id="cuándo-usar-ajustes-para-pruebas-múltiples">Cuándo Usar Ajustes para Pruebas Múltiples</h2>
+<ul>
+<li>Es muy común en la investigación científica y estadística realizar múltiples pruebas de hipótesis para explorar diferentes aspectos de los datos.</li>
+<li>En tales situaciones, es importante controlar la tasa de error Tipo I familiar para evitar conclusiones incorrectas.</li>
+<li>Un ejemplo común es la <strong>comparación de múltiples grupos de tratamiento</strong> en un experimento, donde se realizan pruebas de comparación por pares entre todos los grupos.
+<ul>
+<li>Esto sucede a menudo cuando tenemos múltiples medias, las cuales analizamos con un ANOVA. Si recuerdas, el ANOVA NO nos dice cuáles medias son diferentes, solo que al menos una es diferente. Por lo tanto, necesitamos hacer pruebas adicionales para determinar cuáles son diferentes. En este punto, debemos ajustar el nivel de significancia para controlar el error Tipo I acumulado. Veremos esto en el siguiente módulo, donde nos adentraremos en el ANOVA y las pruebas post-hoc (pruebas adicionales para determinar cuáles medias son diferentes).</li>
+</ul></li>
+</ul>
+
+
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<div id="exercise-loading-indicator" class="exercise-loading-indicator d-none d-flex align-items-center gap-2">
+<div id="exercise-loading-status" class="d-flex gap-2">
+
+</div>
+<div class="spinner-grow spinner-grow-sm">
+
+</div>
+</div>
+<script type="vfs-file">
+W10=
+</script>
+</section>
+
+</main> <!-- /main -->
+<script type="ojs-module-contents">
+eyJjb250ZW50cyI6W119
+</script>
+<script type="module">
+if (window.location.protocol === "file:") { alert("The OJS runtime does not work with file:// URLs. Please use a web server to view this document."); }
+window._ojs.paths.runtimeToDoc = "../../docs";
+window._ojs.paths.runtimeToRoot = "../..";
+window._ojs.paths.docToRoot = "..";
+window._ojs.selfContained = false;
+window._ojs.runtime.interpretFromScriptTags();
+</script>
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/santi-rios\.github\.io\/curso_estadistica_R_Python\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Copyright 2021, Norah Jones</p>
+</div>   
+    <div class="nav-footer-center">
+      &nbsp;
+    <div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/edit/main/docs/79-errores-tipo1.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/santi-rios/R_interactivo_ejecutar/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li></ul></div></div>
+    <div class="nav-footer-right">
+      <ul class="footer-items list-unstyled">
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://github.com/">
+      <i class="bi bi-github" role="img">
+</i> 
+    </a>
+  </li>  
+    <li class="nav-item compact">
+    <a class="nav-link" href="https://twitter.com/">
+      <i class="bi bi-twitter" role="img">
+</i> 
+    </a>
+  </li>  
+</ul>
+    </div>
+  </div>
+</footer>
+
+
+
+
+</body></html>
