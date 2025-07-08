@@ -21,12 +21,12 @@ pyodide:
         - seaborn
         - numpy
         - statsmodels
+        - nbformat
 ---
----
+
 
 ### Lección sobre ANCOVA: Análisis de Covarianza en Ciencias de la Salud y Biológicas
 
----
 
 #### **Introducción al ANCOVA**
 
@@ -34,7 +34,7 @@ El **Análisis de Covarianza (ANCOVA)** es una extensión del ANOVA que incluye 
 
 En un **ANCOVA**, el modelo lineal incluye tanto las **variables categóricas** como una o más **variables continuas**. Este análisis es útil cuando queremos ajustar los efectos de las variables categóricas por una covariable, mejorando la precisión de nuestras estimaciones.
 
----
+
 
 ### **Puntos clave a enseñar:**
 
