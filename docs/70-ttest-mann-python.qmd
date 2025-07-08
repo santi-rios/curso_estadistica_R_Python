@@ -14,7 +14,7 @@ pyodide:
 engine: knitr
 ---
 
-{{< include ./_extensions/r-wasm/live/_knitr.qmd >}}
+{{< include ../_extensions/r-wasm/live/_knitr.qmd >}}
 
 ## Introducción a la Comparación de Dos Medias
 
